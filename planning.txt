@@ -1,0 +1,135 @@
+================================================================================
+PLANNING: Dynamic Table Row Generation for ZC Exporter Invoice
+================================================================================
+
+OBJECTIVE:
+Generate table rows dynamically based on the number of items in the database.
+Each row should display item details and handle the "AS ADDRESS" display on 
+the middle row.
+
+CURRENT STATE:
+- items array in JSON can have ANY number of dictionaries (5, 6, 10, etc.)
+- HTML currently uses Jinja2 loop with complex middle-row logic
+- The middle row is calculated as: loop.index == (loop.length // 2) + (loop.length % 2)
+- Each row contains: from, to, description, unit, quantity, rate, amount
+- Middle row also displays: taxable_value, igst_percent, igst_amount
+
+REQUIREMENTS:
+1. Count the total number of items in the items array
+2. For each item, generate ONE complete table row
+3. For the middle row (calculated position), add "AS ADDRESS" text
+4. For the middle row, populate taxable_value, igst_percent, igst_amount
+5. For non-middle rows, these three fields should be empty or show 0.00
+
+IMPLEMENTATION STEPS:
+================================================================================
+
+STEP 1: Calculate Middle Row Position
+   Formula: middle_row_index = (total_items // 2) + (total_items % 2)
+   Example:
+   - 5 items: (5//2) + (5%2) = 2 + 1 = 3 (middle is 3rd row)
+   - 6 items: (6//2) + (6%2) = 3 + 0 = 3 (middle is 3rd row)
+   - 10 items: (10//2) + (10%2) = 5 + 0 = 5 (middle is 5th row)
+
+STEP 2: Backend Changes (main.py - zc_exporter_print route)
+   ACTION: Calculate and pass middle_row_index to template
+   - Count items: total_items = len(record.items) if record.items else 0
+   - Calculate: middle_row = (total_items // 2) + (total_items % 2)
+   - Add to data dict: data['middle_row'] = middle_row
+   - Add to data dict: data['total_items'] = total_items
+   
+   RATIONALE: Pass this info to template so Jinja2 can compare with loop.index0
+
+STEP 3: Update HTML Template (start.html - table rows section)
+   ACTION: Modify the table row loop logic
+   
+   CURRENT LOGIC:
+   {% for row in table_rows %}
+       <tr>
+           <td>
+               {% if loop.index == (loop.length // 2) + (loop.length % 2) %}
+                   AS ADDRESS
+               {% endif %}
+           </td>
+           ... other fields ...
+       </tr>
+   {% endfor %}
+   
+   BETTER LOGIC (use passed middle_row value):
+   {% for row in table_rows %}
+       <tr>
+           <td>
+               {% if loop.index == middle_row %}
+                   AS ADDRESS
+               {% endif %}
+           </td>
+           <td>{{ row.from }} - {{ row.to }}</td>
+           <td>{{ row.description }}</td>
+           <td>{{ row.unit }}</td>
+           <td>{{ row.quantity }}</td>
+           <td>{{ row.rate }}</td>
+           <td>{{ row.amount }}</td>
+           <td>
+               {% if loop.index == middle_row %}
+                   {{ taxable_value if taxable_value else '0.00' }}
+               {% else %}
+                   0.00
+               {% endif %}
+           </td>
+           <td>
+               {% if loop.index == middle_row %}
+                   {{ igst_percent if igst_percent else '0.00' }}
+               {% else %}
+                   0.00
+               {% endif %}
+           </td>
+           <td>
+               {% if loop.index == middle_row %}
+                   {{ igst_amount if igst_amount else '0.00' }}
+               {% else %}
+                   0.00
+               {% endif %}
+           </td>
+       </tr>
+   {% endfor %}
+
+STEP 4: Add Missing Fields to Backend Data
+   ACTION: Ensure taxable_value, igst_percent, igst_amount are in data dict
+   FIELDS TO ADD:
+   - 'taxable_value': record.taxable_value or '0.00'
+   - 'igst_percent': record.igst_percent or '0.00'
+   - 'igst_amount': record.igst_amount or '0.00'
+   
+   NOTE: These fields may need to be added to ZCExporter model if missing
+
+STEP 5: Test Scenarios
+   Test Case 1: 5 items
+     - Middle row = 3
+     - Row 1, 2: show 0.00
+     - Row 3: show AS ADDRESS + taxable_value + igst_percent + igst_amount
+     - Row 4, 5: show 0.00
+   
+   Test Case 2: 6 items
+     - Middle row = 3
+     - Row 1, 2: show 0.00
+     - Row 3: show AS ADDRESS + values
+     - Row 4, 5, 6: show 0.00
+   
+   Test Case 3: 1 item
+     - Middle row = 1
+     - Row 1: show AS ADDRESS + values
+
+STEP 6: Update JSON File Structure (Optional)
+   ACTION: Consider if we should store middle_row in JSON
+   - Add 'middle_row' key to JSON
+   - Makes data file self-contained
+   - Easier for debugging and offline processing
+
+================================================================================
+EXECUTION ORDER:
+1. Update ZCExporter model (if needed) to include taxable_value, igst_percent, igst_amount
+2. Update main.py print route to calculate and pass middle_row, total_items, and tax fields
+3. Update start.html to use middle_row variable instead of inline calculation
+4. Test with 5, 6, and 1 item scenarios
+5. Verify JSON file generation includes middle_row
+================================================================================

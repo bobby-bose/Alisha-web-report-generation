@@ -1,0 +1,251 @@
+===============================================================================
+BUTTONS ANALYSIS - ALL HTML FILES IN PROJECT
+===============================================================================
+
+1. MAIN DASHBOARD (main.html)
+===============================================================================
+- No direct buttons found (uses Jinja2 form buttons generated from FORMS dict)
+- Links to individual form pages via {{ form_url }}
+
+2. PACKAGING LIST - ADD PAGE (packaging_list/add.html)
+===============================================================================
+Line 206: Submit Button (type="submit")
+- Class: "btn btn-primary px-5 fw-semibold"
+- Text: "Submit"
+- Action: Submits form to /api/packaging-list/create
+- Status: ✅ WORKING (Has JavaScript handler)
+
+Line 458: Delete Row Button (type="button") - INSIDE ITEMS TABLE
+- Class: "btn btn-outline-danger btn-sm"
+- Action: Deletes item rows dynamically
+- Status: ✅ WORKING (Has JavaScript handler)
+
+Line 213: Cancel/Back Button (link)
+- href: "/packaging_list/view"
+- Text: "Cancel & Back to View"
+- Status: ✅ WORKING (Simple link)
+
+3. PACKAGING LIST - EDIT PAGE (packaging_list/edit.html)
+===============================================================================
+Line 179-184: Add Item Button (type="button")
+- ID: addItemBtn
+- Class: "btn btn-sm btn-success"
+- Action: Adds new item row
+- Status: ✅ WORKING (Has JavaScript handler)
+
+Line 195: Update/Submit Button (type="submit")
+- Class: "btn btn-primary px-5 fw-semibold"
+- Action: Updates record via PUT /api/packaging-list/{id}/update
+- Status: ✅ WORKING (Has JavaScript handler)
+
+Line 198: Cancel Button (link)
+- href: "/packaging_list/view"
+- Text: "Cancel"
+- Status: ✅ WORKING (Simple link)
+
+Line 501: Delete Item Button (type="button") - INSIDE TABLE
+- Class: "btn btn-outline-danger btn-sm"
+- Action: Deletes specific item row
+- Status: ✅ WORKING (Has JavaScript handler)
+
+4. PACKAGING LIST - VIEW PAGE (packaging_list/view.html)
+===============================================================================
+Line 154: Add New Button (link)
+- href: "/packaging_list"
+- Class: "btn btn-primary btn-sm"
+- Text: "+ Add New"
+- Status: ✅ WORKING (Routes to add page)
+
+Line 157: Print All Button (type="button")
+- onclick: window.print()
+- Class: "btn btn-print btn-sm"
+- Text: "🖨️ Print All"
+- Status: ✅ WORKING (Browser print function)
+
+Line 271-273: Action Buttons (type="button") - FOR EACH ROW
+- Edit Button: onclick="editRecord(${row.id})"
+  Status: ✅ WORKING (Routes to /packaging_list/edit?id={id})
+- Hide Button: onclick="hideRecord(${row.id})"
+  Status: ⚠️ PARTIAL (Alert only, no backend implementation)
+- Print Button: onclick="printRecord(${row.id})"
+  Status: ⚠️ PARTIAL (Calls window.print(), no filtering by record)
+
+5. PROFORMA INVOICE - ADD PAGE (proforma_invoice/add.html)
+===============================================================================
+Line 225: Add Row Button (type="button")
+- ID: addRowBtn
+- Class: "btn btn-primary"
+- Text: "Add Row"
+- Action: Adds new line item row
+- Status: ✅ WORKING (Has JavaScript handler)
+
+Line 286: Submit Button (type="button")
+- ID: submitBtn
+- Class: "btn btn-primary btn-lg"
+- Style: "width: 200px"
+- Text: "Submit"
+- Action: Submits form to /api/proforma-invoice/create
+- Status: ✅ WORKING (Has JavaScript handler in script.js)
+
+6. PROFORMA INVOICE - EDIT PAGE (proforma_invoice/edit.html)
+===============================================================================
+Line 229: Delete Row Button (type="button") - TEMPLATE
+- Class: delete-row-btn
+- Data attribute: data-line="1"
+- Text: "Delete"
+- Status: ✅ WORKING (Dynamic deletion via JavaScript)
+
+Line 236: Add Row Button (type="button")
+- ID: addRowBtn
+- Class: "btn btn-primary"
+- Text: "Add Row"
+- Status: ✅ WORKING (JavaScript handler)
+
+Line 297: Update Button (type="submit")
+- ID: updateBtn
+- Class: "btn btn-primary btn-lg"
+- Text: "Update"
+- Action: Updates via PUT /api/proforma-invoice/{id}/update
+- Status: ✅ WORKING (Has JavaScript handler)
+
+Line 298: Cancel Button (type="button")
+- ID: cancelBtn
+- Class: "btn btn-secondary btn-lg"
+- Text: "Cancel"
+- Status: ⚠️ PARTIAL (Button defined but needs onclick handler)
+
+Line 383: Delete Row Button (type="button") - DYNAMIC
+- Class: delete-row-btn
+- Data attribute: data-line="${lineNumber}"
+- Status: ✅ WORKING (JavaScript event delegation)
+
+7. PROFORMA INVOICE - VIEW PAGE (proforma_invoice/view.html)
+===============================================================================
+Line 154: Add New Button (link)
+- href: "/proforma_invoice"
+- Class: "btn btn-primary btn-sm"
+- Text: "+ Add New"
+- Status: ✅ WORKING
+
+Line 157: Print All Button (type="button")
+- onclick: window.print()
+- Class: "btn btn-print btn-sm"
+- Status: ✅ WORKING
+
+Line 271-273: Action Buttons - FOR EACH ROW
+- Edit: onclick="editRecord(${row.id})"
+  Status: ✅ WORKING
+- Hide: onclick="hideRecord(${row.id})"
+  Status: ⚠️ PARTIAL
+- Print: onclick="printRecord(${row.id})"
+  Status: ⚠️ PARTIAL
+
+8. ZC EXPORTER - ADD PAGE (ZC/add.html)
+===============================================================================
+Line 121: Add Row Button (type="button")
+- ID: addRowBtn
+- Class: "btn btn-primary btn-sm me-2"
+- Text: "+ Add Row"
+- Status: ✅ WORKING (Inline JavaScript in add.html)
+
+Line 122: Remove Last Row Button (type="button")
+- ID: removeRowBtn
+- Class: "btn btn-secondary btn-sm"
+- Text: "-- Remove Last Row"
+- Status: ✅ WORKING (Inline JavaScript)
+
+Line 154: Submit Button (type="submit")
+- Class: "btn btn-success btn-lg"
+- Text: "Submit"
+- Action: Submits to /api/zc-exporter/create
+- Status: ✅ WORKING (Inline JavaScript)
+
+Line 155: Cancel & Back Button (link)
+- href: "index.html"
+- Class: "btn btn-outline-secondary ms-2"
+- Text: "Cancel & Back to Dashboard"
+- Status: ⚠️ ISSUE - Links to "index.html" (doesn't exist, should be "/")
+
+Line 207: Delete Button (type="button") - INSIDE ITEMS TABLE
+- Class: "btn btn-danger btn-sm delete-row-btn w-100"
+- Text: "DELETE"
+- Status: ✅ WORKING (Inline JavaScript)
+
+9. ZC EXPORTER - EDIT PAGE (ZC/edit.html)
+===============================================================================
+Line 118: Add Row Button (type="button")
+- ID: addRowBtn
+- Class: "btn btn-primary btn-sm me-2"
+- Text: "+ Add Row"
+- Status: ✅ WORKING (Uses script.js)
+
+Line 119: Remove Last Row Button (type="button")
+- ID: removeRowBtn
+- Class: "btn btn-secondary btn-sm"
+- Text: "-- Remove Last Row"
+- Status: ✅ WORKING (Uses script.js)
+
+Line 151: Update Button (type="submit")
+- ID: submitBtn
+- Class: "btn btn-success btn-lg"
+- Text: "Update"
+- Action: Updates via PUT /api/zc-exporter/{id}/update
+- Status: ✅ WORKING (Has JavaScript handler)
+
+Line 152: Cancel Button (link)
+- href: "/zc_exporter/view"
+- Class: "btn btn-outline-secondary ms-2 btn-lg"
+- Text: "Cancel"
+- Status: ✅ WORKING (Simple link)
+
+10. ZC EXPORTER - VIEW PAGE (ZC/view.html)
+===============================================================================
+Line 154: Add New Button (link)
+- href: "/zc_exporter"
+- Class: "btn btn-primary btn-sm"
+- Text: "+ Add New"
+- Status: ✅ WORKING (Routes to add page)
+
+Line 157: Print All Button (type="button")
+- onclick: window.print()
+- Class: "btn btn-print btn-sm"
+- Status: ✅ WORKING
+
+Line 224-226: Action Buttons - FOR EACH ROW
+- Edit: onclick="editRecord(${row.id})"
+  Status: ✅ WORKING
+- Hide: onclick="hideRecord(${row.id})"
+  Status: ⚠️ PARTIAL
+- Print: onclick="printRecord(${row.id})"
+  Status: ⚠️ PARTIAL
+
+===============================================================================
+BUTTON STATUS SUMMARY
+===============================================================================
+
+✅ FULLY WORKING:
+- All Add/Add Row buttons
+- All Submit/Update buttons
+- All Cancel/Back links (except one issue noted below)
+- All Delete row buttons
+- Print All buttons
+- Edit buttons (redirect to edit pages)
+- Remove row buttons
+
+⚠️ PARTIAL/ISSUES:
+- Hide buttons: Show alert but no backend implementation to actually hide records
+- Print buttons (individual): Call window.print() but don't filter by record ID
+
+🔴 BROKEN:
+- ZC/add.html line 155: Cancel button links to "index.html" (doesn't exist)
+  → Should be "/" or "/zc_exporter/view"
+
+===============================================================================
+RECOMMENDATIONS
+===============================================================================
+
+1. Fix ZC add.html Cancel button href from "index.html" to "/"
+2. Implement hide functionality if needed (currently just alerts)
+3. Consider filtering print by record ID if needed
+4. Ensure all edit pages load data from database (data loading logic)
+5. Verify all API endpoints return correct response format for JavaScript handlers

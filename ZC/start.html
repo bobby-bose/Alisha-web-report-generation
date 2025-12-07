@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Commercial Invoice - Zaka Controls & Devices</title>
+    <style>
+         td {
+       
+          text-align: start;
+        }
+        
+    </style>
+</head>
+<body style="font-family: Arial, sans-serif; font-size: 20px;">
+
+    <div style="width: 1200px; margin: 20px auto; border: 1px solid black; ">
+
+        <table border="1" width="100%" cellspacing="0" style="border-collapse: collapse;text-align: start;">
+         
+             
+       
+            <tr>
+                <td colspan="5" align="center" style="font-weight: bold; ">
+                   <h2>INVOICE</h2>
+               <hr>
+                    "SUPPLY MEANT FOR EXPORT UNDER BOND OR LETTER OF UNDERTAKING WITHOUT PAYMENT OF INTEGRATED TAX (IGST)"
+                </td>
+            </tr>
+            <tr>
+                <td width="50%">
+              <div style="border-bottom: 1px solid black;">
+                    <strong style="font-size: 20px;">Exporter:</strong><br>
+                    Zaka Controls & Devices<br>
+                        IX/A/44<br> NH-66<br> Kodingalur<br>
+                    KERALA - 680668<br>
+                  
+         </div>
+         <div  style="border-bottom: 1px solid black;height:fit-content;">
+       <p style="padding:0;">GST No. 32ERGPS8045J1ZD</p>
+       </div>
+       <div>
+                      <strong style="font-size: 20px;">Consignee:</strong><br>
+                   
+                  {{ consigneeAddress | replace('\n', '<br>') | safe }}<br><br>
+
+                   
+                   {{ contactPersonName }} <br>{{ contact_details_phone }}<br>
+                    <span style="color: blue;">{{ contactEmail }}</span>
+                
+               </div>
+                </td>
+               <td width="50%" style="vertical-align: top;">
+    <table width="100%" cellspacing="0"  style="border-collapse: collapse; font-size: 20px;">
+        <tr>
+            <td width="50%" style="border: 1px solid black;">
+                Invoice No.: {{ invoiceNumber }}
+            </td>
+            <td width="50%" style="border: 1px solid black;">
+                Date: {{ invoiceDate }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;">
+                Exporter's Ref: {{ exporterReference }}
+            </td>
+            <td style="border: 1px solid black;">
+                IEC: {{ iecNumber }}
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" cellspacing="0"  style="border-collapse: collapse;  font-size: 20px;">
+        <tr>
+            <td style="border: 1px solid black;" >
+                Buyer's Order: {{ buyerOrderNumber }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;">
+                Buyer's Order Date: {{ buyerOrderDate }}
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" cellspacing="0"  style="border-collapse: collapse;  font-size: 20px;">
+        <tr>
+            <td style="border: 1px solid black;">
+                Other Reference (s)
+            </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black;">
+    Delivery:<br>
+    {{ deliveryPaymentTerms | replace('\n', '<br>') | safe }}
+</td>
+
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;">
+                Shed No: 130A, Dubai Maritime City
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;">
+                Tax Registration Number: 100038645800003
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;">
+                Country of Origin of Goods: {{ countryOfOrigin }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;">
+                Country of Final Destination: {{ finalDestination }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;">
+                Country of destination: {{ portOfDestination }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; font-weight: bold;">
+                Terms of Delivery and Payment: {{ deliveryPaymentTerms }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; text-align: center;">
+                "Supply Meant For Export Under Bond Or Letter of Undertaking Without Payment Of Integrated Tax (IGST)"
+               </td>
+               </tr>
+               
+        <tr>
+                <td style="border: 1px solid black; text-align: center;">
+                LUT ARN NO: {{ lutArnNumber }}
+            </td>
+        </tr>
+    </table>
+</td>
+           </tr>
+        </table>
+        
+       
+
+        <table border="1" width="100%" cellspacing="0"  style="border-collapse: collapse; margin-top: -1px; font-size: 20px;">
+            <tr style="font-weight: bold; text-align: center;">
+                <th width="25%">Pre-carriage by</th>
+                <th width="25%">Place of Receipt of Pre-Carrier</th>
+                <th width="25%">Vessel/Flight No.</th>
+                <th width="25%">Port of Loading</th>
+            </tr>
+            <tr>
+                <th align="center">{{ preCarriageBy }}</th>
+                <th align="center">{{ placeOfReceipt }}</th>
+                <th align="center">{{ vesselFlight }}</th>
+                <th align="center">{{ portOfLoading }}</th>
+            </tr>
+             </table>
+        <table border="1" width="100%" cellspacing="0"  style="border-collapse: collapse; margin-top: -1px; font-size: 20px;">
+            <tr style="font-weight: bold; text-align: center;">
+                <th width="50%">Port of Discharge: {{ portOfDischarge }}</th>
+                <th width="50%">Final Destination: {{ finalDestination }}</th>
+                
+            </tr>
+        </table>
+
+        <table border="1" width="100%" cellspacing="0"  style="border-collapse: collapse; margin-top: -1px; font-size: 20px;">
+            <tr style="font-weight: bold; text-align: center;">
+                <th width="6%">Shipping Mark</th>
+                <th width="6%">No & Kind of Pkgs</th>
+                <th width="28%">Description of Goods</th>
+                <th width="6%">Unit</th>
+                <th width="6%">Qty (NOS)</th>
+                <th width="10%">Rate  {% if currency == 'INR' %}
+        (₹)
+    {% elif currency == 'USD' %}
+        ($)
+    {% elif currency == 'EUR' %}
+        (€)
+    {% endif %}</th>
+                <th width="12%">Amount  {% if currency == 'INR' %}
+        (₹)
+    {% elif currency == 'USD' %}
+        ($)
+    {% elif currency == 'EUR' %}
+        (€)
+    {% endif %}</th>
+                <th width="12%">Taxable Value (INR)</th>
+                <th width="6%">IGST (%)</th>
+                <th width="8%">IGST Amount</th>
+            </tr>
+            
+          {% for row in tableRows %}
+    <tr>
+        <td>
+      {% if loop.index == (loop.length // 2) + (loop.length % 2) %}
+        AS ADDRESS
+      {% endif %}
+      </td>
+       <td>{{ row.from }} - {{ row.to }}</td>
+       <td>{{ row.description }}</td>
+       <td>{{ row.unit }}</td>
+       <td>{{ row.quantity }}</td>
+       <td>{{ row.rate }}</td>
+       <td>{{ row.amount }}</td>
+         <td>
+           {% if loop.index == (loop.length // 2) + (loop.length % 2) %}
+                0.00
+            {{ taxable_value }}
+            {% endif %}
+        </td>   
+        <td>
+            {% if loop.index == (loop.length // 2) + (loop.length % 2) %}
+            0.00
+            {{ igst_percent }}
+            {% endif %}
+        </td>   
+        <td>
+           {% if loop.index == (loop.length // 2) + (loop.length % 2) %}
+            0.00
+            {{ igst_amount }}
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+
+            
+            
+         
+          
+        </table>
+        <table border="1" width="100%" cellspacing="0"  style="border-collapse: collapse; margin-top: -1px; font-size: 20px;">
+            <tr style="font-weight: bold; text-align: center;">
+             
+               <td width="62%">
+    TOTAL 
+    {% if currency == 'INR' %}
+        (₹)
+    {% elif currency == 'USD' %}
+        ($)
+    {% elif currency == 'EUR' %}
+        (€)
+    {% endif %}
+</td>
+
+                <td width="12%">23456</td>
+                <td width="12%">0</td>
+                <td width="6%">0.00</td>
+                <td width="8%">0.00</td>
+            </tr>
+        </table>
+        <table border="1" width="100%" cellspacing="0" style="border-collapse: collapse; margin-top: -1px; font-size: 20px;">
+            <tr>
+                <td width="50%" rowspan="3" style="vertical-align: top;">
+                    Amount Chargable (in words) : {{amountInWords}}
+                    <br>
+                    AD Code: {{ adCode }}
+                    <br>
+                    Total Packages: {{numberOfBoxes}}
+                </td>
+                <td width="30%">
+                    Total Export Value:  {% if currency == 'INR' %}
+        (₹)
+    {% elif currency == 'USD' %}
+        ($)
+    {% elif currency == 'EUR' %}
+        (€)
+    {% endif %}
+                </td>
+                <td width="20%" align="right">
+                    {{ totalExportValue }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Total GST Value:
+                </td>
+                <td align="right">
+                    {{ totalGstValue }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Total Invoice Value:  {% if currency == 'INR' %}
+        (₹)
+    {% elif currency == 'USD' %}
+        ($)
+    {% elif currency == 'EUR' %}
+        (€)
+    {% endif %}
+                </td>
+                <td align="right" style="font-weight: bold;">
+                    {{ totalInvoiceValue }}
+                </td>
+            </tr>
+        </table>
+
+        <table width="100%" cellspacing="0"  style="border-collapse: collapse; margin-top: 10px; font-size: 20px;">
+            <tr>
+                <td width="50%" style="vertical-align: top;">
+                    Declaration:
+                    <br>
+                    We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct
+                </td>
+                <td width="50%" align="center" style="vertical-align: bottom;">
+                    Signature & Date
+                    <br><br>
+                    <span style="color: blue; font-weight: bold;">For Zaka Controls & Devices</span>
+                    <br>
+                    <div style="height: 40px;"></div>
+                    <br>
+                    Proprietor
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+</body>
+</html>

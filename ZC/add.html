@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZC/IN-07 - Add New Export Invoice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .logo-img {
+            max-width: 150px;
+        }
+        .form-row-padding {
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Header -->
+  <div style="text-align: center; padding: 2vh 1vw; background-color: #f8f9fa; border-bottom: 3px solid #d90000;">
+      <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 14vh; width: auto; max-width: 117vw; object-fit: contain;">
+  </div>    <div class="container py-4">
+        <h1 class="h4 text-center">Fill the details for the export invoice below.</h1>
+
+        <form id="exportInvoiceForm" class="p-3 border rounded shadow-sm bg-white">
+            
+            <fieldset class="mb-4 p-3 border rounded">
+                <legend class="float-none w-auto px-1 fs-6">Invoice Details</legend>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="invoiceNumber" class="form-label">Invoice Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text">ZC/IN/</span>
+                            <input type="text" class="form-control" id="invoiceNumber" placeholder="Enter remaining part" value="2025-0001">
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="invoiceDate" class="form-label">Invoice Date</label>
+                        <input type="date" class="form-control" id="invoiceDate" value="2025-01-15">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="buyerOrderNumber" class="form-label">Buyer's Order Number</label>
+                        <input type="text" class="form-control" id="buyerOrderNumber" value="BO-2025-0001">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="buyerOrderDate" class="form-label">Buyer's Order Date</label>
+                        <input type="date" class="form-control" id="buyerOrderDate" value="2025-01-10">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="exporterReference" class="form-label">Exporter's Reference</label>
+                        <input type="text" class="form-control" id="exporterReference" value="EXP-REF-2025-001">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="iecNumber" class="form-label">IEC Number</label>
+                        <input type="text" class="form-control" id="iecNumber" value="1234567890">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-4 p-3 border rounded">
+                <legend class="float-none w-auto px-1 fs-6">Tax and Shipment Details</legend>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="taxRegistrationNumber" class="form-label">Tax Registration Number</label>
+                        <input type="text" class="form-control" id="taxRegistrationNumber" value="27ABCDE1234F2Z5">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="lutArnNumber" class="form-label">LUT / ARN Number</label>
+                        <input type="text" class="form-control" id="lutArnNumber" placeholder="LUT / ARN Number" value="LUT-2025-001">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="deliveryPaymentTerms" class="form-label">Terms of Delivery & Payment</label>
+                        <input type="text" class="form-control" id="deliveryPaymentTerms" placeholder="Terms of delivery & payment" value="CIF Port of Discharge">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="portOfLoading" class="form-label">Port of Loading</label><input type="text" class="form-control" id="portOfLoading" placeholder="Port of Loading" value="Port of Mumbai"></div>
+                    <div class="col-md-4 mb-3"><label for="portOfDischarge" class="form-label">Port of Discharge</label><input type="text" class="form-control" id="portOfDischarge" placeholder="Port of Discharge" value="Port of Hamburg"></div>
+                    <div class="col-md-4 mb-3"><label for="preCarriageBy" class="form-label">Pre-Carriage By</label><input type="text" class="form-control" id="preCarriageBy" placeholder="Pre-Carriage By" value="Road Transport"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="placeOfReceipt" class="form-label">Place of Receipt</label><input type="text" class="form-control" id="placeOfReceipt" placeholder="Place of Receipt" value="Mumbai, India"></div>
+                    <div class="col-md-4 mb-3"><label for="portOfDestination" class="form-label">Port of Destination</label><input type="text" class="form-control" id="portOfDestination" placeholder="Port of Destination" value="Hamburg, Germany"></div>
+                    <div class="col-md-4 mb-3"><label for="destination" class="form-label">Destination</label><input type="text" class="form-control" id="destination" placeholder="Destination" value="Frankfurt, Germany"></div>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-4 p-3 border rounded">
+                <legend class="float-none w-auto px-1 fs-6">Goods and Contact Information</legend>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="currency" class="form-label">Currency</label><input type="text" class="form-control" id="currency" placeholder="Currency (e.g., INR, USD, EUR)" value="EUR"></div>
+                    <div class="col-md-4 mb-3"><label for="vesselFlight" class="form-label">Vessel / Flight</label><input type="text" class="form-control" id="vesselFlight" placeholder="Vessel / Flight" value="MV Global Express"></div>
+                    <div class="col-md-4 mb-3"><label for="countryOfOrigin" class="form-label">Country of Origin (Goods)</label><input type="text" class="form-control" id="countryOfOrigin" placeholder="Country of Origin (Goods)" value="India"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="adCode" class="form-label">AD Code</label><input type="text" class="form-control" id="adCode" placeholder="Enter AD Code" value="AD2025001"></div>
+                    <div class="col-md-4 mb-3"><label for="otherReference" class="form-label">Other Reference</label><input type="text" class="form-control" id="otherReference" value="REF-2025-001"></div>
+                    <div class="col-md-4 mb-3"><label for="hsCode" class="form-label">HS Code</label><input type="text" class="form-control" id="hsCode" placeholder="HS Code (eg. 8471.80)" value="8471.80"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="finalDestination" class="form-label">Final Destination</label><input type="text" class="form-control" id="finalDestination" placeholder="Final Destination" value="Berlin, Germany"></div>
+                    <div class="col-md-4 mb-3"><label for="contactPersonName" class="form-label">Contact Person Name</label><input type="text" class="form-control" id="contactPersonName" value="John Smith"></div>
+                    <div class="col-md-4 mb-3"><label for="contactEmail" class="form-label">Contact Email</label><input type="email" class="form-control" id="contactEmail" value="john.smith@buyer.com"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3"><label for="consigneeAddress" class="form-label">Consignee Address</label><textarea class="form-control" id="consigneeAddress" rows="3">Buyer Trading Company GmbH
+Am Hafen 15
+Hamburg 20457
+Germany</textarea></div>
+                    <div class="col-md-6 mb-3"><label for="deliveryAddress" class="form-label">Delivery Address</label><textarea class="form-control" id="deliveryAddress" rows="3">Buyer Trading Company GmbH
+Warehouse District
+Berlin 10115
+Germany</textarea></div>
+                </div>
+            </fieldset>
+
+            <h4 class="mt-4">Table: Number & Kind of Pkgs.</h4>
+            <div class="d-flex mb-3">
+                <button type="button" class="btn btn-primary btn-sm me-2" id="addRowBtn" style="background-color: #0d6efd; border-color: #0d6efd; color: white; font-weight: bold;">➕ Add Row</button>
+                <button type="button" class="btn btn-sm" id="removeRowBtn" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">➖ Remove Row</button>
+            </div>
+            
+            <div id="itemDetailsContainer" class="mb-4">
+                </div>
+
+            <div class="row pt-3 border-top">
+                <div class="col-12 mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">Amount in Words:</span>
+                        <input type="text" class="form-control" id="amountInWords" value="zero euro, zero cents" disabled>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="totalExportValue" class="form-label">Total Export Value</label>
+                    <input type="text" class="form-control" id="totalExportValue" value="0.00" disabled>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="totalGstValue" class="form-label">Total GST Value</label>
+                    <input type="text" class="form-control" id="totalGstValue" value="0.00" disabled>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="totalInvoiceValue" class="form-label">Total Invoice Value</label>
+                    <input type="text" class="form-control" id="totalInvoiceValue" value="0.00" disabled>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="numberOfBoxes" class="form-label">Number of Boxes</label>
+                    <input type="number" class="form-control" id="numberOfBoxes" value="1" min="1">
+                </div>
+            </div>
+
+            <div class="text-center pt-4 border-top mt-4">
+                <button type="submit" class="btn btn-success btn-lg" style="background-color: #28a745; border-color: #28a745; color: white; font-weight: bold;">✓ Submit</button>
+                <a href="/" class="btn btn-secondary ms-2" style="background-color: #6c757d; border-color: #6c757d; color: white; font-weight: bold;">↩ Cancel & Back</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+ <script>
+    // Global variable to keep track of the number of rows created
+let rowCount = 0;
+
+// Function to generate the HTML for a new item row
+function createNewRow(initialPackageStart, initialPackageEnd) {
+    rowCount++;
+    const startNum = initialPackageStart || 1;
+    // Default new rows to a 10-unit range if no end is provided
+    const endNum = initialPackageEnd || (startNum + 9); 
+    
+    return `
+        <div class="row border-bottom py-3 item-row" data-row-id="${rowCount}">
+            <div class="col-12 mb-2">
+                <strong class="package-range-display d-block d-md-none">Package Range: ${startNum} - ${endNum}</strong>
+            </div>
+            
+            <div class="col-6 col-md-1 mb-2">
+                <label class="form-label small">From</label>
+                <input type="number" class="form-control form-control-sm package-from" value="${startNum}" min="1">
+            </div>
+            <div class="col-6 col-md-1 mb-2">
+                <label class="form-label small">To</label>
+                <input type="number" class="form-control form-control-sm package-to" value="${endNum}" min="${startNum}">
+            </div>
+            <div class="col-12 col-md-3 mb-2">
+                <label class="form-label small">Descrip</label>
+                <input type="text" class="form-control form-control-sm description" placeholder="Description of Goods">
+            </div>
+            <div class="col-6 col-md-1 mb-2">
+                <label class="form-label small">Unit</label>
+                <input type="text" class="form-control form-control-sm unit" placeholder="Unit">
+            </div>
+            <div class="col-6 col-md-2 mb-2">
+                <label class="form-label small">Quantity</label>
+                <input type="number" class="form-control form-control-sm quantity" value="0" min="0">
+            </div>
+            <div class="col-6 col-md-2 mb-2">
+                <label class="form-label small">Rate</label>
+                <input type="number" class="form-control form-control-sm rate" value="0.00" min="0">
+            </div>
+            <div class="col-6 col-md-1 mb-2">
+                <label class="form-label small">Amount</label>
+                <input type="text" class="form-control form-control-sm amount" value="0.00" disabled>
+            </div>
+            <div class="col-12 col-md-1 mb-2 d-flex align-items-end">
+                <button type="button" class="btn btn-danger btn-sm delete-row-btn w-100" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">🗑️ Delete</button>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Ensures package ranges are perfectly synchronized and continuous across all rows.
+ * @param {HTMLElement | null} changedRow - The row that triggered the update (or null for a mass update like delete).
+ */
+function updatePackageSequence(changedRow) {
+    const rows = document.querySelectorAll('.item-row');
+    const changedRowIndex = changedRow ? Array.from(rows).indexOf(changedRow) : -1;
+    let currentStart = 1;
+
+    rows.forEach((row, index) => {
+        const fromInput = row.querySelector('.package-from');
+        const toInput = row.querySelector('.package-to');
+        const rangeDisplay = row.querySelector('.package-range-display');
+        
+        let rowRangeWidth = 0;
+
+        // 1. Set the 'From' value based on the previous row's end + 1
+        fromInput.value = currentStart;
+
+        // 2. Determine the 'To' value (end of the range)
+        if (index < changedRowIndex) {
+            // Rows BEFORE the changed one: Read their current 'To' and skip further modification.
+            currentStart = parseInt(toInput.value, 10) + 1;
+            return;
+        } 
+        
+        if (index === changedRowIndex) {
+            // For the CHANGED row: Ensure 'To' is >= 'From'.
+            let currentEnd = parseInt(toInput.value, 10);
+            
+            // If the new 'From' (currentStart) is greater than the old 'To', bump 'To' up
+            if (currentEnd < currentStart) {
+                currentEnd = currentStart;
+                toInput.value = currentEnd;
+            }
+            
+            // Calculate the width of the user-defined range for this row.
+            rowRangeWidth = currentEnd - currentStart + 1;
+
+        } else {
+            // For SUBSEQUENT rows (or if changedRow is null): Preserve their original width.
+            
+            // Calculate the row's existing width (default to 10 if invalid/new)
+            // IMPORTANT: We must read the width from the existing 'From' and 'To' of *this* row,
+            // NOT the 'From' value we just set (currentStart).
+            rowRangeWidth = (parseInt(toInput.value, 10) - parseInt(fromInput.value, 10) + 1) || 10;
+            
+            // Calculate the new 'To' based on the synchronized 'From' and the preserved width
+            let newEnd = currentStart + rowRangeWidth - 1;
+            toInput.value = newEnd;
+        }
+
+        // 3. Update the display and prepare for the next row
+        if (rangeDisplay) {
+            rangeDisplay.textContent = `Package Range: ${fromInput.value} - ${toInput.value}`;
+        }
+        // The next row starts one unit after the current row ends
+        currentStart = parseInt(toInput.value, 10) + 1;
+    });
+}
+
+
+// Function to calculate amount for a single row
+function calculateRowAmount(row) {
+    const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
+    const rate = parseFloat(row.querySelector('.rate').value) || 0;
+    const amount = (quantity * rate).toFixed(2);
+    row.querySelector('.amount').value = amount;
+    return parseFloat(amount);
+}
+
+// Function to convert number to words (Simplified placeholder as requested)
+function numberToWords(n) {
+    if (isNaN(n) || n === 0) return "zero euro, zero cents";
+    const [euros, cents = '00'] = String(n.toFixed(2)).split('.');
+    
+    // Placeholder logic for immediate update confirmation
+    return `Total ${euros} euro and ${cents} cents (auto-updated)`;
+}
+
+
+// Function to recalculate all totals and update "Amount in Words"
+function updateTotals() {
+    let totalExportValue = 0;
+    document.querySelectorAll('.item-row').forEach(row => {
+        totalExportValue += calculateRowAmount(row);
+    });
+
+    // Update Export, GST, and Invoice Value fields
+    document.getElementById('totalExportValue').value = totalExportValue.toFixed(2);
+    document.getElementById('totalGstValue').value = (0.00).toFixed(2); 
+    
+    const totalInvoiceValue = totalExportValue + parseFloat(document.getElementById('totalGstValue').value);
+    document.getElementById('totalInvoiceValue').value = totalInvoiceValue.toFixed(2);
+
+    // Update Amount in Words immediately as requested
+    document.getElementById('amountInWords').value = numberToWords(totalInvoiceValue);
+}
+
+// Main function to run when the page is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('itemDetailsContainer');
+    const addRowBtn = document.getElementById('addRowBtn');
+    const removeRowBtn = document.getElementById('removeRowBtn');
+    const form = document.getElementById('exportInvoiceForm');
+
+    // 1. Initial Row setup (1-10)
+    container.innerHTML += createNewRow(1, 10);
+    updateTotals();
+
+    // 2. Add Row Listener: Starts the new row at the next sequential number
+    addRowBtn.addEventListener('click', () => {
+        const rows = document.querySelectorAll('.item-row');
+        let nextStart = 1;
+        
+        if (rows.length > 0) {
+            // Get the *persistent* 'To' value of the last row and set nextStart = To + 1
+            const lastRowTo = parseInt(rows[rows.length - 1].querySelector('.package-to').value, 10) || 0;
+            nextStart = lastRowTo + 1;
+        }
+        
+        // New row defaults to a 10-unit range
+        container.innerHTML += createNewRow(nextStart, nextStart + 9); 
+        updateTotals();
+        
+        // No need to call updatePackageSequence here; the nextStart calculation was sufficient.
+    });
+
+    // 3. Remove Last Row Listener
+    removeRowBtn.addEventListener('click', () => {
+        const rows = container.querySelectorAll('.item-row');
+        if (rows.length > 1) { 
+            container.removeChild(rows[rows.length - 1]);
+            updatePackageSequence(null); // Re-sequence all remaining rows
+            updateTotals();
+        }
+    });
+
+    // 4. Dynamic Input Listener for all item rows
+    container.addEventListener('input', (event) => {
+        const target = event.target;
+        const row = target.closest('.item-row');
+
+        if (!row) return; // Exit if the input isn't inside a row
+
+        // Listener for Quantity/Rate changes (updates amounts/totals immediately)
+        if (target.classList.contains('quantity') || target.classList.contains('rate')) {
+            updateTotals();
+        }
+
+        // Listener for From/To changes (updates sequencing)
+        if (target.classList.contains('package-from') || target.classList.contains('package-to')) {
+            let val = parseInt(target.value, 10);
+            if (isNaN(val) || val < 1) val = 1;
+            target.value = val;
+
+            const fromInput = row.querySelector('.package-from');
+            const toInput = row.querySelector('.package-to');
+            const changedField = target.classList.contains('package-from') ? 'from' : 'to';
+
+            // Enforce From <= To (Immediate validation)
+            if (parseInt(fromInput.value, 10) > parseInt(toInput.value, 10)) {
+                // If the 'From' or 'To' value causes an overlap, fix the other one.
+                if (changedField === 'from') {
+                    toInput.value = fromInput.value;
+                } else {
+                    fromInput.value = toInput.value;
+                }
+            }
+
+            // Re-sequence all rows starting from the one that was edited
+            updatePackageSequence(row);
+        }
+
+        // Always ensure totals are recalculated after any relevant change
+        if (target.classList.contains('quantity') || target.classList.contains('rate') || target.classList.contains('package-from') || target.classList.contains('package-to')) {
+             updateTotals();
+        }
+    });
+
+    // 5. Delete Specific Row Listener
+    container.addEventListener('click', (event) => {
+        if (event.target.classList.contains('delete-row-btn')) {
+            const rowToDelete = event.target.closest('.item-row');
+            if (container.querySelectorAll('.item-row').length > 1) { 
+                container.removeChild(rowToDelete);
+                updatePackageSequence(null); // Re-sequence all
+                updateTotals();
+            } else {
+                alert("Cannot delete the last remaining row.");
+            }
+        }
+    });
+
+    // 6. Form Submission (Send to Backend)
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Collect all form data
+        const items = [];
+        container.querySelectorAll('.item-row').forEach(row => {
+            items.push({
+                from: row.querySelector('.package-from').value,
+                to: row.querySelector('.package-to').value,
+                description: row.querySelector('.description').value,
+                unit: row.querySelector('.unit').value,
+                quantity: row.querySelector('.quantity').value,
+                rate: row.querySelector('.rate').value,
+                amount: row.querySelector('.amount').value
+            });
+        });
+        
+        const data = {
+            invoiceNumber: document.getElementById('invoiceNumber').value,
+            invoiceDate: document.getElementById('invoiceDate').value,
+            buyerOrderNumber: document.getElementById('buyerOrderNumber').value,
+            buyerOrderDate: document.getElementById('buyerOrderDate').value,
+            exporterReference: document.getElementById('exporterReference').value,
+            iecNumber: document.getElementById('iecNumber').value,
+            taxRegistrationNumber: document.getElementById('taxRegistrationNumber').value,
+            lutArnNumber: document.getElementById('lutArnNumber').value,
+            deliveryPaymentTerms: document.getElementById('deliveryPaymentTerms').value,
+            portOfLoading: document.getElementById('portOfLoading').value,
+            portOfDischarge: document.getElementById('portOfDischarge').value,
+            preCarriageBy: document.getElementById('preCarriageBy').value,
+            placeOfReceipt: document.getElementById('placeOfReceipt').value,
+            portOfDestination: document.getElementById('portOfDestination').value,
+            destination: document.getElementById('destination').value,
+            currency: document.getElementById('currency').value,
+            vesselFlight: document.getElementById('vesselFlight').value,
+            countryOfOrigin: document.getElementById('countryOfOrigin').value,
+            adCode: document.getElementById('adCode').value,
+            otherReference: document.getElementById('otherReference').value,
+            hsCode: document.getElementById('hsCode').value,
+            finalDestination: document.getElementById('finalDestination').value,
+            contactPersonName: document.getElementById('contactPersonName').value,
+            contactEmail: document.getElementById('contactEmail').value,
+            consigneeAddress: document.getElementById('consigneeAddress').value,
+            deliveryAddress: document.getElementById('deliveryAddress').value,
+            amountInWords: document.getElementById('amountInWords').value,
+            totalExportValue: document.getElementById('totalExportValue').value,
+            totalGstValue: document.getElementById('totalGstValue').value,
+            totalInvoiceValue: document.getElementById('totalInvoiceValue').value,
+            numberOfBoxes: document.getElementById('numberOfBoxes').value,
+            items: items
+        };
+
+        // Send to Flask backend
+        fetch('/api/zc-exporter/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert('Invoice submitted successfully!');
+                window.location.href = '/zc_exporter/view';
+            } else {
+                alert('Error: ' + result.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to submit invoice');
+        });
+    });
+});
+ </script>
+
+
+</body>
+</html>

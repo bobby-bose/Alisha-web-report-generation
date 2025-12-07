@@ -1,0 +1,96 @@
+{
+  "invoiceNumber": "2025-0001",
+  "invoiceDate": "2025-01-15",
+  "buyerOrderNumber": "BO-2025-0001",
+  "buyerOrderDate": "2025-01-10",
+  "exporterReference": "EXP-REF-2025-001",
+  "iecNumber": "1234567890",
+  "taxRegistrationNumber": "27ABCDE1234F2Z5",
+  "lutArnNumber": "LUT-2025-001",
+  "deliveryPaymentTerms": "CIF Port of Discharge",
+  "portOfLoading": "Port of Mumbai",
+  "portOfDischarge": "Port of Hamburg",
+  "preCarriageBy": "Road Transport",
+  "placeOfReceipt": "Mumbai, India",
+  "portOfDestination": "Hamburg, Germany",
+  "destination": "Frankfurt, Germany",
+  "currency": "EUR",
+  "vesselFlight": "MV Global Express",
+  "countryOfOrigin": "India",
+  "adCode": "AD2025001",
+  "otherReference": "REF-2025-001",
+  "hsCode": "8471.80",
+  "finalDestination": "Berlin, Germany",
+  "contactPersonName": "John Smith",
+  "contactEmail": "john.smith@buyer.com",
+  "consigneeAddress": "Buyer Trading Company GmbH\nAm Hafen 15\nHamburg 20457\nGermany",
+  "deliveryAddress": "Buyer Trading Company GmbH\nWarehouse District\nBerlin 10115\nGermany",
+  "amountInWords": "Total 140 euro and 00 cents (auto-updated)",
+  "totalExportValue": "140.00",
+  "totalGstValue": "0.00",
+  "totalInvoiceValue": "140.00",
+  "numberOfBoxes": 1,
+  "items": [
+    {
+      "from": "1",
+      "to": "10",
+      "description": "jjjjjjj",
+      "unit": "34",
+      "quantity": "12",
+      "rate": "2",
+      "amount": "24.00"
+    },
+    {
+      "from": "11",
+      "to": "29",
+      "description": "gggggg",
+      "unit": "4",
+      "quantity": "56",
+      "rate": "2",
+      "amount": "112.00"
+    },
+    {
+      "from": "30",
+      "to": "35",
+      "description": "dfddddd",
+      "unit": "5",
+      "quantity": "2",
+      "rate": "2",
+      "amount": "4.00"
+    }
+  ],
+  "tableRows": [
+    {
+      "from": "1",
+      "to": "10",
+      "description": "jjjjjjj",
+      "unit": "34",
+      "quantity": "12",
+      "rate": "2",
+      "amount": "24.00"
+    },
+    {
+      "from": "11",
+      "to": "29",
+      "description": "gggggg",
+      "unit": "4",
+      "quantity": "56",
+      "rate": "2",
+      "amount": "112.00"
+    },
+    {
+      "from": "30",
+      "to": "35",
+      "description": "dfddddd",
+      "unit": "5",
+      "quantity": "2",
+      "rate": "2",
+      "amount": "4.00"
+    }
+  ],
+  "middle_row": 2,
+  "total_items": 3,
+  "taxable_value": "0.00",
+  "igst_percent": "0.00",
+  "igst_amount": "0.00"
+}

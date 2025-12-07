@@ -1,0 +1,48 @@
+ERROR ANALYSIS AND CORRECTION GUIDE
+====================================
+
+ERROR:
+------
+sqlite3.OperationalError: table packaging_list has no column named packingListNo
+
+ROOT CAUSE:
+-----------
+The database was created with SNAKE_CASE column names (packing_list_no, consignee_address, etc.) 
+before the model was updated. The old database file still exists with the old schema.
+
+Now the code is trying to INSERT data into camelCase columns (packingListNo) that don't exist in the database.
+
+SOLUTION - Two options:
+-----------------------
+
+OPTION 1 (Recommended - Quick Fix):
+Delete the old database file and let Flask recreate it with the new schema.
+
+Steps:
+1. Delete file: x:\Web Screenshots\web_forms.db
+2. Restart Flask (python main.py)
+3. Flask will auto-create a new database with the correct camelCase column names
+
+OPTION 2 (Manual Fix):
+Use SQLite to rename the columns in the existing database from snake_case to camelCase.
+
+Commands to run in SQLite:
+ALTER TABLE packaging_list RENAME COLUMN packing_list_no TO packingListNo;
+ALTER TABLE packaging_list RENAME COLUMN consignee_address TO consigneeAddress;
+ALTER TABLE packaging_list RENAME COLUMN delivery_address TO deliveryAddress;
+ALTER TABLE packaging_list RENAME COLUMN exporter_address TO exporterAddress;
+ALTER TABLE packaging_list RENAME COLUMN po_number TO poNumber;
+ALTER TABLE packaging_list RENAME COLUMN loading_port TO loadingPort;
+ALTER TABLE packaging_list RENAME COLUMN discharge_port TO dischargePort;
+ALTER TABLE packaging_list RENAME COLUMN hs_code TO hsCode;
+ALTER TABLE packaging_list RENAME COLUMN tax_number TO taxNumber;
+
+CODE STATUS:
+------------
+✓ Model definition is CORRECT - all columns now have explicit camelCase names
+✓ Routes are CORRECT - they use camelCase attribute names
+✓ Only issue is DATABASE SCHEMA MISMATCH
+
+RECOMMENDED ACTION:
+-------------------
+Just delete web_forms.db and restart Flask.

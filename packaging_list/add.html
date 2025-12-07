@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Packing List - Add</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Minimal custom CSS (only where Bootstrap can’t help) -->
+  <style>
+    body {
+      background-color: #f7f7f7;
+    }
+    .header-logo {
+      height: 80px;
+      width: 200px;
+      background: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    .card-section {
+      border: 2px solid #000;
+      border-radius: 8px;
+      padding: 1rem;
+      background: #fff;
+      margin-bottom: 1rem;
+    }
+    .item-card {
+      border: 2px solid red;
+      border-radius: 8px;
+    }
+    .btn-add-item {
+      border: 2px solid red;
+      font-weight: 600;
+    }
+    .btn-item-plus {
+      border: 2px solid red;
+      font-size: 1.2rem;
+      line-height: 1;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .box-row {
+      margin-bottom: 0.75rem;
+    }
+    .box-row .form-control {
+      min-width: 70px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo Header -->
+  <div style="text-align: center; padding: 2vh 1vw; background-color: #f8f9fa; border-bottom: 3px solid #d90000;">
+      <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 14vh; width: auto; max-width: 117vw; object-fit: contain;">
+  </div>  <div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4 text-center">
+      <div class="col-12">
+        <h2 class="fw-bold mb-0">
+          ZAKA Controls &amp; Devices - Packing List
+        </h2>
+      </div>
+    </div>
+
+    <form id="packingForm">
+      <!-- Addresses -->
+      <div class="card-section">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Consignee Address</label>
+            <textarea
+              class="form-control border-success"
+              rows="3"
+              name="consigneeAddress"
+              placeholder="Consignee address (3 lines)"
+            >123 Main Street
+Dubai, UAE
+United Arab Emirates</textarea>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Delivery Address</label>
+            <textarea
+              class="form-control border-success"
+              rows="3"
+              name="deliveryAddress"
+              placeholder="Delivery address (3 lines)"
+            >456 Commerce Road
+Abu Dhabi, UAE
+United Arab Emirates</textarea>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Exporter Address</label>
+            <textarea
+              class="form-control border-success"
+              rows="3"
+              name="exporterAddress"
+              placeholder="Exporter address (3 lines)"
+            >ZAKA Controls & Devices
+Industrial Area
+Dubai, UAE</textarea>
+          </div>
+        </div>
+
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Packing List No</label>
+            <input
+              type="text"
+              class="form-control border-success"
+              name="packingListNo"
+              value="PKG-2025-001"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Date</label>
+            <input
+              type="date"
+              class="form-control border-success"
+              name="date"
+              value="2025-12-07"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">PO Number</label>
+            <input
+              type="text"
+              class="form-control border-success"
+              name="poNumber"
+              value="PO-2025-0001"
+            />
+          </div>
+        </div>
+
+        <div class="row g-3 mt-3">
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Loading Port</label>
+            <input
+              type="text"
+              class="form-control border-success"
+              name="loadingPort"
+              value="Jebel Ali Port"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Discharge Port</label>
+            <input
+              type="text"
+              class="form-control border-success"
+              name="dischargePort"
+              value="Rotterdam Port"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">HS Code</label>
+            <input
+              type="text"
+              class="form-control border-success"
+              name="hsCode"
+              value="8471.80"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Tax Number</label>
+            <input
+              type="text"
+              class="form-control border-success"
+              name="taxNumber"
+              value="UAE-12345678-1200"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Items -->
+      <div class="card-section">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">Items</h5>
+          <button
+            type="button"
+            class="btn btn-light btn-add-item px-4"
+            id="addItemBtn"
+          >
+            + Add Item
+          </button>
+        </div>
+
+        <div class="row g-3" id="itemsContainer">
+          <!-- Item cards injected here -->
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="text-end mt-3">
+        <button type="submit" class="btn btn-primary px-5 fw-semibold" style="background-color: #28a745; border-color: #28a745; color: white; font-weight: bold;">✓ Submit</button>
+        <button type="button" class="btn px-5 fw-semibold ms-2" style="background-color: #6c757d; border-color: #6c757d; color: white; font-weight: bold;" onclick="window.history.back()">↩ Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Boxes Modal -->
+  <div
+    class="modal fade"
+    id="boxesModal"
+    tabindex="-1"
+    aria-labelledby="boxesModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="boxesModalLabel">Add Boxes</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p class="small">
+            Add boxes for this item. Box numbers are auto-generated and unique
+            across all items.
+          </p>
+          <div id="boxesRows"></div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-danger me-auto"
+            id="addBoxRowBtn"
+          >
+            + Add Another Box
+          </button>
+          <button
+            type="button"
+            class="btn btn-success"
+            id="saveBoxesBtn"
+            data-bs-dismiss="modal"
+          >
+            Save Boxes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Page JS -->
+  <script>
+    // Data model
+    let items = [];
+    let currentItemIndex = null;
+    let globalBoxNumber = 1;
+
+    const itemsContainer = document.getElementById("itemsContainer");
+    const boxesRows = document.getElementById("boxesRows");
+    const boxesModal = new bootstrap.Modal(
+      document.getElementById("boxesModal")
+    );
+
+    document
+      .getElementById("addItemBtn")
+      .addEventListener("click", () => addItem());
+
+    document
+      .getElementById("addBoxRowBtn")
+      .addEventListener("click", () => addBoxRow());
+
+    document
+      .getElementById("saveBoxesBtn")
+      .addEventListener("click", () => saveBoxes());
+
+    document
+      .getElementById("packingForm")
+      .addEventListener("submit", (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const payload = {
+          consigneeAddress: formData.get("consigneeAddress"),
+          deliveryAddress: formData.get("deliveryAddress"),
+          exporterAddress: formData.get("exporterAddress"),
+          packingListNo: formData.get("packingListNo"),
+          date: formData.get("date"),
+          poNumber: formData.get("poNumber"),
+          loadingPort: formData.get("loadingPort"),
+          dischargePort: formData.get("dischargePort"),
+          hsCode: formData.get("hsCode"),
+          taxNumber: formData.get("taxNumber"),
+          items: items,
+        };
+        
+        // Send data to server
+        fetch('/api/packaging-list/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Packaging list created successfully!');
+            // Redirect to view page
+            window.location.href = '/packaging_list/view';
+          } else {
+            alert('Error: ' + data.message);
+          }
+        })
+        .catch(error => {
+          alert('Error submitting form: ' + error);
+          console.error('Error:', error);
+        });
+      });
+
+    function addItem() {
+      items.push({
+        material: "",
+        description: "",
+        boxes: [],
+      });
+      renderItems();
+    }
+
+    function renderItems() {
+      itemsContainer.innerHTML = "";
+      items.forEach((item, index) => {
+        const col = document.createElement("div");
+        col.className = "col-md-6";
+
+        const card = document.createElement("div");
+        card.className = "item-card p-3 mb-3 bg-white";
+
+        const headerRow = document.createElement("div");
+        headerRow.className =
+          "d-flex justify-content-between align-items-start mb-3";
+
+        const title = document.createElement("h5");
+        title.textContent = `Item ${index + 1}`;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn btn-light btn-item-plus";
+        btn.textContent = "+";
+        btn.addEventListener("click", () => openBoxesModal(index));
+
+        headerRow.appendChild(title);
+        headerRow.appendChild(btn);
+
+        const row = document.createElement("div");
+        row.className = "row g-3";
+
+        const colMat = document.createElement("div");
+        colMat.className = "col-md-6";
+        colMat.innerHTML = `
+          <label class="form-label fw-semibold">Material</label>
+          <input type="text" class="form-control border-success"
+                 value="${item.material}"
+          />
+        `;
+
+        const colDesc = document.createElement("div");
+        colDesc.className = "col-md-6";
+        colDesc.innerHTML = `
+          <label class="form-label fw-semibold">Packaging Description</label>
+          <input type="text" class="form-control border-success"
+                 value="${item.description}"
+          />
+        `;
+
+        // bind change events
+        colMat.querySelector("input").addEventListener("input", (e) => {
+          items[index].material = e.target.value;
+        });
+        colDesc.querySelector("input").addEventListener("input", (e) => {
+          items[index].description = e.target.value;
+        });
+
+        row.appendChild(colMat);
+        row.appendChild(colDesc);
+
+        const boxesInfo = document.createElement("p");
+        boxesInfo.className = "mt-2 mb-0";
+        boxesInfo.textContent = `Boxes: ${item.boxes.length}`;
+
+        card.appendChild(headerRow);
+        card.appendChild(row);
+        card.appendChild(boxesInfo);
+
+        col.appendChild(card);
+        itemsContainer.appendChild(col);
+      });
+    }
+
+    function openBoxesModal(itemIndex) {
+      currentItemIndex = itemIndex;
+      boxesRows.innerHTML = "";
+      const item = items[itemIndex];
+
+      if (item.boxes.length === 0) {
+        addBoxRow();
+      } else {
+        item.boxes.forEach((box) => addBoxRow(box));
+      }
+      boxesModal.show();
+    }
+
+    function addBoxRow(existingBox = null) {
+      const boxId = existingBox ? existingBox.boxNo : globalBoxNumber++;
+      const wrapper = document.createElement("div");
+      wrapper.className = "box-row";
+
+      wrapper.innerHTML = `
+        <div class="row g-2 align-items-center">
+          <div class="col-12 col-md-1 fw-semibold">
+            Box ${boxId}
+          </div>
+          <div class="col-6 col-md-1">
+            <input type="number" class="form-control border-success"
+                   placeholder="Qty" value="${existingBox ? existingBox.quantity : ""}">
+          </div>
+          <div class="col-6 col-md-1">
+            <input type="number" class="form-control border-success"
+                   placeholder="L" value="${existingBox ? existingBox.l : ""}">
+          </div>
+          <div class="col-6 col-md-1">
+            <input type="number" class="form-control border-success"
+                   placeholder="W" value="${existingBox ? existingBox.w : ""}">
+          </div>
+          <div class="col-6 col-md-1">
+            <input type="number" class="form-control border-success"
+                   placeholder="H" value="${existingBox ? existingBox.h : ""}">
+          </div>
+          <div class="col-6 col-md-2">
+            <input type="number" class="form-control border-success"
+                   placeholder="Net Weight" value="${existingBox ? existingBox.netWeight : ""}">
+          </div>
+          <div class="col-6 col-md-2">
+            <input type="number" class="form-control border-success"
+                   placeholder="Gross Weight" value="${existingBox ? existingBox.grossWeight : ""}">
+          </div>
+          <div class="col-12 col-md-2 text-end mt-2 mt-md-0">
+            <button type="button" class="btn btn-outline-danger btn-sm">
+              Remove
+            </button>
+          </div>
+        </div>
+      `;
+
+      wrapper.dataset.boxNo = boxId;
+
+      wrapper
+        .querySelector("button")
+        .addEventListener("click", () => wrapper.remove());
+
+      boxesRows.appendChild(wrapper);
+    }
+
+    function saveBoxes() {
+      if (currentItemIndex === null) return;
+      const rows = boxesRows.querySelectorAll(".box-row");
+      const newBoxes = [];
+      rows.forEach((row) => {
+        const inputs = row.querySelectorAll("input");
+        const boxNo = Number(row.dataset.boxNo);
+        const box = {
+          boxNo,
+          quantity: inputs[0].value,
+          l: inputs[1].value,
+          w: inputs[2].value,
+          h: inputs[3].value,
+          netWeight: inputs[4].value,
+          grossWeight: inputs[5].value,
+        };
+        newBoxes.push(box);
+      });
+      items[currentItemIndex].boxes = newBoxes;
+      renderItems();
+      currentItemIndex = null;
+    }
+
+    // initial one item
+    addItem();
+  </script>
+</body>
+</html>
+```

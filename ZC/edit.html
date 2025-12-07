@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZC/IN-07 - Edit Export Invoice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .logo-img {
+            max-width: 150px;
+        }
+        .form-row-padding {
+            padding-top: 10px;
+        }
+        .page-title {
+            color: #d90000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Header -->
+  <div style="text-align: center; padding: 2vh 1vw; background-color: #f8f9fa; border-bottom: 3px solid #d90000;">
+      <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 14vh; width: auto; max-width: 117vw; object-fit: contain;">
+  </div>    <div class="container py-4">
+        <header class="text-center mb-4">
+            <img src="https://via.placeholder.com/150x50/f00000/ffffff?text=ZAKA+LOGO" alt="ZAKA Logo" class="logo-img mb-3">
+            <h1 class="h4 page-title">Edit the export invoice details below.</h1>
+        </header>
+
+        <form id="exportInvoiceForm" class="p-3 border rounded shadow-sm bg-white">
+            
+            <fieldset class="mb-4 p-3 border rounded">
+                <legend class="float-none w-auto px-1 fs-6">Invoice Details</legend>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="invoiceNumber" class="form-label">Invoice Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text">ZC/IN/</span>
+                            <input type="text" class="form-control" id="invoiceNumber" placeholder="Enter remaining part">
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="invoiceDate" class="form-label">Invoice Date</label>
+                        <input type="date" class="form-control" id="invoiceDate">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="buyerOrderNumber" class="form-label">Buyer's Order Number</label>
+                        <input type="text" class="form-control" id="buyerOrderNumber">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="buyerOrderDate" class="form-label">Buyer's Order Date</label>
+                        <input type="date" class="form-control" id="buyerOrderDate">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="exporterReference" class="form-label">Exporter's Reference</label>
+                        <input type="text" class="form-control" id="exporterReference">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="iecNumber" class="form-label">IEC Number</label>
+                        <input type="text" class="form-control" id="iecNumber">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-4 p-3 border rounded">
+                <legend class="float-none w-auto px-1 fs-6">Tax and Shipment Details</legend>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="taxRegistrationNumber" class="form-label">Tax Registration Number</label>
+                        <input type="text" class="form-control" id="taxRegistrationNumber">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="lutArnNumber" class="form-label">LUT / ARN Number</label>
+                        <input type="text" class="form-control" id="lutArnNumber" placeholder="LUT / ARN Number">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="deliveryPaymentTerms" class="form-label">Terms of Delivery & Payment</label>
+                        <input type="text" class="form-control" id="deliveryPaymentTerms" placeholder="Terms of delivery & payment">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="portOfLoading" class="form-label">Port of Loading</label><input type="text" class="form-control" id="portOfLoading" placeholder="Port of Loading"></div>
+                    <div class="col-md-4 mb-3"><label for="portOfDischarge" class="form-label">Port of Discharge</label><input type="text" class="form-control" id="portOfDischarge" placeholder="Port of Discharge"></div>
+                    <div class="col-md-4 mb-3"><label for="preCarriageBy" class="form-label">Pre-Carriage By</label><input type="text" class="form-control" id="preCarriageBy" placeholder="Pre-Carriage By"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="placeOfReceipt" class="form-label">Place of Receipt</label><input type="text" class="form-control" id="placeOfReceipt" placeholder="Place of Receipt"></div>
+                    <div class="col-md-4 mb-3"><label for="portOfDestination" class="form-label">Port of Destination</label><input type="text" class="form-control" id="portOfDestination" placeholder="Port of Destination"></div>
+                    <div class="col-md-4 mb-3"><label for="destination" class="form-label">Destination</label><input type="text" class="form-control" id="destination" placeholder="Destination"></div>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-4 p-3 border rounded">
+                <legend class="float-none w-auto px-1 fs-6">Goods and Contact Information</legend>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="currency" class="form-label">Currency</label><input type="text" class="form-control" id="currency" placeholder="Currency (e.g., INR, USD, EUR)"></div>
+                    <div class="col-md-4 mb-3"><label for="vesselFlight" class="form-label">Vessel / Flight</label><input type="text" class="form-control" id="vesselFlight" placeholder="Vessel / Flight"></div>
+                    <div class="col-md-4 mb-3"><label for="countryOfOrigin" class="form-label">Country of Origin (Goods)</label><input type="text" class="form-control" id="countryOfOrigin" placeholder="Country of Origin (Goods)"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="adCode" class="form-label">AD Code</label><input type="text" class="form-control" id="adCode" placeholder="Enter AD Code"></div>
+                    <div class="col-md-4 mb-3"><label for="otherReference" class="form-label">Other Reference</label><input type="text" class="form-control" id="otherReference"></div>
+                    <div class="col-md-4 mb-3"><label for="hsCode" class="form-label">HS Code</label><input type="text" class="form-control" id="hsCode" placeholder="HS Code (eg. 8471.80)"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label for="finalDestination" class="form-label">Final Destination</label><input type="text" class="form-control" id="finalDestination" placeholder="Final Destination"></div>
+                    <div class="col-md-4 mb-3"><label for="contactPersonName" class="form-label">Contact Person Name</label><input type="text" class="form-control" id="contactPersonName"></div>
+                    <div class="col-md-4 mb-3"><label for="contactEmail" class="form-label">Contact Email</label><input type="email" class="form-control" id="contactEmail"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3"><label for="consigneeAddress" class="form-label">Consignee Address</label><textarea class="form-control" id="consigneeAddress" rows="3"></textarea></div>
+                    <div class="col-md-6 mb-3"><label for="deliveryAddress" class="form-label">Delivery Address</label><textarea class="form-control" id="deliveryAddress" rows="3"></textarea></div>
+                </div>
+            </fieldset>
+
+            <h4 class="mt-4">Table: Number & Kind of Pkgs.</h4>
+            <div class="d-flex mb-3">
+                <button type="button" class="btn btn-primary btn-sm me-2" id="addRowBtn" style="background-color: #0d6efd; border-color: #0d6efd; color: white; font-weight: bold;">➕ Add Row</button>
+                <button type="button" class="btn btn-sm" id="removeRowBtn" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">➖ Remove Row</button>
+            </div>
+            
+            <div id="itemDetailsContainer" class="mb-4">
+                </div>
+
+            <div class="row pt-3 border-top">
+                <div class="col-12 mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">Amount in Words:</span>
+                        <input type="text" class="form-control" id="amountInWords" disabled>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="totalExportValue" class="form-label">Total Export Value</label>
+                    <input type="text" class="form-control" id="totalExportValue" disabled>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="totalGstValue" class="form-label">Total GST Value</label>
+                    <input type="text" class="form-control" id="totalGstValue" disabled>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="totalInvoiceValue" class="form-label">Total Invoice Value</label>
+                    <input type="text" class="form-control" id="totalInvoiceValue" disabled>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="numberOfBoxes" class="form-label">Number of Boxes</label>
+                    <input type="number" class="form-control" id="numberOfBoxes" value="1" min="1">
+                </div>
+            </div>
+
+            <div class="text-center pt-4 border-top mt-4">
+                <button type="submit" id="submitBtn" class="btn btn-success btn-lg" style="background-color: #28a745; border-color: #28a745; color: white; font-weight: bold;">✓ Update</button>
+                <a href="/zc_exporter/view" class="btn btn-lg ms-2" style="background-color: #6c757d; border-color: #6c757d; color: white; font-weight: bold;">↩ Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get record ID from URL
+        const recordId = new URLSearchParams(window.location.search).get('id');
+
+        // Load record data from database
+        function loadRecordData() {
+            if (!recordId) {
+                return;
+            }
+
+            fetch(`/api/zc-exporter/${recordId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Populate form fields
+                    document.getElementById('invoiceNumber').value = data.invoiceNumber || '';
+                    document.getElementById('invoiceDate').value = data.invoiceDate || '';
+                    document.getElementById('buyerOrderNumber').value = data.buyerOrderNumber || '';
+                    document.getElementById('buyerOrderDate').value = data.buyerOrderDate || '';
+                    document.getElementById('exporterReference').value = data.exporterReference || '';
+                    document.getElementById('iecNumber').value = data.iecNumber || '';
+                    document.getElementById('taxRegistrationNumber').value = data.taxRegistrationNumber || '';
+                    document.getElementById('lutArnNumber').value = data.lutArnNumber || '';
+                    document.getElementById('deliveryPaymentTerms').value = data.deliveryPaymentTerms || '';
+                    document.getElementById('portOfLoading').value = data.portOfLoading || '';
+                    document.getElementById('portOfDischarge').value = data.portOfDischarge || '';
+                    document.getElementById('preCarriageBy').value = data.preCarriageBy || '';
+                    document.getElementById('placeOfReceipt').value = data.placeOfReceipt || '';
+                    document.getElementById('portOfDestination').value = data.portOfDestination || '';
+                    document.getElementById('destination').value = data.destination || '';
+                    document.getElementById('currency').value = data.currency || '';
+                    document.getElementById('vesselFlight').value = data.vesselFlight || '';
+                    document.getElementById('countryOfOrigin').value = data.countryOfOrigin || '';
+                    document.getElementById('adCode').value = data.adCode || '';
+                    document.getElementById('otherReference').value = data.otherReference || '';
+                    document.getElementById('hsCode').value = data.hsCode || '';
+                    document.getElementById('finalDestination').value = data.finalDestination || '';
+                    document.getElementById('contactPersonName').value = data.contactPersonName || '';
+                    document.getElementById('contactEmail').value = data.contactEmail || '';
+                    document.getElementById('consigneeAddress').value = data.consigneeAddress || '';
+                    document.getElementById('deliveryAddress').value = data.deliveryAddress || '';
+                    document.getElementById('amountInWords').value = data.amountInWords || '';
+                    document.getElementById('totalExportValue').value = data.totalExportValue || '0.00';
+                    document.getElementById('totalGstValue').value = data.totalGstValue || '0.00';
+                    document.getElementById('totalInvoiceValue').value = data.totalInvoiceValue || '0.00';
+                    document.getElementById('numberOfBoxes').value = data.numberOfBoxes || '1';
+                })
+                .catch(error => {
+                    console.log('Could not load record:', error);
+                });
+        }
+
+        // Form submit handler
+        document.getElementById('exportInvoiceForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const payload = {
+                invoiceNumber: document.getElementById('invoiceNumber').value,
+                invoiceDate: document.getElementById('invoiceDate').value,
+                buyerOrderNumber: document.getElementById('buyerOrderNumber').value,
+                buyerOrderDate: document.getElementById('buyerOrderDate').value,
+                exporterReference: document.getElementById('exporterReference').value,
+                iecNumber: document.getElementById('iecNumber').value,
+                taxRegistrationNumber: document.getElementById('taxRegistrationNumber').value,
+                lutArnNumber: document.getElementById('lutArnNumber').value,
+                deliveryPaymentTerms: document.getElementById('deliveryPaymentTerms').value,
+                portOfLoading: document.getElementById('portOfLoading').value,
+                portOfDischarge: document.getElementById('portOfDischarge').value,
+                preCarriageBy: document.getElementById('preCarriageBy').value,
+                placeOfReceipt: document.getElementById('placeOfReceipt').value,
+                portOfDestination: document.getElementById('portOfDestination').value,
+                destination: document.getElementById('destination').value,
+                currency: document.getElementById('currency').value,
+                vesselFlight: document.getElementById('vesselFlight').value,
+                countryOfOrigin: document.getElementById('countryOfOrigin').value,
+                adCode: document.getElementById('adCode').value,
+                otherReference: document.getElementById('otherReference').value,
+                hsCode: document.getElementById('hsCode').value,
+                finalDestination: document.getElementById('finalDestination').value,
+                contactPersonName: document.getElementById('contactPersonName').value,
+                contactEmail: document.getElementById('contactEmail').value,
+                consigneeAddress: document.getElementById('consigneeAddress').value,
+                deliveryAddress: document.getElementById('deliveryAddress').value,
+                amountInWords: document.getElementById('amountInWords').value,
+                totalExportValue: document.getElementById('totalExportValue').value,
+                totalGstValue: document.getElementById('totalGstValue').value,
+                totalInvoiceValue: document.getElementById('totalInvoiceValue').value,
+                numberOfBoxes: document.getElementById('numberOfBoxes').value,
+                items: []
+            };
+            
+            // Send data to server
+            fetch(`/api/zc-exporter/${recordId}/update`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Export invoice updated successfully!');
+                    // Redirect to view page
+                    window.location.href = '/zc_exporter/view';
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error updating form: ' + error);
+                console.error('Error:', error);
+            });
+        });
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRecordData();
+        });
+    </script>
+</body>
+</html>
