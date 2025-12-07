@@ -142,22 +142,16 @@
 
 <!-- Logo Header -->
   <div style="text-align: center; padding: 2vh 1vw; background-color: #f8f9fa; border-bottom: 3px solid #d90000;">
-      <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 14vh; width: auto; max-width: 117vw; object-fit: contain;">
+      <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 19vh; width: auto; max-width: 117vw; object-fit: contain;">
   </div><div class="container">
     <div class="header-section">
-        <div class="logo-box">
-            <div class="logo-text">ZAKA</div>
-            <div class="subtitle">CONTROLS & DEVICES</div>
-        </div>
-        <div class="invoice-title">ZC Exporter - View Records</div>
+     
+        <div class="invoice-title"> View Records</div>
     </div>
 
     <div class="action-bar">
-        <div>
-            <a href="/zc_exporter" class="btn btn-primary btn-sm" style="background-color: #0d6efd; border-color: #0d6efd; color: white; font-weight: bold;">➕ Add New</a>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-print btn-sm" onclick="window.print()" style="background-color: #17a2b8; border-color: #17a2b8; color: white; font-weight: bold;">🖨️ Print All</button>
+        <div style="width: 100%; display: flex; justify-content: center;">
+            <a href="/zc_exporter" class="btn btn-primary" style="background-color: #0d6efd; border-color: #0d6efd; color: white; font-weight: bold; font-size: 1.3rem; padding: 15px 20px; width: 20%;">➕ Add New</a>
         </div>
     </div>
 
@@ -169,10 +163,9 @@
                         <th>#</th>
                         <th>Invoice Number</th>
                         <th>Invoice Date</th>
-                        <th>Buyer Order Number</th>
-                        <th>IEC Number</th>
+                        <th>Exporter Reference</th>
+                        <th>Consignee Address</th>
                         <th>Total Invoice Value</th>
-                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -214,14 +207,9 @@
                                 <td>${index + 1}</td>
                                 <td>${row.invoiceNumber || '-'}</td>
                                 <td>${row.invoiceDate || '-'}</td>
-                                <td>${row.buyerOrderNumber || '-'}</td>
-                                <td>${row.iecNumber || '-'}</td>
+                                <td>${row.exporterReference || '-'}</td>
+                                <td>${row.consigneeAddress || '-'}</td>
                                 <td>${row.totalInvoiceValue || '0.00'}</td>
-                                <td>
-                                    <span class="badge ${row.status === 'Completed' ? 'bg-success' : 'bg-warning'}">
-                                        ${row.status || 'Pending'}
-                                    </span>
-                                </td>
                                 <td>
                                     <div class="action-buttons">
                                         <button class="btn btn-edit btn-sm" onclick="editRecord(${row.id})" title="Edit Record">✏️ Edit</button>
@@ -256,8 +244,15 @@
     }
 
     function hideRecord(id) {
-        alert(`Hide record functionality - Record #${id}`);
-        // Update backend to hide record
+        // Hide the row from the table
+        const rows = document.querySelectorAll('#tableBody tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            // Check if this row contains the matching ID in the action buttons
+            if (row.innerHTML.includes(`editRecord(${id})`)) {
+                row.style.display = 'none';
+            }
+        });
     }
 
     function printRecord(id) {

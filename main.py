@@ -207,6 +207,49 @@ def packaging_list_print(id):
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 400
 
+@app.route('/proforma_invoice/print/<int:id>')
+def proforma_invoice_print(id):
+    try:
+        record = ProformaInvoice.query.get(id)
+        if not record:
+            return jsonify({'success': False, 'message': 'Record not found'}), 404
+        
+        # Prepare line items
+        items_data = record.line_items if record.line_items else []
+        
+        # Create data dictionary
+        data = {
+            'bill_to_address': record.bill_to_address or '',
+            'date': record.invoice_date or '',
+            'invoice_no': record.invoice_no or '',
+            'po_wo_number': record.po_wo_number or '',
+            'your_reference_no': '',
+            'our_reference_no': record.our_ref_no or '',
+            'currency': record.currency or 'USD',
+            'items': items_data,
+            'total_amount': record.total_amount or '0.00',
+            'discount_percent': record.discount_percentage or '0',
+            'discount_amount': record.discount_amount or '0.00',
+            'received_details': 'Received Amount',
+            'received_amount': record.received_amount or '0.00',
+            'balance_amount': record.balance_amount or '0.00',
+            'country_of_origin': record.country_of_origin or '',
+            'port_of_embarkation': record.port_of_embarkation or '',
+            'port_of_discharge': record.port_of_discharge or '',
+            'date_created': record.created_at.strftime('%Y-%m-%d') if record.created_at else ''
+        }
+        
+        # Save to JSON file in proforma_invoice folder
+        proforma_folder = os.path.join(os.path.dirname(__file__), 'proforma_invoice')
+        json_file_path = os.path.join(proforma_folder, f'proforma_invoice_data_{id}.json')
+        
+        with open(json_file_path, 'w') as f:
+            json.dump(data, f, indent=2)
+        
+        return render_template('proforma_invoice/start.html', **data)
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 400
+
 @app.route('/zc_exporter/print/<int:id>')
 def zc_exporter_print(id):
     try:
@@ -552,6 +595,7 @@ def get_zc_exporters():
             'invoiceNumber': item.invoice_number or '',
             'invoiceDate': item.invoice_date or '',
             'exporterReference': item.exporter_reference or '',
+            'consigneeAddress': item.consignee_address or '',
             'totalInvoiceValue': item.total_invoice_value or '',
             'status': item.status,
             'createdAt': item.created_at.strftime('%Y-%m-%d') if item.created_at else ''
@@ -610,13 +654,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     
-    print("=" * 60)
-    print("🚀 Web Forms Management System")
-    print("=" * 60)
-    print("\n✅ Database initialized successfully!")
-    print("✅ Starting Flask application...")
-    print("📍 Open your browser and navigate to: http://localhost:5000\n")
-    
+  
     # Automatically open browser
     webbrowser.open('http://localhost:5000')
     

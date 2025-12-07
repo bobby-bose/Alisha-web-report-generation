@@ -1,0 +1,272 @@
+====================================================================
+PROFORMA INVOICE PRINT FUNCTIONALITY - IMPLEMENTATION PLAN
+====================================================================
+
+OBJECTIVE:
+Implement print button functionality for Proforma Invoice that fetches 
+data from database based on ID, renders it using Jinja template 
+(start.html), and creates a JSON backup file.
+
+====================================================================
+DATABASE TO TEMPLATE MAPPING ANALYSIS
+====================================================================
+
+DATABASE MODEL (ProformaInvoice):
+----------------------------------
+1. invoice_date          -> date (in template)
+2. invoice_no            -> invoice_no
+3. po_wo_number          -> po_wo_number
+4. our_ref_no            -> our_reference_no (MISMATCH - need mapping)
+5. supplier_address      -> (Not used - hardcoded in template)
+6. bill_to_address       -> bill_to_address
+7. total_amount          -> total_amount
+8. currency              -> currency (used in table headers & totals)
+9. discount_percentage   -> discount_percent (MISMATCH - need mapping)
+10. discount_amount      -> discount_amount
+11. receivable_amount    -> (Not directly shown - calculated field)
+12. received_amount      -> received_amount
+13. balance_amount       -> balance_amount
+14. country_of_origin    -> country_of_origin
+15. port_of_embarkation  -> port_of_embarkation
+16. port_of_discharge    -> port_of_discharge
+17. line_items (JSON)    -> items (array of objects)
+
+TEMPLATE PLACEHOLDERS (start.html):
+------------------------------------
+1. {{ bill_to_address }}         - Bill to address (with newline support)
+2. {{ date }}                     - Invoice date
+3. {{ invoice_no }}               - Invoice number
+4. {{ po_wo_number }}             - PO/WO number
+5. {{ your_reference_no }}        - Customer reference (NOT IN DB - need to add or use alternative)
+6. {{ our_reference_no }}         - Our reference number
+7. {{ currency }}                 - Currency code (appears in headers)
+8. {{ items }}                    - Array of line items with:
+   - item.line_no                 - Line number
+   - item.description             - Part No / Item description
+   - item.quantity                - Quantity
+   - item.unit_rate               - Unit rate
+   - item.total                   - Line total
+9. {{ total_amount }}             - Total amount
+10. {{ discount_percent }}        - Discount percentage (for display)
+11. {{ discount_amount }}         - Discount/Receivable amount
+12. {{ received_details }}        - Description of received payment (NOT IN DB - need to derive)
+13. {{ received_amount }}         - Amount received
+14. {{ balance_amount }}          - Balance amount
+15. {{ country_of_origin }}       - Country of origin
+16. {{ port_of_embarkation }}     - Port of embarkation
+17. {{ port_of_discharge }}       - Port of discharge
+18. {{ date_created }}            - Date when printed (NOT IN DB - use current date or created_at)
+
+====================================================================
+MISSING/MISMATCHED FIELDS IDENTIFIED
+====================================================================
+
+ISSUES TO RESOLVE:
+------------------
+1. your_reference_no     - NOT in database, appears in template
+   SOLUTION: Either add to DB or use placeholder/empty string
+
+2. received_details      - NOT in database, used as label for received amount
+   SOLUTION: Create dynamic label like "Received on [date]" or static text
+
+3. date_created          - NOT in database as separate field
+   SOLUTION: Use created_at field or current date
+
+4. Naming mismatches:
+   - discount_percentage (DB) -> discount_percent (template)
+   - our_ref_no (DB) -> our_reference_no (template)
+
+====================================================================
+LINE ITEMS STRUCTURE
+====================================================================
+
+DATABASE: line_items (JSON array)
+Expected structure:
+[
+  {
+    "line_no": 1,
+    "description": "Part description",
+    "quantity": 10,
+    "unit_rate": "50.00",
+    "total": "500.00"
+  },
+  ...
+]
+
+TEMPLATE expects same structure in {{ items }} loop
+
+====================================================================
+IMPLEMENTATION STEPS
+====================================================================
+
+STEP 1: Create Flask Route
+---------------------------
+Route: /proforma_invoice/print/<int:id>
+
+Functionality:
+1. Query ProformaInvoice.query.get(id)
+2. Handle not found case (return 404)
+3. Map database fields to template variables
+4. Process line_items JSON to items array
+5. Handle missing fields with defaults
+6. Create JSON backup file in proforma_invoice folder
+7. Render template with all data
+
+STEP 2: Data Mapping Dictionary
+--------------------------------
+Create data dictionary with:
+- bill_to_address: record.bill_to_address or ''
+- date: record.invoice_date or ''
+- invoice_no: record.invoice_no or ''
+- po_wo_number: record.po_wo_number or ''
+- your_reference_no: ''  (empty or add to DB later)
+- our_reference_no: record.our_ref_no or ''
+- currency: record.currency or 'USD'
+- items: record.line_items or []
+- total_amount: record.total_amount or '0.00'
+- discount_percent: record.discount_percentage or '0'
+- discount_amount: record.discount_amount or '0.00'
+- received_details: 'Received Amount' (static or dynamic)
+- received_amount: record.received_amount or '0.00'
+- balance_amount: record.balance_amount or '0.00'
+- country_of_origin: record.country_of_origin or ''
+- port_of_embarkation: record.port_of_embarkation or ''
+- port_of_discharge: record.port_of_discharge or ''
+- date_created: record.created_at.strftime('%Y-%m-%d') if record.created_at else ''
+
+STEP 3: Update view.html
+-------------------------
+Modify printRecord() function:
+function printRecord(id) {
+    window.location.href = `/proforma_invoice/print/${id}`;
+}
+
+STEP 4: JSON File Creation
+---------------------------
+File naming: proforma_invoice_data_{id}.json
+Location: proforma_invoice/ folder
+Content: Complete data dictionary sent to template
+
+STEP 5: Error Handling
+-----------------------
+- Handle missing record (404)
+- Handle JSON parsing errors for line_items
+- Handle missing/null fields gracefully
+- Log errors for debugging
+
+====================================================================
+CODE TEMPLATE FOR FLASK ROUTE
+====================================================================
+
+@app.route('/proforma_invoice/print/<int:id>')
+def proforma_invoice_print(id):
+    try:
+        record = ProformaInvoice.query.get(id)
+        if not record:
+            return jsonify({'success': False, 'message': 'Record not found'}), 404
+        
+        # Prepare line items
+        items_data = record.line_items if record.line_items else []
+        
+        # Create data dictionary
+        data = {
+            'bill_to_address': record.bill_to_address or '',
+            'date': record.invoice_date or '',
+            'invoice_no': record.invoice_no or '',
+            'po_wo_number': record.po_wo_number or '',
+            'your_reference_no': '',  # Not in DB
+            'our_reference_no': record.our_ref_no or '',
+            'currency': record.currency or 'USD',
+            'items': items_data,
+            'total_amount': record.total_amount or '0.00',
+            'discount_percent': record.discount_percentage or '0',
+            'discount_amount': record.discount_amount or '0.00',
+            'received_details': 'Received Amount',  # Static text
+            'received_amount': record.received_amount or '0.00',
+            'balance_amount': record.balance_amount or '0.00',
+            'country_of_origin': record.country_of_origin or '',
+            'port_of_embarkation': record.port_of_embarkation or '',
+            'port_of_discharge': record.port_of_discharge or '',
+            'date_created': record.created_at.strftime('%Y-%m-%d') if record.created_at else ''
+        }
+        
+        # Save to JSON file
+        proforma_folder = os.path.join(os.path.dirname(__file__), 'proforma_invoice')
+        json_file_path = os.path.join(proforma_folder, f'proforma_invoice_data_{id}.json')
+        
+        with open(json_file_path, 'w') as f:
+            json.dump(data, f, indent=2)
+        
+        return render_template('proforma_invoice/start.html', **data)
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 400
+
+====================================================================
+VIEW.HTML MODIFICATION
+====================================================================
+
+Change printRecord function from:
+    function printRecord(id) {
+        alert(`Printing record #${id}...`);
+    }
+
+To:
+    function printRecord(id) {
+        window.location.href = `/proforma_invoice/print/${id}`;
+    }
+
+====================================================================
+TESTING CHECKLIST
+====================================================================
+
+1. [ ] Test with valid record ID
+2. [ ] Test with invalid record ID (should show 404)
+3. [ ] Test with empty line_items array
+4. [ ] Test with null/empty fields
+5. [ ] Verify JSON file creation
+6. [ ] Verify all placeholders are replaced
+7. [ ] Check newline rendering in bill_to_address
+8. [ ] Verify currency symbol appears in headers
+9. [ ] Verify totals section displays correctly
+10. [ ] Test print functionality from rendered page
+
+====================================================================
+POTENTIAL IMPROVEMENTS
+====================================================================
+
+1. Add your_reference_no field to database
+2. Make received_details dynamic (e.g., "Received on [date]")
+3. Add validation for required fields
+4. Add print preview functionality
+5. Add option to download JSON file
+6. Add email functionality to send invoice
+
+====================================================================
+FIELD MAPPING SUMMARY TABLE
+====================================================================
+
+DATABASE FIELD          | TEMPLATE VARIABLE      | STATUS   | NOTES
+------------------------|------------------------|----------|------------------
+invoice_date            | date                   | ✓ MATCH  | Direct mapping
+invoice_no              | invoice_no             | ✓ MATCH  | Direct mapping
+po_wo_number            | po_wo_number           | ✓ MATCH  | Direct mapping
+our_ref_no              | our_reference_no       | ⚠ RENAME | Name difference
+bill_to_address         | bill_to_address        | ✓ MATCH  | With newline support
+total_amount            | total_amount           | ✓ MATCH  | Direct mapping
+currency                | currency               | ✓ MATCH  | Direct mapping
+discount_percentage     | discount_percent       | ⚠ RENAME | Name difference
+discount_amount         | discount_amount        | ✓ MATCH  | Direct mapping
+received_amount         | received_amount        | ✓ MATCH  | Direct mapping
+balance_amount          | balance_amount         | ✓ MATCH  | Direct mapping
+country_of_origin       | country_of_origin      | ✓ MATCH  | Direct mapping
+port_of_embarkation     | port_of_embarkation    | ✓ MATCH  | Direct mapping
+port_of_discharge       | port_of_discharge      | ✓ MATCH  | Direct mapping
+line_items              | items                  | ⚠ RENAME | Name difference
+created_at              | date_created           | ⚠ RENAME | Name difference
+[NOT IN DB]             | your_reference_no      | ✗ MISSING| Use empty string
+[NOT IN DB]             | received_details       | ✗ MISSING| Use static text
+supplier_address        | [HARDCODED]            | ✓ N/A    | Not needed from DB
+
+====================================================================
+END OF PLANNING DOCUMENT
+====================================================================
