@@ -28,6 +28,8 @@ class PackagingList(db.Model):
     hsCode = db.Column('hsCode', db.String(100), nullable=True)
     taxNumber = db.Column('taxNumber', db.String(100), nullable=True)
     items = db.Column('items', db.JSON, nullable=True)
+    total_net_weight = db.Column('total_net_weight', db.Float, nullable=True)
+    total_gross_weight = db.Column('total_gross_weight', db.Float, nullable=True)
     status = db.Column('status', db.String(20), default='Completed')
     created_at = db.Column('created_at', db.DateTime, default=datetime.now)
     updated_at = db.Column('updated_at', db.DateTime, default=datetime.now, onupdate=datetime.now)
@@ -177,8 +179,11 @@ def packaging_list_print(id):
             if 'boxes' in item:
                 total_boxes += len(item['boxes'])
                 for box in item['boxes']:
-                    total_net_weight += float(box.get('net_weight', 0))
-                    total_gross_weight += float(box.get('gross_weight', 0))
+                    # Try both camelCase and snake_case for compatibility
+                    net = box.get('netWeight') or box.get('net_weight', 0)
+                    gross = box.get('grossWeight') or box.get('gross_weight', 0)
+                    total_net_weight += float(net) if net else 0
+                    total_gross_weight += float(gross) if gross else 0
         
         data = {
             'consigneeAddress': record.consigneeAddress or '',
@@ -198,7 +203,7 @@ def packaging_list_print(id):
         
         # Save data to JSON file in packaging_list folder
         packaging_folder = os.path.join(os.path.dirname(__file__), 'packaging_list')
-        json_file_path = os.path.join(packaging_folder, f'packing_list_data_{id}.json')
+        json_file_path = os.path.join(packaging_folder, 'data.json')
         
         with open(json_file_path, 'w') as f:
             json.dump(data, f, indent=2)
@@ -241,7 +246,7 @@ def proforma_invoice_print(id):
         
         # Save to JSON file in proforma_invoice folder
         proforma_folder = os.path.join(os.path.dirname(__file__), 'proforma_invoice')
-        json_file_path = os.path.join(proforma_folder, f'proforma_invoice_data_{id}.json')
+        json_file_path = os.path.join(proforma_folder, 'data.json')
         
         with open(json_file_path, 'w') as f:
             json.dump(data, f, indent=2)
@@ -262,7 +267,7 @@ def zc_exporter_print(id):
         
         # Save data to JSON file in ZC folder
         zc_folder = os.path.join(os.path.dirname(__file__), 'ZC')
-        json_file_path = os.path.join(zc_folder, f'zc_exporter_data_{id}.json')
+        json_file_path = os.path.join(zc_folder, 'data.json')
         
         with open(json_file_path, 'w') as f:
             json.dump(data, f, indent=2)
@@ -277,6 +282,20 @@ def create_packaging_list():
     try:
         data = request.get_json()
         
+        # Calculate totals from items
+        items_data = data.get('items', [])
+        total_net_weight = 0
+        total_gross_weight = 0
+        
+        for item in items_data:
+            if 'boxes' in item:
+                for box in item['boxes']:
+                    # Try both camelCase and snake_case for compatibility
+                    net = box.get('netWeight') or box.get('net_weight', 0)
+                    gross = box.get('grossWeight') or box.get('gross_weight', 0)
+                    total_net_weight += float(net) if net else 0
+                    total_gross_weight += float(gross) if gross else 0
+        
         # Create new packaging list entry
         packaging = PackagingList(
             packingListNo=data.get('packingListNo'),
@@ -289,7 +308,9 @@ def create_packaging_list():
             dischargePort=data.get('dischargePort'),
             hsCode=data.get('hsCode'),
             taxNumber=data.get('taxNumber'),
-            items=data.get('items')
+            items=items_data,
+            total_net_weight=total_net_weight,
+            total_gross_weight=total_gross_weight
         )
         
         db.session.add(packaging)
@@ -322,6 +343,23 @@ def update_packaging_list(id):
         packaging.hsCode = data.get('hsCode', packaging.hsCode)
         packaging.taxNumber = data.get('taxNumber', packaging.taxNumber)
         packaging.items = data.get('items', packaging.items)
+        
+        # Recalculate totals
+        items_data = packaging.items or []
+        total_net_weight = 0
+        total_gross_weight = 0
+        
+        for item in items_data:
+            if 'boxes' in item:
+                for box in item['boxes']:
+                    # Try both camelCase and snake_case for compatibility
+                    net = box.get('netWeight') or box.get('net_weight', 0)
+                    gross = box.get('grossWeight') or box.get('gross_weight', 0)
+                    total_net_weight += float(net) if net else 0
+                    total_gross_weight += float(gross) if gross else 0
+        
+        packaging.total_net_weight = total_net_weight
+        packaging.total_gross_weight = total_gross_weight
         packaging.updated_at = datetime.now()
         
         db.session.commit()
@@ -655,8 +693,7 @@ if __name__ == '__main__':
         db.create_all()
     
   
-    # Automatically open browser
-    webbrowser.open('http://localhost:5000')
+
     
     # Run the Flask app
     app.run(debug=True, port=5000)

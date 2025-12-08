@@ -155,8 +155,8 @@
                     <td class="text-center">{{ box.boxNo }}</td>
                     <td class="text-center">{{ box.quantity }}</td>
                     <td class="text-center">{{ box.l }} (L) x {{ box.w }} (W) x {{ box.h }} (H) cm</td>
-                    <td class="text-center">{{ box.net_weight }}</td>
-                    <td class="text-center">{{ box.gross_weight }}</td>
+                    <td class="text-center">{{ box.netWeight }}</td>
+                    <td class="text-center">{{ box.grossWeight }}</td>
                 </tr>
                 {% endfor %}
             {% endfor %}
@@ -175,6 +175,10 @@
         <div style="height: 50px;">
                     </div>
         <p style="font-weight: bold; margin-top: 5px;">Proprietor</p>
+    </div>
+
+    <div style="margin-top: 20px; text-align: center; border-top: 2px solid #000; padding-top: 10px;">
+        <img src="/static/footer.jpg" alt="Company Logo" style="height: 60px; object-fit: contain;">
     </div>
 
 </div>

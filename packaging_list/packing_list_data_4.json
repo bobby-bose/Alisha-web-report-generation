@@ -1,0 +1,82 @@
+{
+  "consigneeAddress": "44444",
+  "taxNumber": "44444444",
+  "deliveryAddress": "4444444",
+  "date": "1984-01-01",
+  "po_no": "444444",
+  "packing_list_no": "444444",
+  "loding_port": "44444444",
+  "discharge_port": "444444",
+  "hs_code": "44444444",
+  "total_boxes": 6,
+  "items": [
+    {
+      "boxes": [
+        {
+          "boxNo": 1,
+          "quantity": "1",
+          "l": "1",
+          "w": "1",
+          "h": "1",
+          "netWeight": "1",
+          "grossWeight": "1"
+        },
+        {
+          "boxNo": 2,
+          "quantity": "1",
+          "l": "1",
+          "w": "1",
+          "h": "1",
+          "netWeight": "1",
+          "grossWeight": "1"
+        },
+        {
+          "boxNo": 3,
+          "quantity": "1",
+          "l": "1",
+          "w": "1",
+          "h": "1",
+          "netWeight": "1",
+          "grossWeight": "1"
+        },
+        {
+          "boxNo": 5,
+          "quantity": "33",
+          "l": "33",
+          "w": "33",
+          "h": "33",
+          "netWeight": "33",
+          "grossWeight": "33"
+        },
+        {
+          "boxNo": 6,
+          "quantity": "33",
+          "l": "33",
+          "w": "33",
+          "h": "33",
+          "netWeight": "33",
+          "grossWeight": "33"
+        }
+      ],
+      "description": "1111111",
+      "material": "1111111"
+    },
+    {
+      "boxes": [
+        {
+          "boxNo": 4,
+          "grossWeight": "2",
+          "h": "2",
+          "l": "2",
+          "netWeight": "2",
+          "quantity": "2",
+          "w": "2"
+        }
+      ],
+      "description": "22222",
+      "material": "22222"
+    }
+  ],
+  "total_net_weight": "0.00",
+  "total_gross_weight": "0.00"
+}

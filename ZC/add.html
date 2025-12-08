@@ -20,6 +20,11 @@
         fieldset {
             border: 2px solid #000 !important;
         }
+        .auto-expand {
+            overflow: hidden;
+            resize: none;
+            min-height: calc(1.5em * 5 + 0.75rem);
+        }
     </style>
 </head>
 <body>
@@ -111,11 +116,11 @@
                     <div class="col-md-4 mb-3"><label for="contactEmail" class="form-label">Contact Email</label><input type="email" class="form-control" id="contactEmail" value="john.smith@buyer.com"></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mb-3"><label for="consigneeAddress" class="form-label">Consignee Address</label><textarea class="form-control" id="consigneeAddress" rows="3">Buyer Trading Company GmbH
+                    <div class="col-md-6 mb-3"><label for="consigneeAddress" class="form-label">Consignee Address</label><textarea class="form-control auto-expand" id="consigneeAddress" rows="5">Buyer Trading Company GmbH
 Am Hafen 15
 Hamburg 20457
 Germany</textarea></div>
-                    <div class="col-md-6 mb-3"><label for="deliveryAddress" class="form-label">Delivery Address</label><textarea class="form-control" id="deliveryAddress" rows="3">Buyer Trading Company GmbH
+                    <div class="col-md-6 mb-3"><label for="deliveryAddress" class="form-label">Delivery Address</label><textarea class="form-control auto-expand" id="deliveryAddress" rows="5">Buyer Trading Company GmbH
 Warehouse District
 Berlin 10115
 Germany</textarea></div>
@@ -128,8 +133,24 @@ Germany</textarea></div>
                 <button type="button" class="btn btn-sm" id="removeRowBtn" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">➖ Remove Row</button>
             </div>
             
-            <div id="itemDetailsContainer" class="mb-4">
-                </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">From</th>
+                            <th style="width: 8%;">To</th>
+                            <th style="width: 25%;">Description</th>
+                            <th style="width: 10%;">Unit</th>
+                            <th style="width: 12%;">Quantity</th>
+                            <th style="width: 12%;">Rate</th>
+                            <th style="width: 12%;">Amount</th>
+                            <th style="width: 8%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemDetailsContainer">
+                    </tbody>
+                </table>
+            </div>
 
             <div class="row pt-3 border-top">
                 <div class="col-12 mb-3">
@@ -143,7 +164,7 @@ Germany</textarea></div>
                     <input type="text" class="form-control" id="totalExportValue" value="0.00" disabled>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="totalGstValue" class="form-label">Total GST Value</label>
+                    <label for="totalGstValue" class="form-label">GST Value (13% GST)</label>
                     <input type="text" class="form-control" id="totalGstValue" value="0.00" disabled>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -152,7 +173,7 @@ Germany</textarea></div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="numberOfBoxes" class="form-label">Number of Boxes</label>
-                    <input type="number" class="form-control" id="numberOfBoxes" value="1" min="1">
+                    <input type="number" class="form-control" id="numberOfBoxes" value="1" min="1" disabled>
                 </div>
             </div>
 
@@ -176,43 +197,32 @@ function createNewRow(initialPackageStart, initialPackageEnd) {
     const endNum = initialPackageEnd || (startNum + 9); 
     
     return `
-        <div class="row border-bottom py-3 item-row" data-row-id="${rowCount}">
-            <div class="col-12 mb-2">
-                <strong class="package-range-display d-block d-md-none">Package Range: ${startNum} - ${endNum}</strong>
-            </div>
-            
-            <div class="col-6 col-md-1 mb-2">
-                <label class="form-label small">From</label>
+        <tr class="item-row" data-row-id="${rowCount}">
+            <td>
                 <input type="number" class="form-control form-control-sm package-from" value="${startNum}" min="1">
-            </div>
-            <div class="col-6 col-md-1 mb-2">
-                <label class="form-label small">To</label>
+            </td>
+            <td>
                 <input type="number" class="form-control form-control-sm package-to" value="${endNum}" min="${startNum}">
-            </div>
-            <div class="col-12 col-md-3 mb-2">
-                <label class="form-label small">Descrip</label>
+            </td>
+            <td>
                 <input type="text" class="form-control form-control-sm description" placeholder="Description of Goods">
-            </div>
-            <div class="col-6 col-md-1 mb-2">
-                <label class="form-label small">Unit</label>
+            </td>
+            <td>
                 <input type="text" class="form-control form-control-sm unit" placeholder="Unit">
-            </div>
-            <div class="col-6 col-md-2 mb-2">
-                <label class="form-label small">Quantity</label>
+            </td>
+            <td>
                 <input type="number" class="form-control form-control-sm quantity" value="0" min="0">
-            </div>
-            <div class="col-6 col-md-2 mb-2">
-                <label class="form-label small">Rate</label>
-                <input type="number" class="form-control form-control-sm rate" value="0.00" min="0">
-            </div>
-            <div class="col-6 col-md-1 mb-2">
-                <label class="form-label small">Amount</label>
+            </td>
+            <td>
+                <input type="number" class="form-control form-control-sm rate" value="0.00" min="0" step="0.01">
+            </td>
+            <td>
                 <input type="text" class="form-control form-control-sm amount" value="0.00" disabled>
-            </div>
-            <div class="col-12 col-md-1 mb-2 d-flex align-items-end">
-                <button type="button" class="btn btn-danger btn-sm delete-row-btn w-100" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">🗑️ Delete</button>
-            </div>
-        </div>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-danger btn-sm delete-row-btn" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">🗑️</button>
+            </td>
+        </tr>
     `;
 }
 
@@ -228,7 +238,6 @@ function updatePackageSequence(changedRow) {
     rows.forEach((row, index) => {
         const fromInput = row.querySelector('.package-from');
         const toInput = row.querySelector('.package-to');
-        const rangeDisplay = row.querySelector('.package-range-display');
         
         let rowRangeWidth = 0;
 
@@ -268,10 +277,7 @@ function updatePackageSequence(changedRow) {
             toInput.value = newEnd;
         }
 
-        // 3. Update the display and prepare for the next row
-        if (rangeDisplay) {
-            rangeDisplay.textContent = `Package Range: ${fromInput.value} - ${toInput.value}`;
-        }
+        // 3. Prepare for the next row
         // The next row starts one unit after the current row ends
         currentStart = parseInt(toInput.value, 10) + 1;
     });
@@ -304,15 +310,33 @@ function updateTotals() {
         totalExportValue += calculateRowAmount(row);
     });
 
-    // Update Export, GST, and Invoice Value fields
+    // Update Export Value
     document.getElementById('totalExportValue').value = totalExportValue.toFixed(2);
-    document.getElementById('totalGstValue').value = (0.00).toFixed(2); 
     
-    const totalInvoiceValue = totalExportValue + parseFloat(document.getElementById('totalGstValue').value);
+    // Calculate 13% GST
+    const totalGstValue = totalExportValue * 0.13;
+    document.getElementById('totalGstValue').value = totalGstValue.toFixed(2);
+    
+    // Total Invoice Value = Export Value + GST Value
+    const totalInvoiceValue = totalExportValue + totalGstValue;
     document.getElementById('totalInvoiceValue').value = totalInvoiceValue.toFixed(2);
+
+    // Update Number of Boxes from last row's "To" value
+    const rows = document.querySelectorAll('.item-row');
+    if (rows.length > 0) {
+        const lastRow = rows[rows.length - 1];
+        const lastToValue = parseInt(lastRow.querySelector('.package-to').value, 10) || 1;
+        document.getElementById('numberOfBoxes').value = lastToValue;
+    }
 
     // Update Amount in Words immediately as requested
     document.getElementById('amountInWords').value = numberToWords(totalInvoiceValue);
+}
+
+// Function to auto-expand textarea based on content
+function autoExpandTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.max(textarea.scrollHeight, parseInt(getComputedStyle(textarea).minHeight)) + 'px';
 }
 
 // Main function to run when the page is loaded
@@ -322,8 +346,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const removeRowBtn = document.getElementById('removeRowBtn');
     const form = document.getElementById('exportInvoiceForm');
 
+    // Initialize auto-expand textareas
+    document.querySelectorAll('.auto-expand').forEach(textarea => {
+        autoExpandTextarea(textarea);
+        textarea.addEventListener('input', function() {
+            autoExpandTextarea(this);
+        });
+    });
+
     // 1. Initial Row setup (1-10)
-    container.innerHTML += createNewRow(1, 10);
+    container.insertAdjacentHTML('beforeend', createNewRow(1, 10));
     updateTotals();
 
     // 2. Add Row Listener: Starts the new row at the next sequential number
@@ -338,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // New row defaults to a 10-unit range
-        container.innerHTML += createNewRow(nextStart, nextStart + 9); 
+        container.insertAdjacentHTML('beforeend', createNewRow(nextStart, nextStart + 9));
         updateTotals();
         
         // No need to call updatePackageSequence here; the nextStart calculation was sufficient.

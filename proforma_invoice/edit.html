@@ -263,7 +263,7 @@
             </div>
             <div class="col-md-4">
                 <label for="receivedAmount" class="form-label">Received Amount</label>
-                <input type="text" class="form-control" id="receivedAmount" value="zero dollars" readonly>
+                <input type="text" class="form-control" id="receivedAmount" placeholder="e.g., $5,000.00">
             </div>
         </div>
 
@@ -319,6 +319,7 @@
                     document.getElementById('billToAddress').value = data.billToAddress || '';
                     document.getElementById('currency').value = data.currency || '';
                     document.getElementById('discountPercentage').value = data.discountPercentage || '0';
+                    document.getElementById('receivedAmount').value = data.receivedAmount || '';
                     document.getElementById('countryOfOrigin').value = data.countryOfOrigin || '';
                     document.getElementById('portOfEmbarkation').value = data.portOfEmbarkation || '';
                     document.getElementById('portOfDischarge').value = data.portOfDischarge || '';

@@ -14,6 +14,14 @@
         }
         .page-title {
             color: #d90000;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            font-size: xx-large;
+        }
+        .auto-expand {
+            overflow: hidden;
+            resize: none;
+            min-height: calc(1.5em * 5 + 0.75rem);
         }
     </style>
 </head>
@@ -23,8 +31,7 @@
       <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 19vh; width: auto; max-width: 117vw; object-fit: contain;">
   </div>    <div class="container py-4">
         <header class="text-center mb-4">
-            <img src="https://via.placeholder.com/150x50/f00000/ffffff?text=ZAKA+LOGO" alt="ZAKA Logo" class="logo-img mb-3">
-            <h1 class="h4 page-title">Edit the export invoice details below.</h1>
+              <h1 class="h4 page-title">Edit Details Below.</h1>
         </header>
 
         <form id="exportInvoiceForm" class="p-3 border rounded shadow-sm bg-white">
@@ -110,8 +117,8 @@
                     <div class="col-md-4 mb-3"><label for="contactEmail" class="form-label">Contact Email</label><input type="email" class="form-control" id="contactEmail"></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mb-3"><label for="consigneeAddress" class="form-label">Consignee Address</label><textarea class="form-control" id="consigneeAddress" rows="3"></textarea></div>
-                    <div class="col-md-6 mb-3"><label for="deliveryAddress" class="form-label">Delivery Address</label><textarea class="form-control" id="deliveryAddress" rows="3"></textarea></div>
+                    <div class="col-md-6 mb-3"><label for="consigneeAddress" class="form-label">Consignee Address</label><textarea class="form-control auto-expand" id="consigneeAddress" rows="5"></textarea></div>
+                    <div class="col-md-6 mb-3"><label for="deliveryAddress" class="form-label">Delivery Address</label><textarea class="form-control auto-expand" id="deliveryAddress" rows="5"></textarea></div>
                 </div>
             </fieldset>
 
@@ -121,8 +128,24 @@
                 <button type="button" class="btn btn-sm" id="removeRowBtn" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">➖ Remove Row</button>
             </div>
             
-            <div id="itemDetailsContainer" class="mb-4">
-                </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">From</th>
+                            <th style="width: 8%;">To</th>
+                            <th style="width: 25%;">Description</th>
+                            <th style="width: 10%;">Unit</th>
+                            <th style="width: 12%;">Quantity</th>
+                            <th style="width: 12%;">Rate</th>
+                            <th style="width: 12%;">Amount</th>
+                            <th style="width: 8%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemDetailsContainer">
+                    </tbody>
+                </table>
+            </div>
 
             <div class="row pt-3 border-top">
                 <div class="col-12 mb-3">
@@ -136,7 +159,7 @@
                     <input type="text" class="form-control" id="totalExportValue" disabled>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="totalGstValue" class="form-label">Total GST Value</label>
+                    <label for="totalGstValue" class="form-label">Total GST Value (13% GST)</label>
                     <input type="text" class="form-control" id="totalGstValue" disabled>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -145,7 +168,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="numberOfBoxes" class="form-label">Number of Boxes</label>
-                    <input type="number" class="form-control" id="numberOfBoxes" value="1" min="1">
+                    <input type="number" class="form-control" id="numberOfBoxes" value="1" min="1" disabled>
                 </div>
             </div>
 
@@ -158,8 +181,123 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Global variable to keep track of the number of rows created
+        let rowCount = 0;
+
         // Get record ID from URL
         const recordId = new URLSearchParams(window.location.search).get('id');
+
+        // Function to generate the HTML for a new item row
+        function createNewRow(initialPackageStart, initialPackageEnd, rowData = {}) {
+            rowCount++;
+            const startNum = initialPackageStart || 1;
+            const endNum = initialPackageEnd || (startNum + 9);
+            
+            return `
+                <tr class="item-row" data-row-id="${rowCount}">
+                    <td>
+                        <input type="number" class="form-control form-control-sm package-from" value="${rowData.from || startNum}" min="1">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm package-to" value="${rowData.to || endNum}" min="${startNum}">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm description" placeholder="Description of Goods" value="${rowData.description || ''}">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm unit" placeholder="Unit" value="${rowData.unit || ''}">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm quantity" value="${rowData.quantity || 0}" min="0">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm rate" value="${rowData.rate || '0.00'}" min="0" step="0.01">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm amount" value="${rowData.amount || '0.00'}" disabled>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm delete-row-btn" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // Function to calculate amount for a single row
+        function calculateRowAmount(row) {
+            const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
+            const rate = parseFloat(row.querySelector('.rate').value) || 0;
+            const amount = (quantity * rate).toFixed(2);
+            row.querySelector('.amount').value = amount;
+            return parseFloat(amount);
+        }
+
+        // Function to convert number to words
+        function numberToWords(n) {
+            if (isNaN(n) || n === 0) return "zero euro, zero cents";
+            const [euros, cents = '00'] = String(n.toFixed(2)).split('.');
+            return `Total ${euros} euro and ${cents} cents (auto-updated)`;
+        }
+
+        // Function to recalculate all totals
+        function updateTotals() {
+            let totalExportValue = 0;
+            document.querySelectorAll('.item-row').forEach(row => {
+                totalExportValue += calculateRowAmount(row);
+            });
+
+            document.getElementById('totalExportValue').value = totalExportValue.toFixed(2);
+            
+            const totalGstValue = totalExportValue * 0.13;
+            document.getElementById('totalGstValue').value = totalGstValue.toFixed(2);
+            
+            const totalInvoiceValue = totalExportValue + totalGstValue;
+            document.getElementById('totalInvoiceValue').value = totalInvoiceValue.toFixed(2);
+
+            const rows = document.querySelectorAll('.item-row');
+            if (rows.length > 0) {
+                const lastRow = rows[rows.length - 1];
+                const lastToValue = parseInt(lastRow.querySelector('.package-to').value, 10) || 1;
+                document.getElementById('numberOfBoxes').value = lastToValue;
+            }
+
+            document.getElementById('amountInWords').value = numberToWords(totalInvoiceValue);
+        }
+
+        // Function to update package sequence
+        function updatePackageSequence(changedRow) {
+            const rows = document.querySelectorAll('.item-row');
+            const changedRowIndex = changedRow ? Array.from(rows).indexOf(changedRow) : -1;
+            let currentStart = 1;
+
+            rows.forEach((row, index) => {
+                const fromInput = row.querySelector('.package-from');
+                const toInput = row.querySelector('.package-to');
+                let rowRangeWidth = 0;
+
+                fromInput.value = currentStart;
+
+                if (index < changedRowIndex) {
+                    currentStart = parseInt(toInput.value, 10) + 1;
+                    return;
+                }
+                
+                if (index === changedRowIndex) {
+                    let currentEnd = parseInt(toInput.value, 10);
+                    if (currentEnd < currentStart) {
+                        currentEnd = currentStart;
+                        toInput.value = currentEnd;
+                    }
+                    rowRangeWidth = currentEnd - currentStart + 1;
+                } else {
+                    rowRangeWidth = (parseInt(toInput.value, 10) - parseInt(fromInput.value, 10) + 1) || 10;
+                    let newEnd = currentStart + rowRangeWidth - 1;
+                    toInput.value = newEnd;
+                }
+
+                currentStart = parseInt(toInput.value, 10) + 1;
+            });
+        }
 
         // Load record data from database
         function loadRecordData() {
@@ -197,6 +335,26 @@
                     document.getElementById('contactEmail').value = data.contactEmail || '';
                     document.getElementById('consigneeAddress').value = data.consigneeAddress || '';
                     document.getElementById('deliveryAddress').value = data.deliveryAddress || '';
+                    
+                    // Auto-expand textareas after loading data
+                    document.querySelectorAll('.auto-expand').forEach(textarea => {
+                        autoExpandTextarea(textarea);
+                    });
+                    
+                    // Load items into table
+                    const container = document.getElementById('itemDetailsContainer');
+                    container.innerHTML = '';
+                    if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+                        data.items.forEach(item => {
+                            container.insertAdjacentHTML('beforeend', createNewRow(item.from, item.to, item));
+                        });
+                    } else {
+                        // Add one empty row if no items
+                        container.insertAdjacentHTML('beforeend', createNewRow(1, 10));
+                    }
+                    
+                    updateTotals();
+                    
                     document.getElementById('amountInWords').value = data.amountInWords || '';
                     document.getElementById('totalExportValue').value = data.totalExportValue || '0.00';
                     document.getElementById('totalGstValue').value = data.totalGstValue || '0.00';
@@ -211,6 +369,20 @@
         // Form submit handler
         document.getElementById('exportInvoiceForm').addEventListener('submit', (e) => {
             e.preventDefault();
+            
+            // Collect all items from table
+            const items = [];
+            document.querySelectorAll('.item-row').forEach(row => {
+                items.push({
+                    from: row.querySelector('.package-from').value,
+                    to: row.querySelector('.package-to').value,
+                    description: row.querySelector('.description').value,
+                    unit: row.querySelector('.unit').value,
+                    quantity: row.querySelector('.quantity').value,
+                    rate: row.querySelector('.rate').value,
+                    amount: row.querySelector('.amount').value
+                });
+            });
             
             const payload = {
                 invoiceNumber: document.getElementById('invoiceNumber').value,
@@ -244,7 +416,7 @@
                 totalGstValue: document.getElementById('totalGstValue').value,
                 totalInvoiceValue: document.getElementById('totalInvoiceValue').value,
                 numberOfBoxes: document.getElementById('numberOfBoxes').value,
-                items: []
+                items: items
             };
             
             // Send data to server
@@ -271,9 +443,100 @@
             });
         });
 
+        // Function to auto-expand textarea based on content
+        function autoExpandTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.max(textarea.scrollHeight, parseInt(getComputedStyle(textarea).minHeight)) + 'px';
+        }
+
         // Load data on page load
         document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('itemDetailsContainer');
+            const addRowBtn = document.getElementById('addRowBtn');
+            const removeRowBtn = document.getElementById('removeRowBtn');
+
             loadRecordData();
+            
+            // Initialize auto-expand textareas
+            document.querySelectorAll('.auto-expand').forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    autoExpandTextarea(this);
+                });
+            });
+
+            // Add Row Listener
+            addRowBtn.addEventListener('click', () => {
+                const rows = document.querySelectorAll('.item-row');
+                let nextStart = 1;
+                
+                if (rows.length > 0) {
+                    const lastRowTo = parseInt(rows[rows.length - 1].querySelector('.package-to').value, 10) || 0;
+                    nextStart = lastRowTo + 1;
+                }
+                
+                container.insertAdjacentHTML('beforeend', createNewRow(nextStart, nextStart + 9));
+                updateTotals();
+            });
+
+            // Remove Last Row Listener
+            removeRowBtn.addEventListener('click', () => {
+                const rows = container.querySelectorAll('.item-row');
+                if (rows.length > 1) {
+                    container.removeChild(rows[rows.length - 1]);
+                    updatePackageSequence(null);
+                    updateTotals();
+                }
+            });
+
+            // Dynamic Input Listener for all item rows
+            container.addEventListener('input', (event) => {
+                const target = event.target;
+                const row = target.closest('.item-row');
+
+                if (!row) return;
+
+                if (target.classList.contains('quantity') || target.classList.contains('rate')) {
+                    updateTotals();
+                }
+
+                if (target.classList.contains('package-from') || target.classList.contains('package-to')) {
+                    let val = parseInt(target.value, 10);
+                    if (isNaN(val) || val < 1) val = 1;
+                    target.value = val;
+
+                    const fromInput = row.querySelector('.package-from');
+                    const toInput = row.querySelector('.package-to');
+                    const changedField = target.classList.contains('package-from') ? 'from' : 'to';
+
+                    if (parseInt(fromInput.value, 10) > parseInt(toInput.value, 10)) {
+                        if (changedField === 'from') {
+                            toInput.value = fromInput.value;
+                        } else {
+                            fromInput.value = toInput.value;
+                        }
+                    }
+
+                    updatePackageSequence(row);
+                }
+
+                if (target.classList.contains('quantity') || target.classList.contains('rate') || target.classList.contains('package-from') || target.classList.contains('package-to')) {
+                    updateTotals();
+                }
+            });
+
+            // Delete Specific Row Listener
+            container.addEventListener('click', (event) => {
+                if (event.target.classList.contains('delete-row-btn')) {
+                    const rowToDelete = event.target.closest('.item-row');
+                    if (container.querySelectorAll('.item-row').length > 1) {
+                        container.removeChild(rowToDelete);
+                        updatePackageSequence(null);
+                        updateTotals();
+                    } else {
+                        alert("Cannot delete the last remaining row.");
+                    }
+                }
+            });
         });
     </script>
 </body>

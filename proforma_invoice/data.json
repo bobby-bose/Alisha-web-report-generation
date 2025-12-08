@@ -1,0 +1,53 @@
+{
+  "bill_to_address": "ABC Trading Company\n123 Business Street\nRotterdam, Netherlands",
+  "date": "2025-12-07",
+  "invoice_no": "PI-2025-001",
+  "po_wo_number": "PO-2025-0001",
+  "your_reference_no": "",
+  "our_reference_no": "REF-ZAKA-001",
+  "currency": "USD",
+  "items": [
+    {
+      "lineNo": 1,
+      "partNumber": "33",
+      "description": "33",
+      "quantity": "3",
+      "unitRate": "33",
+      "total": "99.00"
+    },
+    {
+      "lineNo": 2,
+      "partNumber": "33",
+      "description": "33",
+      "quantity": "3",
+      "unitRate": "33",
+      "total": "99.00"
+    },
+    {
+      "lineNo": 3,
+      "partNumber": "1",
+      "description": "1",
+      "quantity": "1",
+      "unitRate": "1",
+      "total": "1.00"
+    },
+    {
+      "lineNo": 4,
+      "partNumber": "",
+      "description": "",
+      "quantity": "0",
+      "unitRate": "0.00",
+      "total": "0.00"
+    }
+  ],
+  "total_amount": "199.00",
+  "discount_percent": "5",
+  "discount_amount": "9.95",
+  "received_details": "Received Amount",
+  "received_amount": "zero dollars",
+  "balance_amount": "189.05",
+  "country_of_origin": "United Arab Emirates",
+  "port_of_embarkation": "Jebel Ali Port",
+  "port_of_discharge": "Rotterdam Port",
+  "date_created": "2025-12-08"
+}
