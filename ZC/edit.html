@@ -132,14 +132,17 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th style="width: 8%;">From</th>
-                            <th style="width: 8%;">To</th>
-                            <th style="width: 25%;">Description</th>
-                            <th style="width: 10%;">Unit</th>
-                            <th style="width: 12%;">Quantity</th>
-                            <th style="width: 12%;">Rate</th>
-                            <th style="width: 12%;">Amount</th>
-                            <th style="width: 8%;">Action</th>
+                            <th style="width: 6%;">From</th>
+                            <th style="width: 6%;">To</th>
+                            <th style="width: 20%;">Description</th>
+                            <th style="width: 8%;">Unit</th>
+                            <th style="width: 8%;">Quantity</th>
+                            <th style="width: 8%;">Rate</th>
+                            <th style="width: 10%;">Amount</th>
+                            <th style="width: 10%;">Taxable Value</th>
+                            <th style="width: 8%;">IGST %</th>
+                            <th style="width: 10%;">IGST Amount</th>
+                            <th style="width: 6%;">Action</th>
                         </tr>
                     </thead>
                     <tbody id="itemDetailsContainer">
@@ -159,7 +162,7 @@
                     <input type="text" class="form-control" id="totalExportValue" disabled>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="totalGstValue" class="form-label">Total GST Value (13% GST)</label>
+                    <label for="totalGstValue" class="form-label">Total GST Value (Sum of IGST)</label>
                     <input type="text" class="form-control" id="totalGstValue" disabled>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -205,7 +208,7 @@
                         <input type="text" class="form-control form-control-sm description" placeholder="Description of Goods" value="${rowData.description || ''}">
                     </td>
                     <td>
-                        <input type="text" class="form-control form-control-sm unit" placeholder="Unit" value="${rowData.unit || ''}">
+                        <input type="number" class="form-control form-control-sm unit" value="${rowData.unit || 0}" min="0">
                     </td>
                     <td>
                         <input type="number" class="form-control form-control-sm quantity" value="${rowData.quantity || 0}" min="0">
@@ -216,6 +219,15 @@
                     <td>
                         <input type="text" class="form-control form-control-sm amount" value="${rowData.amount || '0.00'}" disabled>
                     </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm taxable-value" value="${rowData.taxableValue || '0.00'}" min="0" step="0.01">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm igst-percent" value="${rowData.igstPercent || 0}" min="0" max="100" step="0.01">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm igst-amount" value="${rowData.igstAmount || '0.00'}" disabled>
+                    </td>
                     <td class="text-center">
                         <button type="button" class="btn btn-danger btn-sm delete-row-btn" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">🗑️</button>
                     </td>
@@ -225,10 +237,18 @@
 
         // Function to calculate amount for a single row
         function calculateRowAmount(row) {
+            const unit = parseFloat(row.querySelector('.unit').value) || 0;
             const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
             const rate = parseFloat(row.querySelector('.rate').value) || 0;
-            const amount = (quantity * rate).toFixed(2);
+            const amount = (unit * quantity * rate).toFixed(2);
             row.querySelector('.amount').value = amount;
+            
+            // Calculate IGST Amount = (IGST % / 100) * Taxable Value
+            const taxableValue = parseFloat(row.querySelector('.taxable-value').value) || 0;
+            const igstPercent = parseFloat(row.querySelector('.igst-percent').value) || 0;
+            const igstAmount = ((igstPercent / 100) * taxableValue).toFixed(2);
+            row.querySelector('.igst-amount').value = igstAmount;
+            
             return parseFloat(amount);
         }
 
@@ -242,15 +262,25 @@
         // Function to recalculate all totals
         function updateTotals() {
             let totalExportValue = 0;
+            let totalGstValue = 0;
+            
             document.querySelectorAll('.item-row').forEach(row => {
-                totalExportValue += calculateRowAmount(row);
+                // Sum all Amount values for Total Export Value
+                const amount = parseFloat(row.querySelector('.amount').value) || 0;
+                totalExportValue += amount;
+                
+                // Sum all IGST Amount values for Total GST Value
+                const igstAmount = parseFloat(row.querySelector('.igst-amount').value) || 0;
+                totalGstValue += igstAmount;
             });
 
+            // Update Total Export Value
             document.getElementById('totalExportValue').value = totalExportValue.toFixed(2);
             
-            const totalGstValue = totalExportValue * 0.13;
+            // Update Total GST Value (sum of all IGST amounts)
             document.getElementById('totalGstValue').value = totalGstValue.toFixed(2);
             
+            // Total Invoice Value = Total Export Value + Total GST Value
             const totalInvoiceValue = totalExportValue + totalGstValue;
             document.getElementById('totalInvoiceValue').value = totalInvoiceValue.toFixed(2);
 
@@ -261,6 +291,7 @@
                 document.getElementById('numberOfBoxes').value = lastToValue;
             }
 
+            // Update Amount in Words based on Total Invoice Value
             document.getElementById('amountInWords').value = numberToWords(totalInvoiceValue);
         }
 
@@ -380,7 +411,10 @@
                     unit: row.querySelector('.unit').value,
                     quantity: row.querySelector('.quantity').value,
                     rate: row.querySelector('.rate').value,
-                    amount: row.querySelector('.amount').value
+                    amount: row.querySelector('.amount').value,
+                    taxableValue: row.querySelector('.taxable-value').value,
+                    igstPercent: row.querySelector('.igst-percent').value,
+                    igstAmount: row.querySelector('.igst-amount').value
                 });
             });
             
@@ -495,7 +529,14 @@
 
                 if (!row) return;
 
-                if (target.classList.contains('quantity') || target.classList.contains('rate')) {
+                if (target.classList.contains('unit') || target.classList.contains('quantity') || target.classList.contains('rate')) {
+                    calculateRowAmount(row);
+                    updateTotals();
+                }
+
+                // Listener for Taxable Value and IGST % changes
+                if (target.classList.contains('taxable-value') || target.classList.contains('igst-percent')) {
+                    calculateRowAmount(row);
                     updateTotals();
                 }
 
@@ -519,7 +560,7 @@
                     updatePackageSequence(row);
                 }
 
-                if (target.classList.contains('quantity') || target.classList.contains('rate') || target.classList.contains('package-from') || target.classList.contains('package-to')) {
+                if (target.classList.contains('unit') || target.classList.contains('quantity') || target.classList.contains('rate') || target.classList.contains('package-from') || target.classList.contains('package-to')) {
                     updateTotals();
                 }
             });

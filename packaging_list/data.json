@@ -8,9 +8,11 @@
   "loding_port": "Jebel Ali Port",
   "discharge_port": "Rotterdam Port",
   "hs_code": "8471.80",
-  "total_boxes": 1,
+  "total_boxes": 2,
   "items": [
     {
+      "material": "uu",
+      "description": "uu",
       "boxes": [
         {
           "boxNo": 1,
@@ -20,12 +22,19 @@
           "h": "2",
           "netWeight": "2",
           "grossWeight": "2"
+        },
+        {
+          "boxNo": 2,
+          "quantity": "4",
+          "l": "4",
+          "w": "4",
+          "h": "4",
+          "netWeight": "4",
+          "grossWeight": "4"
         }
-      ],
-      "description": "3",
-      "material": "3"
+      ]
     }
   ],
-  "total_net_weight": "2.00",
-  "total_gross_weight": "2.00"
+  "total_net_weight": "6.00",
+  "total_gross_weight": "6.00"
 }

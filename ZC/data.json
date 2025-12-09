@@ -25,89 +25,65 @@
   "contactEmail": "john.smith@buyer.com",
   "consigneeAddress": "Buyer Trading Company GmbH\nAm Hafen 15\nHamburg 20457\nGermany",
   "deliveryAddress": "Buyer Trading Company GmbH\nWarehouse District\nBerlin 10115\nGermany",
-  "amountInWords": "Total 9764881 euro and 44 cents (auto-updated)",
-  "totalExportValue": "8641488.00",
-  "totalGstValue": "1123393.44",
-  "totalInvoiceValue": "9764881.44",
-  "numberOfBoxes": 57,
+  "amountInWords": "Total 2002 euro and 00 cents (auto-updated)",
+  "totalExportValue": "2000.00",
+  "totalGstValue": "2.00",
+  "totalInvoiceValue": "2002.00",
+  "numberOfBoxes": 20,
   "items": [
     {
       "from": "1",
       "to": "10",
-      "description": "jj",
-      "unit": "5",
-      "quantity": "5",
-      "rate": "55",
-      "amount": "275.00"
+      "description": "ooo",
+      "unit": "10",
+      "quantity": "10",
+      "rate": "10",
+      "amount": "1000.00",
+      "taxableValue": "10",
+      "igstPercent": "10",
+      "igstAmount": "1.00"
     },
     {
       "from": "11",
       "to": "20",
-      "description": "jjhkhkjhj",
-      "unit": "55",
-      "quantity": "55",
-      "rate": "555",
-      "amount": "30525.00"
-    },
-    {
-      "from": "21",
-      "to": "30",
-      "description": "pppppppp",
-      "unit": "88",
-      "quantity": "88",
-      "rate": "88888",
-      "amount": "7822144.00"
-    },
-    {
-      "from": "31",
-      "to": "57",
-      "description": "pppppppp",
-      "unit": "888",
-      "quantity": "888",
-      "rate": "888",
-      "amount": "788544.00"
+      "description": "ooo",
+      "unit": "10",
+      "quantity": "10",
+      "rate": "10",
+      "amount": "1000.00",
+      "taxableValue": "10",
+      "igstPercent": "10",
+      "igstAmount": "1.00"
     }
   ],
   "tableRows": [
     {
       "from": "1",
       "to": "10",
-      "description": "jj",
-      "unit": "5",
-      "quantity": "5",
-      "rate": "55",
-      "amount": "275.00"
+      "description": "ooo",
+      "unit": "10",
+      "quantity": "10",
+      "rate": "10",
+      "amount": "1000.00",
+      "taxableValue": "10",
+      "igstPercent": "10",
+      "igstAmount": "1.00"
     },
     {
       "from": "11",
       "to": "20",
-      "description": "jjhkhkjhj",
-      "unit": "55",
-      "quantity": "55",
-      "rate": "555",
-      "amount": "30525.00"
-    },
-    {
-      "from": "21",
-      "to": "30",
-      "description": "pppppppp",
-      "unit": "88",
-      "quantity": "88",
-      "rate": "88888",
-      "amount": "7822144.00"
-    },
-    {
-      "from": "31",
-      "to": "57",
-      "description": "pppppppp",
-      "unit": "888",
-      "quantity": "888",
-      "rate": "888",
-      "amount": "788544.00"
+      "description": "ooo",
+      "unit": "10",
+      "quantity": "10",
+      "rate": "10",
+      "amount": "1000.00",
+      "taxableValue": "10",
+      "igstPercent": "10",
+      "igstAmount": "1.00"
     }
   ],
-  "middle_row": 2,
-  "total_items": 4,
+  "middle_row": 1,
+  "total_items": 2,
   "taxable_value": "0.00",
   "igst_percent": "0.00",
   "igst_amount": "0.00"

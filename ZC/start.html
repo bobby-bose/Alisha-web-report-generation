@@ -11,7 +11,7 @@
         
         .header-img {
             width: 100%;
-            height: 100px;
+            height: 25vh;
             object-fit: contain;
             margin-bottom: 10px;
         }
@@ -214,24 +214,9 @@
        <td>{{ row.quantity }}</td>
        <td>{{ row.rate }}</td>
        <td>{{ row.amount }}</td>
-         <td>
-           {% if loop.index == (loop.length // 2) + (loop.length % 2) %}
-                0.00
-            {{ taxable_value }}
-            {% endif %}
-        </td>   
-        <td>
-            {% if loop.index == (loop.length // 2) + (loop.length % 2) %}
-            0.00
-            {{ igst_percent }}
-            {% endif %}
-        </td>   
-        <td>
-           {% if loop.index == (loop.length // 2) + (loop.length % 2) %}
-            0.00
-            {{ igst_amount }}
-            {% endif %}
-        </td>
+       <td>{{ row.taxableValue | default('0.00', true) }}</td>
+       <td>{{ row.igstPercent | default('0.00', true) }}</td>
+       <td>{{ row.igstAmount | default('0.00', true) }}</td>
     </tr>
 {% endfor %}
 
@@ -254,10 +239,10 @@
     {% endif %}
 </td>
 
-                <td width="12%">23456</td>
-                <td width="12%">0</td>
-                <td width="6%">0.00</td>
-                <td width="8%">0.00</td>
+                <td width="12%">{{ totalExportValue }}</td>
+                <td width="12%">{% set ns = namespace(total=0) %}{% for row in tableRows %}{% set ns.total = ns.total + (row.taxableValue | float) %}{% endfor %}{{ "%.2f" | format(ns.total) }}</td>
+                <td width="6%"></td>
+                <td width="8%">{% set ns = namespace(total=0) %}{% for row in tableRows %}{% set ns.total = ns.total + (row.igstAmount | float) %}{% endfor %}{{ "%.2f" | format(ns.total) }}</td>
             </tr>
         </table>
         <table border="1" width="100%" cellspacing="0" style="border-collapse: collapse; margin-top: -1px; font-size: 20px;">
@@ -326,7 +311,7 @@
         </table>
 
         <div style="margin-top: 20px; text-align: center; border-top: 2px solid #000; padding-top: 10px;">
-            <img src="/static/footer.jpg" alt="Company Logo" style="height: 60px; object-fit: contain;">
+            <img src="/static/footer.jpg" alt="Company Logo" style="width: 100%; height: auto; object-fit: contain;">
         </div>
 
     </div>
