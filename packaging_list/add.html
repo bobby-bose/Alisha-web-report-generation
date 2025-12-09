@@ -222,7 +222,7 @@ Dubai, UAE</textarea>
     aria-labelledby="boxesModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="boxesModalLabel">Add Boxes</h5>
@@ -431,35 +431,35 @@ Dubai, UAE</textarea>
 
       wrapper.innerHTML = `
         <div class="row g-2 align-items-center">
-          <div class="col-12 col-md-1 fw-semibold">
+          <div class="col-1 fw-semibold">
             Box ${boxId}
           </div>
-          <div class="col-6 col-md-1">
-            <input type="number" class="form-control border-success"
+          <div class="col-1">
+            <input type="number" class="form-control form-control-sm border-success"
                    placeholder="Qty" value="${existingBox ? existingBox.quantity : ""}">
           </div>
-          <div class="col-6 col-md-1">
-            <input type="number" class="form-control border-success"
+          <div class="col-1">
+            <input type="number" class="form-control form-control-sm border-success"
                    placeholder="L" value="${existingBox ? existingBox.l : ""}">
           </div>
-          <div class="col-6 col-md-1">
-            <input type="number" class="form-control border-success"
+          <div class="col-1">
+            <input type="number" class="form-control form-control-sm border-success"
                    placeholder="W" value="${existingBox ? existingBox.w : ""}">
           </div>
-          <div class="col-6 col-md-1">
-            <input type="number" class="form-control border-success"
+          <div class="col-1">
+            <input type="number" class="form-control form-control-sm border-success"
                    placeholder="H" value="${existingBox ? existingBox.h : ""}">
           </div>
-          <div class="col-6 col-md-2">
-            <input type="number" class="form-control border-success"
+          <div class="col-2">
+            <input type="number" class="form-control form-control-sm border-success"
                    placeholder="Net Weight" value="${existingBox ? existingBox.netWeight : ""}">
           </div>
-          <div class="col-6 col-md-2">
-            <input type="number" class="form-control border-success"
+          <div class="col-2">
+            <input type="number" class="form-control form-control-sm border-success"
                    placeholder="Gross Weight" value="${existingBox ? existingBox.grossWeight : ""}">
           </div>
-          <div class="col-12 col-md-2 text-end mt-2 mt-md-0">
-            <button type="button" class="btn btn-outline-danger btn-sm">
+          <div class="col-2">
+            <button type="button" class="btn btn-outline-danger btn-sm w-100">
               Remove
             </button>
           </div>

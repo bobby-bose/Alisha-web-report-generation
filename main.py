@@ -17,7 +17,7 @@ db = SQLAlchemy(app)
 class PackagingList(db.Model):
     __tablename__ = 'packaging_list'
     id = db.Column(db.Integer, primary_key=True)
-    packingListNo = db.Column('packingListNo', db.String(100), unique=True, nullable=True)
+    packingListNo = db.Column('packingListNo', db.String(100), nullable=True)
     date = db.Column('date', db.Date, nullable=True)
     consigneeAddress = db.Column('consigneeAddress', db.Text, nullable=True)
     deliveryAddress = db.Column('deliveryAddress', db.Text, nullable=True)
