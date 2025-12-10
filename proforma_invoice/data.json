@@ -3,35 +3,35 @@
   "date": "2025-12-07",
   "invoice_no": "PI-2025-001",
   "po_wo_number": "PO-2025-0001",
-  "your_reference_no": "",
+  "your_reference_no": "uuuuu",
   "our_reference_no": "REF-ZAKA-001",
   "currency": "USD",
   "items": [
     {
       "lineNo": 1,
-      "partNumber": "4",
-      "description": "4",
-      "quantity": "4",
-      "unitRate": "44",
-      "total": "176.00"
+      "partNumber": "",
+      "description": "",
+      "quantity": "0",
+      "unitRate": "0.00",
+      "total": "0.00"
     },
     {
       "lineNo": 2,
-      "partNumber": "4",
-      "description": "4",
-      "quantity": "4",
-      "unitRate": "44",
-      "total": "176.00"
+      "partNumber": "",
+      "description": "",
+      "quantity": "0",
+      "unitRate": "0.00",
+      "total": "0.00"
     }
   ],
-  "total_amount": "352.00",
+  "total_amount": "0.00",
   "discount_percent": "5",
-  "discount_amount": "17.60",
+  "discount_amount": "0.00",
   "received_details": "Received Amount",
-  "received_amount": "5555",
-  "balance_amount": "334.40",
+  "received_amount": "0.00",
+  "balance_amount": "0.00",
   "country_of_origin": "United Arab Emirates",
   "port_of_embarkation": "Jebel Ali Port",
   "port_of_discharge": "Rotterdam Port",
-  "date_created": "2025-12-08"
+  "date_created": "2025-12-10"
 }

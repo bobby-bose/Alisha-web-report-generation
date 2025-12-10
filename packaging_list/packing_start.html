@@ -147,7 +147,7 @@
                 <tr>
                     {# Item No. and Material: Use rowspan on the first box only #}
                     {% if loop.first %}
-                    <td rowspan="{{ box_count }}" class="text-center">{{ item.item_number }}</td>
+                    <td rowspan="{{ box_count }}" class="text-center">{{ item.item_number or loop.parent.index }}</td>
                     <td rowspan="{{ box_count }}" class="text-center" style="vertical-align: top;">{{ item.material }},{{ item.description }}</td>
                     {% endif %}
 
@@ -170,12 +170,14 @@
         </tbody>
     </table>
 
-    <div style="margin-top: 40px; text-align: right;">
-        <p style="margin-bottom: 5px;">For Zaka Controls & Devices</p>
-        <div style="height: 50px;">
-                    </div>
-        <p style="font-weight: bold; margin-top: 5px;">Proprietor</p>
-    </div>
+    <div style="margin-top: 40px; text-align: right;height:80px;">
+        <div>
+
+        </div>
+        <div>
+            
+        </div>
+           </div>
 
     <div style="margin-top: 20px; text-align: center; border-top: 2px solid #000; padding-top: 10px;">
         <img src="/static/footer.jpg" alt="Company Logo" style="width: 100%; max-width: 7.5in; height: auto; object-fit: contain;">

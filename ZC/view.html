@@ -144,14 +144,14 @@
   <div style="text-align: center; padding: 2vh 1vw; background-color: #f8f9fa; border-bottom: 3px solid #d90000;">
       <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 19vh; width: auto; max-width: 117vw; object-fit: contain;">
   </div><div class="container">
-    <div class="header-section">
-     
-        <div class="invoice-title"> View Records</div>
-    </div>
+   
 
     <div class="action-bar">
-        <div style="width: 100%; display: flex; justify-content: center;">
-            <a href="/zc_exporter" class="btn btn-primary" style="background-color: #0d6efd; border-color: #0d6efd; color: white; font-weight: bold; font-size: 1.3rem; padding: 15px 20px; width: 20%;">➕ Add New</a>
+        <div style="width: 50%; display: flex; justify-content: flex-start;">
+            <a href="/" class="btn btn-secondary" style="background-color: #6c757d; border-color: #6c757d; color: white; font-weight: 500; padding: 8px 12px;">← Back</a>
+        </div>
+        <div style="width: 50%; display: flex; justify-content: flex-end;">
+            <a href="/zc_exporter" class="btn btn-primary" style="background-color: #0d6efd; border-color: #0d6efd; color: white; font-weight: bold; font-size: 1.1rem; padding: 10px 16px; margin-right: 8px;">➕ Add New</a>
         </div>
     </div>
 
@@ -200,9 +200,11 @@
                     tableContainer.style.display = 'block';
                     noDataMessage.style.display = 'none';
                     
+                    // server returns data already ordered by updated/created/id (descending)
                     data.forEach((row, index) => {
                         if (row.visible !== false) {
                             const tr = document.createElement('tr');
+                            tr.setAttribute('data-id', row.id);
                             tr.innerHTML = `
                                 <td>${index + 1}</td>
                                 <td>${row.invoiceNumber || '-'}</td>
@@ -244,12 +246,10 @@
     }
 
     function hideRecord(id) {
-        // Hide the row from the table
+        // Hide the row from the table using data-id attribute
         const rows = document.querySelectorAll('#tableBody tr');
         rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            // Check if this row contains the matching ID in the action buttons
-            if (row.innerHTML.includes(`editRecord(${id})`)) {
+            if (row.dataset && row.dataset.id == String(id)) {
                 row.style.display = 'none';
             }
         });

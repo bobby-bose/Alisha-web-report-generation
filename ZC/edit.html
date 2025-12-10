@@ -256,7 +256,7 @@
         function numberToWords(n) {
             if (isNaN(n) || n === 0) return "zero euro, zero cents";
             const [euros, cents = '00'] = String(n.toFixed(2)).split('.');
-            return `Total ${euros} euro and ${cents} cents (auto-updated)`;
+            return `${euros} euro and ${cents} cents`;
         }
 
         // Function to recalculate all totals

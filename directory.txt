@@ -1,0 +1,60 @@
+./
+├─ BUTTON_ANALYSIS.txt
+├─ changes.txt
+├─ correction.txt
+├─ main.html
+├─ main.py
+├─ planning.txt
+├─ proforma_planning.txt
+├─ wsgi.py
+├─ __pycache__/
+│  └─ main.cpython-312.pyc
+├─ instance/
+│  └─ web_forms.db
+├─ packaging_list/
+│  ├─ add.html
+│  ├─ ANALYSIS.txt
+│  ├─ data.json
+│  ├─ edit.html
+│  ├─ packing_list_data_2.json
+│  ├─ packing_list_data_4.json
+│  ├─ packing_start.html
+│  ├─ PLACEHOLDER_ANALYSIS.txt
+│  └─ script.js
+├─ proforma_invoice/
+│  ├─ add.html
+│  ├─ data.json
+│  ├─ edit.html
+│  ├─ proforma_invoice_data_2.json
+│  ├─ start.html
+│  └─ view.html
+├─ screenshots/
+│  ├─ zc-in-07-tables-dynamic-one.png
+│  ├─ zc-in-07-home-page.png
+│  ├─ zc-in-07-home-page-2nd-add.png
+│  ├─ zc-in-07-Add-page-1.png
+│  ├─ proforma-invoice-home-page.png
+│  ├─ proforma-invoice-dynamic-tables-add-page.png
+│  ├─ proforma-invoice-add-page-2nd.png
+│  ├─ proforma-invoice-add-page-1.png
+│  ├─ packiaging-list-add-1.png
+│  ├─ packaging-list-main-boxes-with-4-items.png
+│  ├─ packaging-list-home.png
+│  ├─ packaging-list-box-add-demo-2nd.png
+│  └─ packaging-list-add-add_boxes-1.png
+├─ static/
+│  ├─ footer.jpg
+│  └─ logo.jpg
+├─ ZC/
+│  ├─ add.html
+│  ├─ data.json
+│  ├─ edit.html
+│  ├─ logic.py
+│  ├─ start.html
+│  ├─ view.html
+│  ├─ zc_exporter_data_1.json
+│  ├─ zc_exporter_data_2.json
+│  └─ __pycache__/
+│     └─ logic.cpython-312.pyc
+└─ proforma_invoice/
+   └─ (already listed above)

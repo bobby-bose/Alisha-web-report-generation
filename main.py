@@ -41,6 +41,7 @@ class ProformaInvoice(db.Model):
     invoice_no = db.Column(db.String(100), nullable=True)
     po_wo_number = db.Column(db.String(100), nullable=True)
     our_ref_no = db.Column(db.String(100), nullable=True)
+    your_reference_no = db.Column(db.String(100), nullable=True)
     supplier_address = db.Column(db.Text, nullable=True)
     bill_to_address = db.Column(db.Text, nullable=True)
     total_amount = db.Column(db.String(50), nullable=True)
@@ -228,7 +229,7 @@ def proforma_invoice_print(id):
             'date': record.invoice_date or '',
             'invoice_no': record.invoice_no or '',
             'po_wo_number': record.po_wo_number or '',
-            'your_reference_no': '',
+            'your_reference_no': record.your_reference_no or '',
             'our_reference_no': record.our_ref_no or '',
             'currency': record.currency or 'USD',
             'items': items_data,
@@ -379,6 +380,7 @@ def create_proforma_invoice():
             invoice_no=data.get('invoiceNo'),
             po_wo_number=data.get('poWoNumber'),
             our_ref_no=data.get('yourRefNo'),
+            your_reference_no=data.get('yourReferenceNo'),
             supplier_address=data.get('supplierAddress'),
             bill_to_address=data.get('billToAddress'),
             total_amount=data.get('totalAmount'),
@@ -416,6 +418,7 @@ def update_proforma_invoice(id):
         invoice.invoice_no = data.get('invoiceNo', invoice.invoice_no)
         invoice.po_wo_number = data.get('poWoNumber', invoice.po_wo_number)
         invoice.our_ref_no = data.get('yourRefNo', invoice.our_ref_no)
+        invoice.your_reference_no = data.get('yourReferenceNo', invoice.your_reference_no)
         invoice.supplier_address = data.get('supplierAddress', invoice.supplier_address)
         invoice.bill_to_address = data.get('billToAddress', invoice.bill_to_address)
         invoice.total_amount = data.get('totalAmount', invoice.total_amount)
@@ -540,14 +543,16 @@ def update_zc_exporter(id):
 @app.route('/api/packaging-list', methods=['GET'])
 def get_packaging_lists():
     try:
-        items = PackagingList.query.all()
+        # Return records ordered by updated_at desc, then created_at desc, then id desc
+        items = PackagingList.query.order_by(PackagingList.updated_at.desc(), PackagingList.created_at.desc(), PackagingList.id.desc()).all()
         return jsonify([{
             'id': item.id,
             'packingListNo': item.packingListNo or '',
             'poNumber': item.poNumber or '',
             'consigneeAddress': item.consigneeAddress or '',
             'status': item.status,
-            'createdAt': item.created_at.strftime('%Y-%m-%d') if item.created_at else ''
+            'createdAt': item.created_at.strftime('%Y-%m-%d') if item.created_at else '',
+            'updatedAt': item.updated_at.strftime('%Y-%m-%d %H:%M:%S') if item.updated_at else ''
         } for item in items]), 200
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 400
@@ -580,7 +585,8 @@ def get_packaging_list(id):
 @app.route('/api/proforma-invoice', methods=['GET'])
 def get_proforma_invoices():
     try:
-        items = ProformaInvoice.query.all()
+        # Return records ordered by updated_at desc, then created_at desc, then id desc
+        items = ProformaInvoice.query.order_by(ProformaInvoice.updated_at.desc(), ProformaInvoice.created_at.desc(), ProformaInvoice.id.desc()).all()
         return jsonify([{
             'id': item.id,
             'invoiceNo': item.invoice_no or '',
@@ -588,7 +594,8 @@ def get_proforma_invoices():
             'billToAddress': item.bill_to_address or '',
             'totalAmount': item.total_amount or '',
             'status': item.status,
-            'createdAt': item.created_at.strftime('%Y-%m-%d') if item.created_at else ''
+            'createdAt': item.created_at.strftime('%Y-%m-%d') if item.created_at else '',
+            'updatedAt': item.updated_at.strftime('%Y-%m-%d %H:%M:%S') if item.updated_at else ''
         } for item in items]), 200
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 400
@@ -605,6 +612,7 @@ def get_proforma_invoice(id):
             'invoiceNo': item.invoice_no,
             'poWoNumber': item.po_wo_number,
             'yourRefNo': item.our_ref_no,
+            'yourReferenceNo': item.your_reference_no,
             'supplierAddress': item.supplier_address,
             'billToAddress': item.bill_to_address,
             'totalAmount': item.total_amount,
@@ -627,7 +635,8 @@ def get_proforma_invoice(id):
 @app.route('/api/zc-exporter', methods=['GET'])
 def get_zc_exporters():
     try:
-        items = ZCExporter.query.all()
+        # Return records ordered by updated_at desc, then created_at desc, then id desc
+        items = ZCExporter.query.order_by(ZCExporter.updated_at.desc(), ZCExporter.created_at.desc(), ZCExporter.id.desc()).all()
         return jsonify([{
             'id': item.id,
             'invoiceNumber': item.invoice_number or '',
@@ -636,7 +645,8 @@ def get_zc_exporters():
             'consigneeAddress': item.consignee_address or '',
             'totalInvoiceValue': item.total_invoice_value or '',
             'status': item.status,
-            'createdAt': item.created_at.strftime('%Y-%m-%d') if item.created_at else ''
+            'createdAt': item.created_at.strftime('%Y-%m-%d') if item.created_at else '',
+            'updatedAt': item.updated_at.strftime('%Y-%m-%d %H:%M:%S') if item.updated_at else ''
         } for item in items]), 200
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 400

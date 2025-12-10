@@ -182,13 +182,17 @@
             <label for="invoiceNo" class="form-label">Invoice No</label>
             <input type="text" class="form-control" id="invoiceNo">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="poWoNumber" class="form-label">PO/WO Number</label>
             <input type="text" class="form-control" id="poWoNumber">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="yourRefNo" class="form-label">Our Reference No</label>
             <input type="text" class="form-control" id="yourRefNo">
+        </div>
+        <div class="col-md-2">
+            <label for="yourReferenceNo" class="form-label">Your Reference No</label>
+            <input type="text" class="form-control" id="yourReferenceNo">
         </div>
     </div>
 
@@ -258,7 +262,7 @@
                 <input type="text" class="form-control" id="discountAmount" value="0.00" readonly>
             </div>
             <div class="col-md-4">
-                <label for="receivableAmount" class="form-label">Receivable Amount (50%)</label>
+                <label for="receivableAmount" class="form-label">Receivable Amount</label>
                 <input type="text" class="form-control" id="receivableAmount" readonly>
             </div>
             <div class="col-md-4">
@@ -315,6 +319,7 @@
                     document.getElementById('invoiceNo').value = data.invoiceNo || '';
                     document.getElementById('poWoNumber').value = data.poWoNumber || '';
                     document.getElementById('yourRefNo').value = data.yourRefNo || '';
+                    document.getElementById('yourReferenceNo').value = data.yourReferenceNo || '';
                     document.getElementById('supplierAddress').value = data.supplierAddress || '';
                     document.getElementById('billToAddress').value = data.billToAddress || '';
                     document.getElementById('currency').value = data.currency || '';
@@ -506,6 +511,7 @@
                 invoiceNo: document.getElementById('invoiceNo').value,
                 poWoNumber: document.getElementById('poWoNumber').value,
                 yourRefNo: document.getElementById('yourRefNo').value,
+                yourReferenceNo: document.getElementById('yourReferenceNo').value,
                 supplierAddress: document.getElementById('supplierAddress').value,
                 billToAddress: document.getElementById('billToAddress').value,
                 lineItems: [],

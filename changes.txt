@@ -1,0 +1,34 @@
+change header to correct ..
+Add Back to home page in View pages ALL
+left and right  - ADD and back button
+( View Records ) - AVOID THAT TEXT in View pages ... 
+REMOVE ALL DUMMY DATA
+
+packaging list - NO item Numbers ..
+Last updated or aDDED TO THE top .. in descending .. order of time ..
+Remove 50% from proforma invoice ..
+
+Proforma invoice remove the Empty cell to the bottom .. 4th on i a ow..
+
+ROFORMA inoce -template exactlys ame IMP ...the template egenarted is worng NOT nice ..
+
+Roform- balance amount in words ..
+
+Unit column - text only 
+
+
+Amount in words - FRo read-only to INPUT based..should be writable...
+
+Box 2 , Box 3 etc should be editable...
+bcz in report they will be categorized ...on the material, description ...
+in the entire items no.. make sure only 1 '2' is there..if the '2' comes in item 1 nad item 2 also..put error
+
+Propertier to the RIGHT SIDE.. not center
+
+in the ZC remove the  - For Zaka cotorlerse and devices and proeprties  (REMOVE THEM)
+fro all reporter generated it is actually a SEAL
+
+The part of the ZC - amount in report -> check fully only word and (NO auto updated , total  like those words
+
+
+MAKE SURE THE FORMAT OF ALL THE reports are same in the pdf given (III MMM PPP)

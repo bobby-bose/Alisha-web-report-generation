@@ -163,13 +163,17 @@
             <label for="invoiceNo" class="form-label">Invoice No</label>
             <input type="text" class="form-control" id="invoiceNo" value="PI-2025-001">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="poWoNumber" class="form-label">PO/WO Number</label>
             <input type="text" class="form-control" id="poWoNumber" value="PO-2025-0001">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="yourRefNo" class="form-label">Our Reference No</label>
             <input type="text" class="form-control" id="yourRefNo" value="REF-ZAKA-001">
+        </div>
+        <div class="col-md-2">
+            <label for="yourReferenceNo" class="form-label">Your Reference No</label>
+            <input type="text" class="form-control" id="yourReferenceNo" placeholder="">
         </div>
     </div>
 
@@ -249,7 +253,7 @@ Rotterdam, Netherlands</textarea>
                 <input type="text" class="form-control" id="discountAmount" value="0.00" readonly>
             </div>
             <div class="col-md-4">
-                <label for="receivableAmount" class="form-label">Receivable Amount (50%)</label>
+                <label for="receivableAmount" class="form-label">Receivable Amount</label>
                 <input type="text" class="form-control" id="receivableAmount" readonly>
             </div>
             <div class="col-md-4">
@@ -397,6 +401,7 @@ Rotterdam, Netherlands</textarea>
                 invoiceNo: document.getElementById('invoiceNo').value,
                 poWoNumber: document.getElementById('poWoNumber').value,
                 yourRefNo: document.getElementById('yourRefNo').value,
+                yourReferenceNo: document.getElementById('yourReferenceNo').value,
                 supplierAddress: document.getElementById('supplierAddress').value,
                 billToAddress: document.getElementById('billToAddress').value,
                 lineItems: [],

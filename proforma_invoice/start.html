@@ -4,201 +4,269 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proforma Invoice</title>
-<style>
-    /* Print settings for A4 paper */
-    @page { size: A4; margin: 15mm; }
-    body {
-        font-family: Arial, sans-serif;
-        font-size: 10pt; /* Adjusting font size to fit more content */
-        color: #000;
-        background: #fff;
-        margin: 0;
-    }
-    .container {
-        width: 100%;
-        max-width: 7.5in; /* Standard printable width for A4 */
-        margin: 0 auto;
-    }
-    .header {
-        text-align: center;
-        margin-bottom: 10px;
-        border-bottom: 2px solid #000;
-        padding-bottom: 5px;
-    }
-    .header-img {
-        width: 100%;
-        height: 100px; /* Reduced height for better fit */
-        object-fit: contain;
-    }
-    p {
-        text-align: center;
-        margin: 5px 0 10px 0;
-        font-size: 12pt;
-      
-    }
-    .header { font-size: 18pt; font-weight: bold; margin:0 }
 
-    /* All Tables Styling */
-    .info-table, .detail-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 5px;
-    }
-    .info-table td, .detail-table th, .detail-table td {
-        border: 1px solid #000;
-        padding: 4px 6px;
-        vertical-align: top;
-        height: 1.5em; /* Ensure uniform row height */
-    }
-    .detail-table th {
-        background: #f0f0f0;
-        font-weight: bold;
-        text-align: center;
-    }
-    
-    .text-center { text-align: center; }
-    .text-right { text-align: right; }
-    .text-left { text-align: left; }
-    .label { font-weight: bold; }
+<style>
+@page { size: A4; margin: 15mm; }
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    color: #000;
+}
+
+.container {
+    width: 100%;
+    max-width: 7.5in;
+    margin: 0 auto;
+}
+
+/* HEADER IMAGE */
+.header-image,
+.footer-image {
+    width: 100%;
+    height: 110px;
+    object-fit: contain;
+    display: block;
+}
+
+/* TITLE */
+.invoice-title {
+    text-align: start;
+    font-size: 25pt;
+    font-weight: bold;
+    margin: 10px 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* META ROW */
+.meta-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+}
+
+.meta-table td {
+    border: 1px solid #000;
+    padding: 6px;
+    text-align: center;
+    width: 20%;
+}
+
+/* INFO BOXES */
+.info-box {
+    width: 70%;
+    border: 1px solid #000;
+    margin-bottom: 6px;
+}
+
+.info-box td {
+    padding: 8px;
+    vertical-align: top;
+}
+
+.label {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* ITEM TABLE */
+.item-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+}
+
+.item-table th,
+.item-table td {
+    border: 1px solid #000;
+    padding: 5px;
+    vertical-align: top;
+}
+
+.item-table th {
+    background: #f0f0f0;
+    text-align: center;
+}
+
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+
+/* TOTALS BLOCK */
+.totals-table {
+    width: 100%;
+    margin-left: auto;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.totals-table td {
+    border: 1px solid #000;
+    padding: 5px;
+}
+
+.amount-words {
+    border: 1px solid #000;
+    padding: 6px;
+    margin-top: 4px;
+    font-weight: bold;
+}
+
+/* ADDITIONAL DETAILS */
+.additional-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.additional-table td {
+    border: 1px solid #000;
+    padding: 6px;
+}
+
+/* SIGNATURE */
+.signature-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+}
+
+.signature-table td {
+    border: 1px solid #000;
+    height: 70px;
+    text-align: center;
+    vertical-align: bottom;
+    padding-bottom: 5px;
+}
+
+/* FOOTER IMAGE */
+.footer {
+    margin-top: 30px;
+}
 </style>
 </head>
+
 <body>
 <div class="container">
 
-    <div class="header">
- <img src="/static/logo.jpg" alt="Company Logo" class="header-img">
-        <p class="header">Proforma Invoice</p>
-    </div>
+<img src="/static/logo.jpg" class="header-image" alt="Header Image">
 
-    <table class="info-table">
-        <tbody>
-            <tr>
-                <td style="width: 50%; padding:0;">
-                 <table style="
-                    border-collapse: collapse;
-                    height: -webkit-fill-available;
-                    width: 100%;
-                ">
-                    <tbody>
-                        <tr>
-                            <td><span class="label">Supplier:</span><br>
-                                Zaka Controls & Devices<br>
-                                NH - 66, Mathilakam - Kodungallur,<br>
-                                Kerala - Thrissur, India, Pin-680685
-                            </td>
-                        </tr>
-                    </tbody>
-                 </table>
-                </td>
-                
-                <td style="width: 50%; padding: 0;">
-                    <table style="
-                        border-collapse: collapse;
-                        height: -webkit-fill-available;
-                        width: 100%;
-                    ">
-                    <tbody>
-                        <tr>
-                            <td style="border-left: none;"><span class="label">Bill to:</span><br>
-                                {{ bill_to_address | replace('\n', '<br>') | safe }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="border-left: none; height: 1.5em;"><span class="label">Date:</span> {{ date }}</td>
-                        </tr>
-                        <tr>
-                            <td style="border-left: none; height: 1.5em;"><span class="label">Invoice No:</span> {{ invoice_no }}</td>
-                        </tr>
-                        <tr>
-                            <td style="border-left: none; height: 1.5em;"><span class="label">PO / WO No:</span> {{ po_wo_number }}</td>
-                        </tr>
-                        <tr>
-                            <td style="border-left: none; height: 1.5em;"><span class="label">Your Ref No:</span> {{ your_reference_no }}</td>
-                        </tr>
-                        <tr>
-                            <td style="border-left: none; height: 1.5em;"><span class="label">Our Ref:</span> {{ our_reference_no }}</td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="invoice-title">Proforma Invoice</div>
 
-    <table class="detail-table">
-        <thead>
-            <tr>
-                <th style="width: 5%;">Line No</th>
-                <th style="width: 50%;">Part No / Item Description</th>
-                <th style="width: 10%;">Qty</th>
-                <th style="width: 15%;">Unit Rate ({{ currency }})</th>
-                <th style="width: 20%;">Total ({{ currency }})</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
-            <tr>
-                <td class="text-center">{{ item.line_no }}</td>
-                <td class="text-left">{{ item.description }}</td>
-                <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-right">{{ item.unit_rate }}</td>
-                <td class="text-right">{{ item.total }}</td>
-            </tr>
-            {% endfor %}
+<table class="meta-table">
+<tr>
+    <td><span class="label">Date:</span> <hr/>{{ date }}</td>
+    <td><span class="label">Invoice No:</span> <hr/> {{ invoice_no }}</td>
+    <td><span class="label">PO / WO No:</span><hr/> {{ po_wo_number }}</td>
+    <td><span class="label">Your Ref No:</span><hr/> {{ your_reference_no }}</td>
+    <td><span class="label">Our Ref:</span><hr/> {{ our_reference_no }}</td>
+</tr>
+</table>
 
-            <tr style="font-weight: bold;">
-                <td colspan="4" class="text-right">Total Amount in US($)</td>
-                <td class="text-right" style="background-color: #f0f0f0;">{{ total_amount }}</td>
-            </tr>
-            <tr>
-                <td colspan="4" class="text-right">Receivable Amount ({{ discount_percent }}%)</td>
-                <td class="text-right">{{ discount_amount }}</td>
-            </tr>
-            <tr>
-                <td colspan="4" class="text-right">{{ received_details }}</td>
-                <td class="text-right">{{ received_amount }}</td>
-            </tr>
-            <tr style="font-weight: bold; background-color: #f5f5f5;">
-                <td colspan="4" class="text-right">Balance receivable of {{ discount_percent }}% Advance</td>
-                <td class="text-right">{{ balance_amount }}</td>
-            </tr>
-        </tbody>
-    </table>
+<table class="info-box">
+<tr>
+<td>
+<span class="label">Supplier:</span><br>
+Zaka Controls & Devices<br>
+NH - 66, Mathilakam - Kodungallur,<br>
+Kerala - Thrissur, India, Pin-680685
+</td>
+</tr>
+</table>
 
-    <table class="info-table" style="margin-top: 15px;">
-        <thead>
-             <tr>
-                <th colspan="4" class="text-left" style="background-color: #f0f0f0; border-bottom: none;">ADDITIONAL DETAILS</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="width: 25%;"><span class="label">Country of Origin:</span> {{ country_of_origin }}</td>
-                <td style="width: 25%;"><span class="label">Port of Embarkation:</span> {{ port_of_embarkation }}</td>
-                <td style="width: 25%;"><span class="label">Port of Discharge:</span> {{ port_of_discharge }}</td>
-                <td style="width: 25%;"></td> </tr>
-        </tbody>
-    </table>
+<table class="info-box">
+<tr>
+<td>
+<span class="label">Bill To:</span><br>
+{{ bill_to_address | replace('\n', '<br>') | safe }}
+</td>
+</tr>
+</table>
 
-    <div style="margin-top: 40px; text-align: right;">
-        <p style="margin-bottom: 5px;">For Zaka Controls & Devices</p>
-        <div style="height: 50px;">
-        </div>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-            <tbody>
+<table class="item-table">
+<thead>
+<tr>
+<th style="width:5%">No</th>
+<th style="width:55%">Part No / Item Description</th>
+<th style="width:10%">Qty</th>
+<th style="width:15%">Unit Rate ({{ currency }})</th>
+<th style="width:15%">Total ({{ currency }})</th>
+</tr>
+</thead>
+<tbody>
+{% for item in items %}
+<tr>
+<td class="text-center">{{ item.line_no or loop.index }}</td>
+<td>{{ item.description }}</td>
+<td class="text-center">{{ item.quantity }}</td>
+<td class="text-right">{{ item.unit_rate }}</td>
+<td class="text-right">{{ item.total }}</td>
+</tr>
+{% endfor %}
+
+
+<tr>
+<td colspan="3"><span class="label">Total Amount (US$)</span></td>
+<td class="text-right" colspan="2">{{ total_amount }}</td>
+</tr>
+<tr>
+<td colspan="3"><span class="label" >Receivable Amount ({{ discount_percent }}%)</span></td>
+<td class="text-right" colspan="2">{{ discount_amount }}</td>
+</tr>
+
+<tr>
+<td colspan="3"><span class="label">Balance receivable of {{ discount_percent }}% Advance</span></td>
+<td class="text-right" colspan="2">{{ balance_amount }}</td>
+</tr>
+</table>
+
+<div style="height: 20px;">
+
+</div>
+
+<table class="additional-table" style="width:100%; border-collapse:collapse;">
+    <tr style="background-color:#f0f0f0;">
+        <td style="padding:6px;">
+            <span class="label">Additional Details</span>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding:0; margin:0; border:none;">
+            <table class="additional-table" style="width:50%; border-collapse:collapse; margin:0;">
                 <tr>
-                    <td class="text-center" style="width: 33.3%; border: none;"><span class="label">Prepared By</span><br>Praveen Kumar</td>
-                    <td class="text-center" style="width: 33.3%; border: none;"><span class="label">Verified By</span><br>Mujeeb Arakkal</td>
-                    <td class="text-center" style="width: 33.3%; border: none;"><span class="label">Authorized By</span><br>Sarth C Nambir</td>
+                    <td style="padding:6px;">
+                        <span class="label">Country of Origin:</span> {{ country_of_origin }}
+                    </td>
                 </tr>
-            </tbody>
-        </table>
-        <p style="font-weight: bold; margin-top: 5px; text-align: left;">Date: {{ date_created }}</p>
-    </div>
+                <tr>
+                    <td style="padding:6px;">
+                        <span class="label">Port of Embarkation:</span> {{ port_of_embarkation }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:6px;">
+                        <span class="label">Port of Discharge:</span> {{ port_of_discharge }}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 
-    <div style="margin-top: 20px; text-align: center; border-top: 2px solid #000; padding-top: 10px;">
-        <img src="/static/footer.jpg" alt="Company Logo" style="width: 100%; max-width: 7.5in; height: auto; object-fit: contain;">
-    </div>
+
+
+<table class="signature-table">
+<tr>
+<td>Prepared By<br>Praveen Kumar</td>
+<td>Verified By<br>Mujeeb Arakkal</td>
+<td>Authorized By<br>Sarth C Nambir</td>
+<td>Date<br>{{ date_created }}</td>
+</tr>
+</table>
+
+<div class="footer">
+<img src="/static/footer.jpg" class="footer-image" alt="Footer Image">
+</div>
 
 </div>
 </body>
