@@ -547,14 +547,14 @@ def update_zc_exporter(id):
 @app.route('/api/packaging-list', methods=['GET'])
 def get_packaging_lists():
     try:
-        # Return records ordered by updated_at desc, then created_at desc, then id desc
-        items = PackagingList.query.order_by(PackagingList.updated_at.desc(), PackagingList.created_at.desc(), PackagingList.id.desc()).all()
+        # Return records ordered strictly by id desc (latest created first)
+        items = PackagingList.query.order_by(PackagingList.id.desc()).all()
         return jsonify([{
             'id': item.id,
             'packingListNo': item.packingListNo or '',
             'poNumber': item.poNumber or '',
             'consigneeAddress': item.consigneeAddress or '',
-            'status': item.status,
+            'status': item.status or 'Completed',
             'createdAt': item.created_at.strftime('%Y-%m-%d') if item.created_at else '',
             'updatedAt': item.updated_at.strftime('%Y-%m-%d %H:%M:%S') if item.updated_at else ''
         } for item in items]), 200
@@ -589,15 +589,16 @@ def get_packaging_list(id):
 @app.route('/api/proforma-invoice', methods=['GET'])
 def get_proforma_invoices():
     try:
-        # Return records ordered by updated_at desc, then created_at desc, then id desc
-        items = ProformaInvoice.query.order_by(ProformaInvoice.updated_at.desc(), ProformaInvoice.created_at.desc(), ProformaInvoice.id.desc()).all()
+        # Return records ordered strictly by id desc (latest created first)
+        items = ProformaInvoice.query.order_by(ProformaInvoice.id.desc()).all()
         return jsonify([{
             'id': item.id,
             'invoiceNo': item.invoice_no or '',
             'poWoNumber': item.po_wo_number or '',
             'billToAddress': item.bill_to_address or '',
             'totalAmount': item.total_amount or '',
-            'status': item.status,
+            'currency': item.currency or 'USD',
+            'status': item.status or 'Completed',
             'createdAt': item.created_at.strftime('%Y-%m-%d') if item.created_at else '',
             'updatedAt': item.updated_at.strftime('%Y-%m-%d %H:%M:%S') if item.updated_at else ''
         } for item in items]), 200
@@ -639,8 +640,8 @@ def get_proforma_invoice(id):
 @app.route('/api/zc-exporter', methods=['GET'])
 def get_zc_exporters():
     try:
-        # Return records ordered by id desc, then created_at desc
-        items = ZCExporter.query.order_by(ZCExporter.id.desc(), ZCExporter.created_at.desc()).all()
+        # Return records ordered strictly by id desc (latest created first)
+        items = ZCExporter.query.order_by(ZCExporter.id.desc()).all()
         return jsonify([{
             'id': item.id,
             'invoiceNumber': item.invoice_number or '',
