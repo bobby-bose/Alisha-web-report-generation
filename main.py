@@ -129,6 +129,10 @@ def proforma_invoice_view():
 def zc_exporter():
     return send_from_directory(os.path.join(os.path.dirname(__file__), 'ZC'), 'add.html')
 
+@app.route('/ZC/<path:filename>')
+def zc_exporter_assets(filename):
+    return send_from_directory(os.path.join(os.path.dirname(__file__), 'ZC'), filename)
+
 @app.route('/zc_exporter/view')
 def zc_exporter_view():
     return send_from_directory(os.path.join(os.path.dirname(__file__), 'ZC'), 'view.html')
