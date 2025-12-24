@@ -1,10 +1,10 @@
 import sys
 import os
 
-# Add your project directory to the sys.path
-project_home = '/home/alisha123/Alisha-web-report-generation'
-if project_home not in sys.path:
-    sys.path.insert(0, project_home)
+# Automatically detect the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
 
 # Import the Flask app
 from main import app, db
