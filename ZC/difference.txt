@@ -1,0 +1,85 @@
+Comparison: add.html vs edit.html
+Generated: 2025-12-19
+
+Legend:
+✅ = same/matching
+❌ = different
+⚠️ = present in one, missing in the other
+
+======================================================================
+1) ICON-BASED DIFFS (Buttons / Icons / Symbols)
+======================================================================
+| Item | Add (add.html / add_script.js) | Edit (edit.html) | Status |
+|---|---|---|---|
+| Add Row button | ➕ Add Row | ➕ Add Row | ✅ |
+| Remove Row button | ➖ Remove Row | ➖ Remove Row | ✅ |
+| Per-row delete icon | 🗑️ | 🗑️ | ✅ |
+| Submit/Update icon | ✓ (Submit) | ✓ (Update) | ✅ (icon), ❌ (label) |
+| Cancel icon | ↩ (Cancel & Back) | ↩ (Cancel) | ✅ (icon), ❌ (label) |
+
+======================================================================
+2) UI / LAYOUT DIFFS (Spacing, Borders, Components)
+======================================================================
+| UI Item | Add | Edit | Status |
+|---|---|---|---|
+| Page <title> | Add New Export Invoice | Edit Export Invoice | ❌ |
+| Logo wrapper + logo img style | Matches (max-width:117vw) | Matches | ✅ |
+| Header below logo | Matches (Edit Details Below.) | Matches | ✅ |
+| Fieldset border appearance | Uses Bootstrap border (lighter/thinner) | Uses Bootstrap border (lighter/thinner) | ✅ |
+| Label styling (visual) | Bold + 1.1rem (via .form-label CSS) | Bold + 1.1rem (via .form-label CSS) | ✅ |
+| Table “Rate/Amount/IGST Amount” currency display next to inputs | Shown beside rate/amount/igst amount via currency spans | Shown beside rate/amount/igst amount via currency spans | ✅ |
+| Bottom button spacing classes | Submit has `me-2`; Cancel uses `btn-secondary` | Cancel has `ms-2` and `btn-lg` (no btn-secondary class) | ❌ |
+
+======================================================================
+3) FONT-BASED DIFFS (Family / Size / Weight)
+======================================================================
+| Font Item | Add | Edit | Status |
+|---|---|---|---|
+| Header font (page-title) | Times New Roman, xx-large, bold, #d90000 | Same | ✅ |
+| Form label font weight | Forced bold | Forced bold | ✅ |
+| Form label font size | Forced 1.1rem | Forced 1.1rem | ✅ |
+
+======================================================================
+4) INPUT-FIELD DIFFS (Types, Disabled/Readonly, Defaults)
+======================================================================
+| Input Item | Add | Edit | Status |
+|---|---|---|---|
+| HTML default values (top form fields) | Many inputs have sample `value="..."` | Empty; filled by API load | ❌ |
+| Textareas default values | Sample addresses prefilled | Empty; filled by API load | ❌ |
+| Amount in Words | Enabled/editable | Enabled/editable | ✅ |
+| Total GST label text | “Total GST Value (Sum of IGST)” | “Total GST Value (Sum of IGST)” | ✅ |
+| Table row: Unit input type | text | text | ✅ |
+| Table row: Quantity field | `.qty` (number, step=0.01) | `.qty` (number, step=0.01) | ✅ |
+| Table row: Amount field | number + readonly | number + readonly | ✅ |
+| Table row: Taxable Value | readonly, equals amount | readonly, equals amount | ✅ |
+| Table row: IGST % | select (0/12/18/28) | select (0/12/18/28) | ✅ |
+| Table row: IGST Amount | number + readonly | number + readonly | ✅ |
+
+======================================================================
+5) API CALLS / NETWORKING DIFFS
+======================================================================
+| Network Item | Add | Edit | Status |
+|---|---|---|---|
+| Load record on page open | None | GET `/api/zc-exporter/{id}` (id from querystring) | ❌ |
+| Save/submit endpoint | POST `/api/zc-exporter/create` | PUT `/api/zc-exporter/{id}/update` | ❌ |
+| Redirect after success | `/zc_exporter/view` | `/zc_exporter/view` | ✅ |
+
+======================================================================
+6) JS / CALCULATION / BEHAVIOR DIFFS
+======================================================================
+| Behavior | Add (add_script.js) | Edit (edit.html inline JS) | Status |
+|---|---|---|---|
+| Script delivery | External JS file | Inline script | ❌ |
+| Initial row creation | Creates 1 row and injects sample row values | Loads items from API; else creates 1 empty row (1..10) | ❌ |
+| Amount calculation | amount = qty * rate | amount = qty * rate | ✅ |
+| Taxable value handling | taxable-value readonly = amount | taxable-value readonly = amount | ✅ |
+| Amount-in-words auto-update rule | Stops auto-update after manual edit | Stops auto-update after manual edit | ✅ |
+| Currency symbols update | Updates all `.currency-display`, including per-row spans | Updates all `.currency-display`, including per-row spans | ✅ |
+
+======================================================================
+7) NAVIGATION / ROUTE DIFFS (Buttons)
+======================================================================
+| Navigation Item | Add | Edit | Status |
+|---|---|---|---|
+| Cancel link destination | `/` | `/zc_exporter/view` | ❌ |
+| Primary action label | “✓ Submit” | “✓ Update” | ❌ |

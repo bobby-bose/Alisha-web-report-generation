@@ -6,6 +6,73 @@ import webbrowser
 from datetime import datetime
 from ZC.logic import prepare_invoice_data
 
+def number_to_words(num):
+    """Convert number to words for currency amounts"""
+    if not num or num == '0' or num == '0.00':
+        return "Zero"
+    
+    # Convert to float and handle decimal places
+    try:
+        num_float = float(num)
+    except (ValueError, TypeError):
+        return "Zero"
+    
+    # Split into integer and decimal parts
+    integer_part = int(num_float)
+    decimal_part = round((num_float - integer_part) * 100)
+    
+    # Words for numbers
+    ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+    teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']
+    tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']
+    
+    def convert_less_than_thousand(n):
+        if n == 0:
+            return ''
+        elif n < 10:
+            return ones[n]
+        elif n < 20:
+            return teens[n - 10]
+        elif n < 100:
+            return tens[n // 10] + (' ' + ones[n % 10] if n % 10 != 0 else '')
+        else:
+            return ones[n // 100] + ' Hundred' + (' ' + convert_less_than_thousand(n % 100) if n % 100 != 0 else '')
+    
+    def convert_integer(n):
+        if n == 0:
+            return 'Zero'
+        result = ''
+        
+        # Crore (10 million)
+        if n >= 10000000:
+            result += convert_less_than_thousand(n // 10000000) + ' Crore '
+            n %= 10000000
+        
+        # Lakh (100 thousand)
+        if n >= 100000:
+            result += convert_less_than_thousand(n // 100000) + ' Lakh '
+            n %= 100000
+        
+        # Thousand
+        if n >= 1000:
+            result += convert_less_than_thousand(n // 1000) + ' Thousand '
+            n %= 1000
+        
+        # Hundred and below
+        if n > 0:
+            result += convert_less_than_thousand(n)
+        
+        return result.strip()
+    
+    # Convert integer part
+    words = convert_integer(integer_part)
+    
+    # Add decimal part if exists
+    if decimal_part > 0:
+        words += ' and ' + convert_less_than_thousand(decimal_part) + ' Paise'
+    
+    return words + ' Rupees'
+
 app = Flask(__name__, template_folder=os.path.dirname(os.path.abspath(__file__)), static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static'))
 
 # Database Configuration
@@ -243,6 +310,8 @@ def proforma_invoice_print(id):
             'received_details': record.receivable_amount or '',
             'received_amount': record.received_amount or '0.00',
             'balance_amount': record.balance_amount or '0.00',
+            'balance_amount_words': number_to_words(record.balance_amount or '0.00'),
+            'receivable_amount_words': number_to_words(record.discount_amount or '0.00'),
             'country_of_origin': record.country_of_origin or '',
             'port_of_embarkation': record.port_of_embarkation or '',
             'port_of_discharge': record.port_of_discharge or '',

@@ -1,18 +1,18 @@
 {
-  "consigneeAddress": "gg",
-  "taxNumber": "g",
-  "deliveryAddress": "gg",
-  "date": "2025-12-17",
-  "po_no": "gg",
-  "packing_list_no": "gg",
-  "loding_port": "gg",
-  "discharge_port": "gg",
-  "hs_code": "gg",
+  "consigneeAddress": "kkk",
+  "taxNumber": "k",
+  "deliveryAddress": "kk",
+  "date": "2025-12-10",
+  "po_no": "k",
+  "packing_list_no": "k",
+  "loding_port": "k",
+  "discharge_port": "k",
+  "hs_code": "k",
   "total_boxes": 1,
   "items": [
     {
-      "material": "hh",
-      "description": "hh",
+      "material": "k",
+      "description": "k",
       "boxes": [
         {
           "boxNo": "1",

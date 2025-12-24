@@ -1,0 +1,203 @@
+# Proforma Invoice UI / Code Comparison (Add vs Edit)
+
+Legend:
+- ● = Same / matching / present
+- ◆ = Different
+- ∅ = Missing / not present
+- ⚠ = Potential bug / risk
+
+---
+
+## 1) High-level UI Layout / Structure
+
+| Area | Add (`add.html`) | Edit (`edit.html`) | Status |
+|---|---|---|---|
+| Page `<title>` | `ZAKA Proforma Invoice - Add` | `ZAKA Proforma Invoice - Edit` | ◆ |
+| Main header text (`.invoice-title`) | `Proforma Invoice` | `Proforma Invoice - Edit` | ◆ |
+| Bootstrap version | `bootstrap@5.3.3` CSS + bundle JS | `bootstrap@5.3.3` CSS + bundle JS | ● |
+| Header logo section | Present (same inline styles, same `/static/logo.jpg`) | Present (same) | ● |
+| Container | `.container` max-width `1100px`, padding `30px 20px`, white bg + shadow | Same | ● |
+| Top form rows | Invoice Date / Invoice No / PO/WO, then Our Ref / Your Ref / Currency | Same fields and ordering | ● |
+| Address section | Supplier Address + Bill To Address (side-by-side) | Same | ● |
+| Line item section | Table (6 columns) + “Add Row” control | Table (7 columns incl. Action) + “Add Row” control | ◆ |
+| Summary section | Total/Discount + Received/Balance + Port/Country fields | Same | ● |
+| Bottom action area | 1 primary button (Submit) | 2 buttons (Update + Cancel) | ◆ |
+
+---
+
+## 2) Font Differences (Family / Size / Weight / Styling)
+
+### 2.1 Font family
+
+| Item | Add | Edit | Status |
+|---|---|---|---|
+| Base font family | Not explicitly set (defaults to Bootstrap/system stack) | Not explicitly set (same) | ● |
+
+### 2.2 Label typography (`.form-label`)
+
+| CSS property | Add | Edit | Status |
+|---|---|---|---|
+| `font-weight` | `bold` | `500` | ◆ |
+| `font-size` | `1.1rem` | `0.85rem` | ◆ |
+| `color` | `#000` | not specified (inherits) | ◆ |
+
+Impact:
+- Add page labels appear **bigger and bolder**.
+- Edit page labels appear **smaller and medium weight**.
+
+### 2.3 Table header typography (`.line-item-table th`)
+
+| CSS property | Add | Edit | Status |
+|---|---|---|---|
+| `font-weight` | `600` | `600` | ● |
+| `font-size` | `0.9rem` | `0.9rem` | ● |
+
+### 2.4 Button typography (inline styles)
+
+| Button | Add | Edit | Status |
+|---|---|---|---|
+| Add Row button weight | Inline `font-weight: bold;` | No inline bold; `.add-row-controls .btn` doesn’t set weight | ◆ |
+| Submit/Update button weight | Inline `font-weight: bold;` | Inline `font-weight: bold;` | ● |
+| Cancel button weight | N/A | Inline `font-weight: bold;` | ◆ |
+
+---
+
+## 3) Border / Spacing / Box Styling Differences
+
+| Component | Add | Edit | Status |
+|---|---|---|---|
+| `.address-box, .table-box, .summary-box, .discharge-box` border | `2px solid #000` | `1px solid #000` | ◆ |
+| Submit area container (`.submit-btn-container`) | `margin-top: 30px;` only; centered by `text-center` wrapper | `margin-top: 30px; display:flex; gap:10px; justify-content:center;` | ◆ |
+| Submit area button sizing | Add sets inline `style="width: 200px"` on Submit button | Edit sets `.submit-btn-container .btn { width: 200px; }` | ◆ (same end-result for width, different implementation) |
+
+Impact:
+- Add page box borders look **heavier**.
+- Edit page has a **flex layout** for bottom buttons.
+
+---
+
+## 4) Table / Columns / Row Controls Differences
+
+### 4.1 Column set
+
+| Table aspect | Add | Edit | Status |
+|---|---|---|---|
+| Column count | 6 | 7 | ◆ |
+| Columns | Line No, Part Number, Description, Quantity, Unit Rate, Total | Same + **Action** | ◆ |
+| “Action” column | ∅ | ● (contains Delete button) | ◆ |
+
+### 4.2 Column width rules (CSS)
+
+| Selector | Add | Edit | Status |
+|---|---|---|---|
+| `th:nth-child(3)` (Description) | `35%` | `30%` | ◆ |
+| `th:nth-child(6)` (Total) | `15%` | `12%` | ◆ |
+| `th:nth-child(7)` (Action) | N/A | `8%` | ◆ |
+
+### 4.3 Initial rows rendered in HTML
+
+| Item | Add | Edit | Status |
+|---|---|---|---|
+| Initial line item rows | 2 rows (`data-line="1"` and `2`) | 1 row (`data-line="1"`) | ◆ |
+| Delete button in each existing row | ∅ | ● (in the one initial row) | ◆ |
+
+---
+
+## 5) Buttons & Icons (Presence + Text + Styling)
+
+### 5.1 Button inventory (UI)
+
+| Button / Control | Add | Edit | Status |
+|---|---|---|---|
+| Add Row (id `addRowBtn`) | ● Text: `➕ Add Row` (plus icon) | ● Text: `Add Row` (no icon) | ◆ |
+| Delete row button | ∅ | ● Text: `Delete` (no icon) | ◆ |
+| Primary submit/update | ● `✓ Submit` | ● `✓ Update` | ◆ |
+| Cancel / Back | ∅ | ● `↩ Cancel` | ◆ |
+
+### 5.2 Button styling differences
+
+| Button | Add | Edit | Status |
+|---|---|---|---|
+| Add Row button | Inline colors + `font-weight:bold` + icon `➕` | Styled mostly via CSS `.add-row-controls .btn` + no bold + no icon | ◆ |
+| Delete button styling | N/A | Custom `.delete-row-btn` red, small, hover darker | ◆ |
+| Primary action color | Green (`#28a745`) | Green (`#28a745`) | ● |
+| Cancel action color | N/A | Gray (`#6c757d`) | ◆ |
+
+---
+
+## 6) Currency Display UI Differences
+
+| Area | Add | Edit | Status |
+|---|---|---|---|
+| Unit Rate cell (existing rows) | Input + `<span class="currency-display">` shown next to input | Existing HTML row has currency span; BUT dynamically-created rows do **not** | ◆ |
+| Total cell (existing rows) | `<span class="amount-num">0.00</span>` + currency span | Existing HTML row has amount span + currency span; BUT dynamically-created rows output total as plain text only (`0.00`) | ◆ |
+| Currency symbols update on Add Row | Calls `updateCurrencySymbols()` after adding row | Does not call on add-row (and new row lacks currency spans anyway) | ◆ |
+
+Impact:
+- Add page keeps a consistent “amount + currency symbol” layout for all rows.
+- Edit page is inconsistent: initial row shows currency symbol layout, but added rows will not.
+
+---
+
+## 7) JavaScript / Behavior Differences (UI logic)
+
+### 7.1 Input validation / restrictions
+
+| Behavior | Add | Edit | Status |
+|---|---|---|---|
+| `receivedAmount` numeric-only enforcement | ● Sanitizes input to digits + one decimal point | ∅ No sanitization | ◆ |
+
+### 7.2 Calculations / totals
+
+| Behavior | Add | Edit | Status |
+|---|---|---|---|
+| Per-row total rendering | Uses `.amount-num` span if present | Writes directly to `.total` text | ◆ |
+| Balance calculation | Has dedicated `updateBalanceAmount()` + debug logs + multiple listeners | Balance computed inside `updateSummary()` only | ◆ |
+| Discount change handler | Custom handler recalculates discount then forces balance update | `discountPercentageInput` triggers `updateSummary` | ◆ |
+
+### 7.3 Row add/delete
+
+| Feature | Add | Edit | Status |
+|---|---|---|---|
+| Add row | ● | ● | ● |
+| Delete row | ∅ | ● (button + logic + renumbering) | ◆ |
+| Renumbering after delete | N/A | ● re-assigns `data-line`, line number, and delete button `data-line` | ◆ |
+
+---
+
+## 8) API / “PI calls” (Endpoints, methods, load flow)
+
+| Category | Add | Edit | Status |
+|---|---|---|---|
+| Create flow | ● `fetch('/api/proforma-invoice/create', { method:'POST' })` | ∅ | ◆ |
+| Read existing record | ∅ | ● `fetch(`/api/proforma-invoice/${recordId}`)` (GET) | ◆ |
+| Update flow | ∅ | ● `fetch(`/api/proforma-invoice/${recordId}/update`, { method:'PUT' })` | ◆ |
+| Redirect on success | Redirects to `/proforma_invoice/view` after create | Redirects to `/proforma_invoice/view` after update | ● |
+
+---
+
+## 9) Potential Bugs / Risks (Edit page)
+
+| Issue | Add | Edit | Status |
+|---|---|---|---|
+| Using variables before declaration | No | In the `recordId` load block, `lineItemsBody`, `createRow`, `handleInputChange` are referenced before they are declared (temporal dead zone risk) | ⚠ |
+| Dynamic rows missing currency display spans | No | Yes (due to `createRow()` generating different markup) | ⚠ |
+| Duplicate cancel navigation | No cancel button | Cancel has inline `onclick` AND JS `addEventListener` redirect | ◆ |
+
+Notes:
+- The “use before declaration” issue can cause the Edit page to fail when opened with `?id=...`.
+
+---
+
+## 10) What’s Missing Where (Quick Checklist)
+
+| Item | Add | Edit |
+|---|---|---|
+| Delete row buttons | ∅ | ● |
+| Cancel button | ∅ | ● |
+| Two initial line items | ● | ∅ |
+| Add Row icon `➕` | ● | ∅ |
+| Submit vs Update | `Submit` | `Update` |
+| Label bold + large | ● (bold, 1.1rem, black) | ∅ (500 weight, 0.85rem) |
+| Thick box borders | ● (2px) | ∅ (1px) |
+| Received amount numeric sanitization | ● | ∅ |

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZAKA Proforma Invoice - Add</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
 
     <style>
         /* [CSS from previous response remains here for layout integrity] */
@@ -56,7 +56,7 @@
             border-color: #ced4da;
         }
         .form-label {
-            font-weight: bold;
+            font-weight: 700;
             margin-bottom: 0.2rem;
             font-size: 1.1rem;
             color: #000;
@@ -112,8 +112,8 @@
         .line-item-table th:nth-child(2) { width: 15%; }
         .line-item-table th:nth-child(3) { width: 35%; }
         .line-item-table th:nth-child(4), .line-item-table th:nth-child(5) { width: 10%; }
-        .line-item-table th:nth-child(6) { width: 15%; }
-
+        .line-item-table th:nth-child(6) { width: 20%; }
+        .line-item-table th:nth-child(7) { width: 10%; }
 
         /* --- 6. Add Row Button Styling --- */
         .add-row-controls {
@@ -125,6 +125,20 @@
             border-color: #0d6efd;
             font-size: 0.85rem;
             padding: 0.25rem 0.75rem;
+        }
+
+        .delete-row-btn {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+        .delete-row-btn:hover {
+            background-color: #c82333;
         }
 
         /* --- 7. Summary Box Field Layout --- */
@@ -151,7 +165,9 @@
 
 <!-- Logo Header -->
   <div style="text-align: center; padding: 2vh 1vw; background-color: #f8f9fa; border-bottom: 3px solid #d90000;">
-      <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 19vh; width: auto; max-width: 117vw; object-fit: contain;">
+      <div style="max-width: 1100px; margin: 0 auto;">
+        <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 19vh; width: auto; max-width: 100%; object-fit: contain;">
+      </div>
   </div><div class="container">
     <div class="header-section">
         <div class="invoice-title">Proforma Invoice</div>
@@ -214,6 +230,7 @@
                         <th scope="col" class="text-end">Quantity</th>
                         <th scope="col" class="text-end">Unit Rate</th>
                         <th scope="col" class="text-end">Total</th>
+                        <th scope="col" class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody id="lineItemsBody">
@@ -229,6 +246,7 @@
                             </div>
                         </td>
                         <td class="total text-end pe-3"><span class="amount-num">0.00</span><span class="currency-display ms-2" style="min-width: 15px;"></span></td>
+                        <td class="text-center"><button type="button" class="delete-row-btn" data-line="1">🗑 Delete</button></td>
                     </tr>
                     <tr class="line-item-row" data-line="2">
                         <td class="line-no">2</td>
@@ -242,6 +260,7 @@
                             </div>
                         </td>
                         <td class="total text-end pe-3"><span class="amount-num">0.00</span><span class="currency-display ms-2" style="min-width: 15px;"></span></td>
+                        <td class="text-center"><button type="button" class="delete-row-btn" data-line="2">🗑 Delete</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -331,11 +350,12 @@
 
     <div class="text-center submit-btn-container">
         <button type="button" class="btn btn-primary btn-lg" id="submitBtn" style="width: 200px; background-color: #28a745; border-color: #28a745; color: white; font-weight: bold;">✓ Submit</button>
+        <button type="button" class="btn btn-secondary btn-lg" id="cancelBtn" style="width: 200px; background-color: #6c757d; border-color: #6c757d; color: white; font-weight: bold;" onclick="window.location.href='/proforma_invoice/view';">↩ Cancel</button>
     </div>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/vendor/bootstrap/bootstrap.bundle.min.js"></script>
 
 <script>
     // Define all variables at the top
@@ -396,6 +416,7 @@
                         </div>
                     </td>
                     <td class="total text-end pe-3"><span class="amount-num">0.00</span><span class="currency-display ms-2" style="min-width: 15px;"></span></td>
+                    <td class="text-center"><button type="button" class="delete-row-btn" data-line="${lineNumber}">🗑 Delete</button></td>
                 </tr>
             `;
         };
@@ -505,6 +526,37 @@
 
             updateSummary(); // Re-calculate after adding a row
         });
+
+        lineItemsBody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-row-btn')) {
+                e.preventDefault();
+                deleteRow(e.target);
+            }
+        });
+
+        const deleteRow = (button) => {
+            const row = button.closest('.line-item-row');
+            const remainingRows = lineItemsBody.querySelectorAll('.line-item-row').length;
+
+            if (remainingRows > 1) {
+                row.remove();
+
+                const rows = lineItemsBody.querySelectorAll('.line-item-row');
+                rows.forEach((r, index) => {
+                    const lineNo = index + 1;
+                    r.setAttribute('data-line', lineNo);
+                    r.querySelector('.line-no').textContent = lineNo;
+                    const deleteBtn = r.querySelector('.delete-row-btn');
+                    if (deleteBtn) {
+                        deleteBtn.setAttribute('data-line', lineNo);
+                    }
+                });
+
+                updateSummary();
+            } else {
+                alert('At least one line item is required.');
+            }
+        };
 
         // Event delegation for input changes in line items
         lineItemsBody.addEventListener('input', (e) => {

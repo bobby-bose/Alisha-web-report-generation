@@ -18,8 +18,18 @@ function createNewRow(initialPackageStart, initialPackageEnd) {
             <td><input type="text" class="form-control form-control-sm description"></td>
             <td><input type="text" class="form-control form-control-sm unit"></td>
             <td><input type="number" class="form-control form-control-sm qty" min="0" step="0.01" value="0" oninput="calculateRowAmount(this.closest('tr')); updateTotals();"></td>
-            <td><input type="number" class="form-control form-control-sm rate" min="0" step="0.01" value="0" oninput="calculateRowAmount(this.closest('tr')); updateTotals();"></td>
-            <td><input type="number" class="form-control form-control-sm amount" value="0.00" readonly></td>
+            <td>
+                <div class="d-flex align-items-center justify-content-end">
+                    <input type="number" class="form-control form-control-sm rate" min="0" step="0.01" value="0" oninput="calculateRowAmount(this.closest('tr')); updateTotals();" style="flex: 1;">
+                    <span class="currency-display ms-2" style="min-width: 15px;"></span>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center justify-content-end">
+                    <input type="number" class="form-control form-control-sm amount" value="0.00" readonly style="flex: 1;">
+                    <span class="currency-display ms-2" style="min-width: 15px;"></span>
+                </div>
+            </td>
             <td><input type="number" class="form-control form-control-sm taxable-value" value="0.00" readonly></td>
             <td>
                 <select class="form-select form-select-sm igst-percent" onchange="calculateRowAmount(this.closest('tr')); updateTotals();">
@@ -29,9 +39,14 @@ function createNewRow(initialPackageStart, initialPackageEnd) {
                     <option value="28">28%</option>
                 </select>
             </td>
-            <td><input type="number" class="form-control form-control-sm igst-amount" value="0.00" readonly></td>
+            <td>
+                <div class="d-flex align-items-center justify-content-end">
+                    <input type="number" class="form-control form-control-sm igst-amount" value="0.00" readonly style="flex: 1;">
+                    <span class="currency-display ms-2" style="min-width: 15px;"></span>
+                </div>
+            </td>
             <td class="text-center">
-                <button type="button" class="btn btn-sm btn-danger remove-row" style="padding: 0.1rem 0.4rem;">×</button>
+                <button type="button" class="btn btn-danger btn-sm delete-row-btn" style="background-color: #dc3545; border-color: #dc3545; color: white; font-weight: bold;">🗑️</button>
             </td>
         </tr>`;
 }
@@ -126,7 +141,7 @@ function numberToWords(n) {
     const [euros, cents = '00'] = String(n.toFixed(2)).split('.');
     
     // Placeholder logic for immediate update confirmation
-    return `Total ${euros} euro and ${cents} cents`;
+    return `${euros} euro and ${cents} cents`;
 }
 
 
@@ -337,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Delete Specific Row Listener
     container.addEventListener('click', (event) => {
-        if (event.target.classList.contains('remove-row')) {
+        if (event.target.classList.contains('delete-row-btn')) {
             const rowToDelete = event.target.closest('.item-row');
             const rows = container.querySelectorAll('.item-row');
             if (rows.length > 1) { 

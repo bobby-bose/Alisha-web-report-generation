@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZC/IN-07 - Edit Export Invoice</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>ZC/IN-07 PyInstaller\loader\pyimod02_importers.py:384: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+[2025-12-22 00:17:26,590] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "flask\app.py", line 1473, in wsgi_app
+  File "flask\app.py", line 882, in full_dispatch_request
+  File "flask\app.py", line 880, in full_dispatch_request
+  File "flask\app.py", line 865, in dispatch_request
+  File "main.py", line 110, in home
+  File "flask\templating.py", line 149, in render_template
+  File "jinja2\environment.py", line 1087, in get_or_select_template
+  File "jinja2\environment.py", line 1016, in get_template
+  File "jinja2\environment.py", line 975, in _load_template
+  File "jinja2\loaders.py", line 126, in load
+  File "flask\templating.py", line 65, in get_source
+  File "flask\templating.py", line 99, in _get_source_fast
+jinja2.exceptions.TemplateNotFound: main.html
+127.0.0.1 - - [22/Dec/2025 00:17:26] "GET / HTTP/1.1" 500 -
+127.0.0.1 - - [22/Dec/2025 00:17:26] "GET /favicon.ico HTTP/1.1" 404 -
+ Export Invoice</title>
+    <link href="/static/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
     <style>
         .logo-img {
             max-width: 150px;
@@ -17,6 +35,11 @@
             font-family: 'Times New Roman', Times, serif;
             font-weight: bold;
             font-size: xx-large;
+        }
+        .form-label {
+            font-weight: bold;
+            color: #000;
+            font-size: 1.1rem;
         }
         .auto-expand {
             overflow: hidden;
@@ -161,7 +184,7 @@
                 <div class="col-12 mb-3">
                     <div class="input-group">
                         <span class="input-group-text">Amount in Words:</span>
-                        <input type="text" class="form-control" id="amountInWords" disabled>
+                        <input type="text" class="form-control" id="amountInWords">
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
@@ -198,10 +221,13 @@
         </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/bootstrap/bootstrap.bundle.min.js"></script>
     <script>
         // Global variable to keep track of the number of rows created
         let rowCount = 0;
+
+        // Track whether user has manually edited the Amount in Words field
+        let amountInWordsManuallyEdited = false;
 
         // Get record ID from URL
         const recordId = new URLSearchParams(window.location.search).get('id');
@@ -238,10 +264,10 @@
                         <input type="text" class="form-control form-control-sm description" placeholder="Description of Goods" value="${rowData.description || ''}">
                     </td>
                     <td>
-                        <input type="number" class="form-control form-control-sm unit" value="${rowData.unit || 0}" min="0">
+                        <input type="text" class="form-control form-control-sm unit" value="${rowData.unit || ''}">
                     </td>
                     <td>
-                        <input type="number" class="form-control form-control-sm quantity" value="${rowData.quantity || 0}" min="0">
+                        <input type="number" class="form-control form-control-sm qty" value="${rowData.quantity || 0}" min="0" step="0.01">
                     </td>
                     <td>
                         <div class="d-flex align-items-center justify-content-end">
@@ -251,19 +277,24 @@
                     </td>
                     <td>
                         <div class="d-flex align-items-center justify-content-end">
-                            <input type="text" class="form-control form-control-sm amount" value="${rowData.amount || '0.00'}" disabled style="flex: 1;">
+                            <input type="number" class="form-control form-control-sm amount" value="${rowData.amount || '0.00'}" readonly style="flex: 1;">
                             <span class="currency-display ms-2" style="min-width: 15px;"></span>
                         </div>
                     </td>
                     <td>
-                        <input type="number" class="form-control form-control-sm taxable-value" value="${rowData.taxableValue || '0.00'}" min="0" step="0.01">
+                        <input type="number" class="form-control form-control-sm taxable-value" value="${rowData.taxableValue || '0.00'}" readonly>
                     </td>
                     <td>
-                        <input type="number" class="form-control form-control-sm igst-percent" value="${rowData.igstPercent || 0}" min="0" max="100" step="0.01">
+                        <select class="form-select form-select-sm igst-percent">
+                            <option value="0" ${String(rowData.igstPercent || 0) === '0' ? 'selected' : ''}>0%</option>
+                            <option value="12" ${String(rowData.igstPercent || 0) === '12' ? 'selected' : ''}>12%</option>
+                            <option value="18" ${String(rowData.igstPercent || 0) === '18' ? 'selected' : ''}>18%</option>
+                            <option value="28" ${String(rowData.igstPercent || 0) === '28' ? 'selected' : ''}>28%</option>
+                        </select>
                     </td>
                     <td>
                         <div class="d-flex align-items-center justify-content-end">
-                            <input type="text" class="form-control form-control-sm igst-amount" value="${rowData.igstAmount || '0.00'}" disabled style="flex: 1;">
+                            <input type="number" class="form-control form-control-sm igst-amount" value="${rowData.igstAmount || '0.00'}" readonly style="flex: 1;">
                             <span class="currency-display ms-2" style="min-width: 15px;"></span>
                         </div>
                     </td>
@@ -276,13 +307,13 @@
 
         // Function to calculate amount for a single row
         function calculateRowAmount(row) {
-            const unit = parseFloat(row.querySelector('.unit').value) || 0;
-            const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
+            const quantity = parseFloat(row.querySelector('.qty').value) || 0;
             const rate = parseFloat(row.querySelector('.rate').value) || 0;
-            const amount = (unit * quantity * rate).toFixed(2);
+            const amount = (quantity * rate).toFixed(2);
             row.querySelector('.amount').value = amount;
+            row.querySelector('.taxable-value').value = amount;
             
-            // Calculate IGST Amount = (IGST % / 100) * Taxable Value
+            // Calculate IGST Amount = (IGST % / 100) * Taxable Value (Taxable Value = Amount)
             const taxableValue = parseFloat(row.querySelector('.taxable-value').value) || 0;
             const igstPercent = parseFloat(row.querySelector('.igst-percent').value) || 0;
             const igstAmount = ((igstPercent / 100) * taxableValue).toFixed(2);
@@ -331,7 +362,9 @@
             }
 
             // Update Amount in Words based on Total Invoice Value
-            document.getElementById('amountInWords').value = numberToWords(totalInvoiceValue);
+            if (!amountInWordsManuallyEdited) {
+                document.getElementById('amountInWords').value = numberToWords(totalInvoiceValue);
+            }
         }
 
         // Function to update package sequence
@@ -449,7 +482,7 @@
                     to: row.querySelector('.package-to').value,
                     description: row.querySelector('.description').value,
                     unit: row.querySelector('.unit').value,
-                    quantity: row.querySelector('.quantity').value,
+                    quantity: row.querySelector('.qty').value,
                     rate: row.querySelector('.rate').value,
                     amount: row.querySelector('.amount').value,
                     taxableValue: row.querySelector('.taxable-value').value,
@@ -529,6 +562,14 @@
             const addRowBtn = document.getElementById('addRowBtn');
             const removeRowBtn = document.getElementById('removeRowBtn');
 
+            // Setup event listener to detect manual edits to Amount in Words
+            const amountInWordsInput = document.getElementById('amountInWords');
+            if (amountInWordsInput) {
+                amountInWordsInput.addEventListener('input', () => {
+                    amountInWordsManuallyEdited = true;
+                });
+            }
+
             loadRecordData();
             
             // Currency change listener
@@ -556,6 +597,7 @@
                 
                 container.insertAdjacentHTML('beforeend', createNewRow(nextStart, nextStart + 9));
                 updateTotals();
+                updateCurrencySymbols();
             });
 
             // Remove Last Row Listener
@@ -575,13 +617,13 @@
 
                 if (!row) return;
 
-                if (target.classList.contains('unit') || target.classList.contains('quantity') || target.classList.contains('rate')) {
+                if (target.classList.contains('qty') || target.classList.contains('rate')) {
                     calculateRowAmount(row);
                     updateTotals();
                 }
 
-                // Listener for Taxable Value and IGST % changes
-                if (target.classList.contains('taxable-value') || target.classList.contains('igst-percent')) {
+                // Listener for IGST % changes
+                if (target.classList.contains('igst-percent')) {
                     calculateRowAmount(row);
                     updateTotals();
                 }
@@ -606,7 +648,18 @@
                     updatePackageSequence(row);
                 }
 
-                if (target.classList.contains('unit') || target.classList.contains('quantity') || target.classList.contains('rate') || target.classList.contains('package-from') || target.classList.contains('package-to')) {
+                if (target.classList.contains('qty') || target.classList.contains('rate') || target.classList.contains('package-from') || target.classList.contains('package-to')) {
+                    updateTotals();
+                }
+            });
+
+            // Listener for IGST % select changes (select doesn't always trigger input)
+            container.addEventListener('change', (event) => {
+                const target = event.target;
+                const row = target.closest('.item-row');
+                if (!row) return;
+                if (target.classList.contains('igst-percent')) {
+                    calculateRowAmount(row);
                     updateTotals();
                 }
             });

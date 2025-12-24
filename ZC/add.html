@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZC/IN-07 - Add New Export Invoice</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
     <style>
         .logo-img {
             max-width: 150px;
@@ -12,13 +12,16 @@
         .form-row-padding {
             padding-top: 10px;
         }
+        .page-title {
+            color: #d90000;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            font-size: xx-large;
+        }
         .form-label {
             font-weight: bold;
             color: #000;
             font-size: 1.1rem;
-        }
-        fieldset {
-            border: 2px solid #000 !important;
         }
         .auto-expand {
             overflow: hidden;
@@ -30,8 +33,11 @@
 <body>
     <!-- Logo Header -->
   <div style="text-align: center; padding: 2vh 1vw; background-color: #f8f9fa; border-bottom: 3px solid #d90000;">
-      <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 19vh; width: auto; max-width: 200vw; object-fit: contain;">
+      <img src="/static/logo.jpg" alt="ZAKA Controls & Devices" style="height: 19vh; width: auto; max-width: 117vw; object-fit: contain;">
   </div>    <div class="container py-4">
+        <header class="text-center mb-4">
+              <h1 class="h4 page-title">Add New Export Invoice.</h1>
+        </header>
       
         <form id="exportInvoiceForm" class="p-3 border rounded shadow-sm bg-white">
             
@@ -177,7 +183,7 @@ Attn: John Doe, +49 30 1234567</textarea></div>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="totalGstValue" class="form-label">Total GST Value</label>
+                    <label for="totalGstValue" class="form-label">Total GST Value (Sum of IGST)</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="totalGstValue" value="0.00" disabled>
                         <span class="input-group-text currency-display"></span>
@@ -203,7 +209,7 @@ Attn: John Doe, +49 30 1234567</textarea></div>
         </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="/ZC/add_script.js"></script>
 </body>
 </html>

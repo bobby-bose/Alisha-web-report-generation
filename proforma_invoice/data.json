@@ -1,37 +1,39 @@
 {
-  "bill_to_address": "i",
+  "bill_to_address": "555\n55\n55",
   "date": "2025-12-12",
-  "invoice_no": "ii",
-  "po_wo_number": "ii",
-  "your_reference_no": "i",
-  "our_reference_no": "i",
-  "currency": "INR",
+  "invoice_no": "555",
+  "po_wo_number": "555",
+  "your_reference_no": "999999999",
+  "our_reference_no": "555",
+  "currency": "USD",
   "items": [
     {
       "lineNo": 1,
-      "partNumber": "i",
-      "description": "i",
-      "quantity": "100",
-      "unitRate": "100",
-      "total": "10000.00"
+      "partNumber": "5",
+      "description": "5",
+      "quantity": "55",
+      "unitRate": "55",
+      "total": "3025.00$"
     },
     {
       "lineNo": 2,
-      "partNumber": "u",
-      "description": "u",
-      "quantity": "100",
-      "unitRate": "100",
-      "total": "10000.00"
+      "partNumber": "55",
+      "description": "5",
+      "quantity": "5",
+      "unitRate": "55",
+      "total": "275.00$"
     }
   ],
-  "total_amount": "20000.00",
-  "discount_percent": "10",
-  "discount_amount": "2000.00",
-  "received_details": "cheque with csh",
-  "received_amount": "500.00",
-  "balance_amount": "17500.00",
-  "country_of_origin": "mm",
-  "port_of_embarkation": "mmm",
+  "total_amount": "3300.00",
+  "discount_percent": "20",
+  "discount_amount": "660.00",
+  "received_details": "hello",
+  "received_amount": "20",
+  "balance_amount": "2620.00",
+  "balance_amount_words": "Two Thousand Six Hundred Twenty Rupees",
+  "receivable_amount_words": "Six Hundred Sixty Rupees",
+  "country_of_origin": "hhhh",
+  "port_of_embarkation": "hhhh",
   "port_of_discharge": "Rotterdam Port",
-  "date_created": "2025-12-16"
+  "date_created": "2025-12-21"
 }
