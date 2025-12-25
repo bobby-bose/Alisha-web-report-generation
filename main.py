@@ -2,6 +2,7 @@ from flask import Flask, render_template, send_from_directory, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import os
 import json
+import sys
 import webbrowser
 from datetime import datetime
 from ZC.logic import prepare_invoice_data
@@ -76,7 +77,14 @@ def number_to_words(num):
 app = Flask(__name__, template_folder=os.path.dirname(os.path.abspath(__file__)), static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static'))
 
 # Database Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///web_forms.db'
+if getattr(sys, 'frozen', False):
+    appdata_dir = os.environ.get('APPDATA') or os.path.expanduser('~')
+    db_dir = os.path.join(appdata_dir, 'ReportGeneration')
+    os.makedirs(db_dir, exist_ok=True)
+    db_path = os.path.join(db_dir, 'web_forms.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path.replace('\\', '/')
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///web_forms.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 

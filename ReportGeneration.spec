@@ -5,7 +5,7 @@ a = Analysis(
     ['desktop_launcher.py'],
     pathex=[],
     binaries=[],
-    datas=[('static', 'static'), ('packaging_list', 'packaging_list'), ('proforma_invoice', 'proforma_invoice'), ('ZC', 'ZC')],
+    datas=[('static', 'static'), ('packaging_list', 'packaging_list'), ('proforma_invoice', 'proforma_invoice'), ('ZC', 'ZC'), ('main.html', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

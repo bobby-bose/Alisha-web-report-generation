@@ -1,2 +1,3 @@
-2025/12/22-00:12:56.348 704 Creating DB X:\Web Screenshots\dist\ReportGeneration.exe.WebView2\EBWebView\Default\shared_proto_db since it was missing.
-2025/12/22-00:12:56.353 704 Reusing MANIFEST X:\Web Screenshots\dist\ReportGeneration.exe.WebView2\EBWebView\Default\shared_proto_db/MANIFEST-000001
+2025/12/24-18:23:09.651 4410 Reusing MANIFEST X:\Web Screenshots\dist\ReportGeneration.exe.WebView2\EBWebView\Default\shared_proto_db/MANIFEST-000001
+2025/12/24-18:23:09.652 4410 Recovering log #3
+2025/12/24-18:23:09.652 4410 Reusing old log X:\Web Screenshots\dist\ReportGeneration.exe.WebView2\EBWebView\Default\shared_proto_db/000003.log 
